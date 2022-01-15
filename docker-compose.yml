@@ -1,0 +1,65 @@
+version: "3"
+services:
+  br_db:
+    image: postgres:alpine
+    container_name: "br_db"
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=bike_rider
+  br_db_admin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=thelandofdevs@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=password
+      - PGADMIN_DISABLE_POSTFIX=1
+      - GUNICORN_ACCESS_LOGFILE=/dev/null
+    container_name: "br_db_admin"
+    depends_on:
+      - br_db
+    volumes:
+      - ./config/pgadmin.json:/pgadmin4/servers.json
+  br_web:
+    image: nginx:latest
+    container_name: "br_web"
+    ports:
+      - "80:80"
+    volumes:
+      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./data:/app_data
+    depends_on:
+      - br_db_admin
+      - br_react
+      - br_django
+
+  br_react:
+    container_name: "br_react"
+    image: node:alpine
+    volumes:
+      - ./frontend/:/home/node/app/
+      - ./data:/app_data
+      - ./config/private/${ENV:-dev}:/private/
+      - ./config/startnode.sh:/startnode.sh:ro
+    working_dir: /home/node/app/
+    command: sh /startnode.sh
+    env_file:
+      - .env
+      - config/private/${ENV:-dev}/secrets.env
+      - config/private/${ENV:-dev}/super-secrets.env
+    depends_on:
+      - br_db
+      - br_django
+
+  br_django:
+    container_name: "br_django"
+    build: ./config/docker/django
+    command: sh /startdjango.sh
+    volumes:
+      - ./backend/:/app
+      - ./data:/app_data
+      - ./config/private/${ENV:-dev}:/private/
+      - ./config/startdjango.sh:/startdjango.sh:ro
+    env_file:
+      - .env
+      - config/private/${ENV:-dev}/secrets.env
+    depends_on:
+      - br_db

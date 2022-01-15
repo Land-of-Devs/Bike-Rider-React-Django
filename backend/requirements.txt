@@ -1,0 +1,13 @@
+asgiref==3.2.3
+Django==3.0.2
+djangorestframework==3.11.0
+djangorestframework-jwt==1.11.0
+PyJWT==1.7.1
+python-dotenv==0.10.3
+pytz==2019.3
+redis==3.3.11
+sqlparse==0.3.0
+psycopg2-binary==2.8.6
+Faker
+django-cors-headers
+django-extensions==3.1.0
