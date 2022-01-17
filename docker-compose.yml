@@ -8,6 +8,8 @@ services:
       - POSTGRES_DB=bike_rider
   br_db_admin:
     image: dpage/pgadmin4
+    logging:
+      driver: none
     environment:
       - PGADMIN_DEFAULT_EMAIL=thelandofdevs@gmail.com
       - PGADMIN_DEFAULT_PASSWORD=password
