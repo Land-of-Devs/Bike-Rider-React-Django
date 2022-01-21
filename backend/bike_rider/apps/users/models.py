@@ -4,6 +4,7 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 from bike_rider.apps.subscriptions.models import Subscription
+from bike_rider.apps.core.models import TimestampedModel
 
 
 class UserManager(BaseUserManager):
@@ -49,7 +50,7 @@ class UserManager(BaseUserManager):
 
 
 # Create your models here.
-class User(AbstractBaseUser, PermissionsMixin):
+class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     ROLE_CHOICES = [
         ('USER', 'user'),
         ('STAFF', 'staff'),

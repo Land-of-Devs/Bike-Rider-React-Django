@@ -52,6 +52,7 @@ services:
       - br_django
 
   br_django:
+    user: ${UID:-1000}:${GID:-1000}
     container_name: "br_django"
     build: ./config/docker/django
     command: sh /startdjango.sh
