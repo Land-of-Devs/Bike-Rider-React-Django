@@ -52,7 +52,6 @@ services:
       - br_django
 
   br_django:
-    user: ${UID:-1000}:${GID:-1000}
     container_name: "br_django"
     build: ./config/docker/django
     command: sh /startdjango.sh
@@ -61,6 +60,7 @@ services:
       - ./data:/app_data
       - ./config/private/${ENV:-dev}:/private/
       - ./config/startdjango.sh:/startdjango.sh:ro
+      - ./config/startdjango_user.sh:/startdjango_user.sh:ro
     env_file:
       - .env
       - config/private/${ENV:-dev}/secrets.env
