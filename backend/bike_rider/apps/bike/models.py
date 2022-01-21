@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-from bstation.models import BStation
+from bike_rider.apps.bstation.models import BStation
 
 
 

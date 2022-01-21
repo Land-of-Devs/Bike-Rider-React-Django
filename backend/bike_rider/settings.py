@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bike',
-    'bstation',
-    'bookings',
-    'subscriptions',
-    'user'
+    'bike_rider.apps.bike',
+    'bike_rider.apps.bstation',
+    'bike_rider.apps.bookings',
+    'bike_rider.apps.subscription',
+    'bike_rider.apps.user'
 ]
 
 MIDDLEWARE = [
@@ -128,3 +128,20 @@ USE_TZ = False
 
 STATIC_ROOT = os.path.join(BASE_DIR, '/api/static/')
 STATIC_URL = '/api/static/'
+
+# Tell Django about the custom `User` model we created. The string
+# `authentication.User` tells Django we are referring to the `User` model in
+# the `authentication` module. This module is registered above in a setting
+# called `INSTALLED_APPS`.
+AUTH_USER_MODEL = 'user.User'
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER': 'bike_rider.apps.core.exceptions.core_exception_handler',
+    'NON_FIELD_ERRORS_KEY': 'error',
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'conduit.apps.authentication.backends.JWTAuthentication',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+}
