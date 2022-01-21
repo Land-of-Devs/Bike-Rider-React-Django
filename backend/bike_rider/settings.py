@@ -37,11 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bike_rider.apps.bike',
-    'bike_rider.apps.bstation',
+    'bike_rider.apps.bikes',
+    'bike_rider.apps.bstations',
     'bike_rider.apps.bookings',
-    'bike_rider.apps.subscription',
-    'bike_rider.apps.user'
+    'bike_rider.apps.subscriptions',
+    'bike_rider.apps.users',
+    'bike_rider.apps.travels',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,7 @@ STATIC_URL = '/api/static/'
 # `authentication.User` tells Django we are referring to the `User` model in
 # the `authentication` module. This module is registered above in a setting
 # called `INSTALLED_APPS`.
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = 'users.User'
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'bike_rider.apps.core.exceptions.core_exception_handler',

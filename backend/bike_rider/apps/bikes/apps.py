@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class BstationConfig(AppConfig):
+class BikesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'bstation'
+    name = 'bikes'

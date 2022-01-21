@@ -3,7 +3,7 @@ from django.core.validators import MinLengthValidator
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
-from bike_rider.apps.subscription.models import Subscription
+from bike_rider.apps.subscriptions.models import Subscription
 
 
 class UserManager(BaseUserManager):
