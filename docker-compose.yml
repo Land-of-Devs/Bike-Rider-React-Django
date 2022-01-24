@@ -55,6 +55,9 @@ services:
     container_name: "br_django"
     build: ./config/docker/django
     command: sh /startdjango.sh
+    environment:
+      - PIP_TARGET=/app/pip_modules
+      - PYTHONPATH=/app/pip_modules
     volumes:
       - ./backend/:/app
       - ./data:/app_data

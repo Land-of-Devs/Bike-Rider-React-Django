@@ -1,8 +1,5 @@
 #!/bin/sh
 
-export PIP_TARGET=/app/pip_modules
-export PYTHONPATH=/app/pip_modules
-
 python -m pip install --no-warn-script-location --upgrade pip
 python -m pip install --no-warn-script-location --upgrade -r requirements.txt
 # find . -type d -name migrations -exec rm -rf {} \;
