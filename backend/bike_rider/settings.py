@@ -37,12 +37,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'bike_rider.apps.bikes',
     'bike_rider.apps.bstations',
     'bike_rider.apps.bookings',
     'bike_rider.apps.subscriptions',
     'bike_rider.apps.users',
-    'bike_rider.apps.travels',
+    'bike_rider.apps.travels'
 ]
 
 MIDDLEWARE = [
@@ -136,12 +137,24 @@ STATIC_URL = '/api/static/'
 # called `INSTALLED_APPS`.
 AUTH_USER_MODEL = 'users.User'
 
+JWT_AUTH = {
+    'JWT_SECRET_KEY': os.environ.get('JWT_PASSPHRASE'),
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_VERIFY': True,
+    'JWT_VERIFY_EXPIRATION': True,
+
+    'JWT_ALLOW_REFRESH': True,
+
+    'JWT_AUTH_HEADER_PREFIX': 'Token',
+    'JWT_AUTH_COOKIE': 'brsession',
+}
+
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'bike_rider.apps.core.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'conduit.apps.authentication.backends.JWTAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,

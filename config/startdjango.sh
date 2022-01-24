@@ -11,4 +11,4 @@ if ! id "user${uid}" &>/dev/null; then
   chown "${uid}:${gid}" "/user${uid}"
 fi
 
-su "user${uid}" -c "sh /startdjango_user.sh"
+exec su "user${uid}" -c "sh /startdjango_user.sh"
