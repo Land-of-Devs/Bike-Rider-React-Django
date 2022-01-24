@@ -17,7 +17,7 @@ class UserManager(BaseUserManager):
     to create `User` objects.
     """
 
-    def create_user(self, dni, email, password=None):
+    def create_user(self, dni, email, password=None, role="user"):
         """Create and return a `User` with an email, username and password."""
         if dni is None:
             raise TypeError('Users must have a username.')
@@ -25,13 +25,13 @@ class UserManager(BaseUserManager):
         if email is None:
             raise TypeError('Users must have an email address.')
 
-        user = self.model(dni=dni, email=self.normalize_email(email))
+        user = self.model(dni=dni, email=self.normalize_email(email), role=role)
         user.set_password(password)
         user.save()
 
         return user
 
-    def create_superuser(self, dni, email, password):
+    def create_superuser(self, dni, email, password, role):
       """
       Create and return a `User` with superuser powers.
 
@@ -41,7 +41,7 @@ class UserManager(BaseUserManager):
       if password is None:
           raise TypeError('Superusers must have a password.')
 
-      user = self.create_user(dni, email, password)
+      user = self.create_user(dni, email, password, role)
       user.is_superuser = True
       user.is_staff = True
       user.save()
@@ -53,13 +53,14 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     ROLE_CHOICES = [
         ('USER', 'user'),
-        ('STAFF', 'staff'),
+        ('SUPPORT', 'support'),
+        ('MAINTENANCE', 'maintenance'),
         ('ADMIN', 'admin')
     ]
     dni = models.CharField(max_length=9, validators=[MinLengthValidator(9)], unique=True, db_index=True)
     password = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
-    role = models.CharField(choices=ROLE_CHOICES, max_length=32)
+    role = models.CharField(choices=ROLE_CHOICES, default='user', max_length=32)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, null=True)
 
     # The `is_staff` flag is expected by Django to determine who can and cannot
@@ -68,6 +69,5 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     is_staff = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'dni'
-    REQUIRED_FIELDS = ['email']
-
+    REQUIRED_FIELDS = ['email', 'role']
     objects = UserManager()
