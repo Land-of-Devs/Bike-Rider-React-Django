@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'bike_rider.apps.bookings',
     'bike_rider.apps.subscriptions',
     'bike_rider.apps.users',
-    'bike_rider.apps.travels'
+    'bike_rider.apps.travels',
+    'bike_rider.apps.tickets'
 ]
 
 MIDDLEWARE = [

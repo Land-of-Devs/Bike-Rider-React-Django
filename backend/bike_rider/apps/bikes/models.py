@@ -11,6 +11,6 @@ class Bike(models.Model):
         ('REPAIRING', 'repairing'),
         ('UNAVALIBALE', 'unavaliable')
     ]
-    station = models.ForeignKey(BStation, on_delete=models.CASCADE)
+    station = models.ForeignKey(BStation, related_name="station", on_delete=models.CASCADE, null=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=32)
     last_check = models.DateTimeField(default=timezone.now)
