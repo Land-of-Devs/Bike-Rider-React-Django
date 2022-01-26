@@ -62,6 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     email = models.CharField(max_length=255)
     role = models.CharField(choices=ROLE_CHOICES, default='user', max_length=32)
     subscription = models.ForeignKey(Subscription, on_delete=models.CASCADE, null=True)
+    image = models.FileField(upload_to='users')
 
     # The `is_staff` flag is expected by Django to determine who can and cannot
     # log into the Django admin site. For most users, this flag will always be
