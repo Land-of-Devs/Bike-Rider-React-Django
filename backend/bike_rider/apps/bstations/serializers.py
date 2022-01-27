@@ -1,15 +1,18 @@
 from rest_framework import serializers
 from .models import BStation
-from pprint import pprint
+
+#from bike_rider.apps.core.utils import MaintenancePrivateField
 
 class BStationSerializer(serializers.ModelSerializer):
     av_slots = serializers.IntegerField(read_only=True)
     av_bike_ct = serializers.SerializerMethodField(read_only=True, method_name='get_av_bike_ct')
     bk_bike_ct = serializers.IntegerField(read_only=True)
+    
+    maint_ticket_ct = serializers.IntegerField(read_only=True, required=False)
 
     class Meta:
         model = BStation
-        fields = ['name', 'lat', 'lon', 'image', 'nslots', 'av_slots', 'av_bike_ct', 'bk_bike_ct']
+        fields = ['name', 'lat', 'lon', 'image', 'nslots', 'av_slots', 'av_bike_ct', 'bk_bike_ct', 'maint_ticket_ct']
 
     def get_av_bike_ct(self, instance):
         try:
@@ -23,4 +26,4 @@ class BStationDistSerializer(BStationSerializer):
 
     class Meta:
         model = BStation
-        fields = ['name', 'lat', 'lon', 'image', 'nslots', 'av_slots', 'av_bike_ct', 'bk_bike_ct', 'approx_dist', 'dist']
+        fields = ['name', 'lat', 'lon', 'image', 'nslots', 'av_slots', 'av_bike_ct', 'bk_bike_ct', 'maint_ticket_ct', 'approx_dist', 'dist']

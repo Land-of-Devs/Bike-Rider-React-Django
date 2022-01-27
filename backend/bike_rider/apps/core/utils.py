@@ -1,5 +1,7 @@
-from django.db.models import Func
 import math
+
+from django.db.models import Func
+from rest_framework import serializers
 
 def to_float_or_none(strn):
     try:
@@ -9,7 +11,20 @@ def to_float_or_none(strn):
         return None
 
 
+# Serializer fields
+# class MaintenancePrivateField(serializers.ReadOnlyField):
+#     def get_attribute(self, instance):
+#         """
+#         Given the *outgoing* object instance, return the primitive value
+#         that should be used for this field.
+#         """
+#         user = self.context['request'].user
+#         if user and user.is_authenticated and (user.is_superuser or user.role == 'MAINTENANCE'):
+#             return super(MaintenancePrivateField, self).get_attribute(instance)
+#         return None
 
+
+# ORM functions
 class ApproxDistance(Func):
     function = 'approxDistance'
     arity = 4
