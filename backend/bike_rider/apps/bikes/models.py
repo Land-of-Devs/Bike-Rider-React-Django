@@ -9,8 +9,8 @@ class Bike(models.Model):
     STATUS_CHOICES = [
         ('OK', 'ok'),
         ('REPAIRING', 'repairing'),
-        ('UNAVALIBALE', 'unavaliable')
+        ('UNAVAILABLE', 'unavaliable')
     ]
-    station = models.ForeignKey(BStation, related_name="station", on_delete=models.CASCADE, null=True)
+    station = models.ForeignKey(BStation, related_name='bike', on_delete=models.SET_NULL, null=True, blank=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=32)
     last_check = models.DateTimeField(default=timezone.now)
