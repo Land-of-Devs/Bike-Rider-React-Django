@@ -1,42 +1,76 @@
+from pprint import pprint
 from rest_framework import serializers
 from bike_rider.apps.users.serializers import ThumbnailSerializer
 from bike_rider.apps.bikes.serializers import BikeSerializer
 from bike_rider.apps.bstations.serializers import BStationSerializer
-from .relations import TravelsRelatedField
 from .models import Ticket, SupportTicket, MaintenanceTicket
+from bike_rider.apps.bikes.models import Bike
+from bike_rider.apps.bstations.models import BStation
 
 class TicketSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
     client = ThumbnailSerializer(read_only=True)
-    status = serializers.ChoiceField(Ticket.TYPE_TICKETS)
+    type = serializers.ChoiceField(Ticket.TYPE_TICKETS)
+    status = serializers.ChoiceField(Ticket.STATUS_TICKETS, read_only=True)
     created_at = serializers.SerializerMethodField(method_name='get_created_at')
 
     class Meta:
         model = Ticket
-        fields = ['title','client', 'status', 'created_at']
+        fields = ['title','client','type', 'status', 'created_at']
         read_only_fields = ['client']
     
     def get_created_at(self, instance):
         return instance.created_at.isoformat()
+    
+    def update(self, instance):
+        status = self.context['status']
+        
+        if status is not None:
+            instance.status = status
+            instance.save()
+        
+        return instance
 
 class TicketSupportSerializer(serializers.ModelSerializer):
-    head = TicketSerializer()
+    ticket_head = TicketSerializer()
     type = serializers.ChoiceField(SupportTicket.TYPE_SUBJECTS)
     message = serializers.CharField()
     class Meta:
         model = SupportTicket
-        fields = ['head', 'type', 'message']
+        fields = ['ticket_head', 'type', 'message']
+
+    def create(self, validated_data):
+        head_data = validated_data.pop('ticket_head')
+        head_model = Ticket.objects.create(client=self.context['client'], **head_data)
+        return SupportTicket.objects.create(ticket_head=head_model, **validated_data)
 
 class TicketMaintenanceSerializer(serializers.ModelSerializer):
-    head = TicketSerializer()
+    ticket_head = TicketSerializer()
     type = serializers.ChoiceField(MaintenanceTicket.TYPE_OBJECT)
-    bike_r = BikeSerializer(read_only=True)
-    bike_w = TravelsRelatedField(write_only=True)
-    station_r = BStationSerializer(read_only=True)
+    bike_id = BikeSerializer(read_only=True)
+    station_id = BStationSerializer(read_only=True)
     message = serializers.CharField()
     
     class Meta:
         model = MaintenanceTicket
-        fields = ['head', 'type', 'bike_r','bike_w','station_r', 'message']
-        read_only_fields = ['bike_r','station_r']
-        write_only_fields = ['bike_w']
+        fields = ['ticket_head', 'type' ,'bike_id','station_id', 'message']
+        read_only_fields = ['bike','station']
+    
+    def create(self, validated_data):
+        head_data = validated_data.pop('ticket_head')
+        head_model = Ticket.objects.create(client=self.context['client'], **head_data)
+        if(validated_data['type'] == 'BIKES'):
+            bike = Bike.objects.get(id=self.context['bike'])
+            return MaintenanceTicket.objects.create(
+                ticket_head=head_model, 
+                bike_id=bike, 
+                **validated_data
+            )
+        else:
+            station = BStation.objects.get(id=self.context['station'])
+            return MaintenanceTicket.objects.create(
+                ticket_head=head_model, 
+                station_id=station,
+                **validated_data
+            )
+

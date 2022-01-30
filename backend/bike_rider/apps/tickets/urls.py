@@ -1,13 +1,10 @@
-from .views import MaintenanceTicketViewSet, SupportTicketViewSet
-from django.conf.urls import url
+from .views import StaffListTicketViewSet, UserSendTicketViewSet
+from django.conf.urls import url, include
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter(trailing_slash=False)
+router.register(r'list', StaffListTicketViewSet, basename='StaffListTicket')  
+router.register(r'user', UserSendTicketViewSet, basename='UserSendTicket')
 urlpatterns = [
-    url(r'support', SupportTicketViewSet.as_view({
-        'post': 'create',
-        'get': 'list'
-    })),
-    url('maintenance', MaintenanceTicketViewSet.as_view({
-        'post': 'create',
-        'get': 'list'
-    }))
+    url(r'tickets/', include(router.urls))
 ]

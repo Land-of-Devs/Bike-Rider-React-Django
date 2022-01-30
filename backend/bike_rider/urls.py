@@ -6,7 +6,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 urlpatterns = [
     url('admin/', admin.site.urls),
     url('api/auth/login/', obtain_jwt_token),
-#    url('api/auth/logout/', views.LogoutView.as_view(), name='logout'),
+    # url('api/auth/logout/', views.LogoutView.as_view(), name='logout'),
     url('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
     url('api/', include('bike_rider.apps.users.urls')),
     url('api/', include('bike_rider.apps.subscriptions.urls')),
