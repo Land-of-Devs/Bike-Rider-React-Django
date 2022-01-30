@@ -10,14 +10,14 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('bstations', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('travels', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='travel',
-            name='user',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='travel', to=settings.AUTH_USER_MODEL),
+            model_name='bstation',
+            name='maintainer',
+            field=models.ForeignKey(blank=True, limit_choices_to={'role': 'MAINTENANCE'}, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='bstation', to=settings.AUTH_USER_MODEL),
         ),
     ]

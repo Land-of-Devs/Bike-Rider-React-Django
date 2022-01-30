@@ -1,36 +1,41 @@
 import datetime
+import jwt
 
-from django.shortcuts import render
 from rest_framework import viewsets
-from rest_framework import permissions
-from django.db.models import Value, IntegerField, Count, Q, F, Subquery, OuterRef
-from django.db.models.functions import Coalesce
+from rest_framework import views
+from rest_framework.exceptions import NotFound
+from rest_framework.permissions import AllowAny
+from rest_framework.request import Request
+from django.db.models import Count, Q, F, Subquery, OuterRef
+from django.conf import settings
 
 from .models import BStation
 from bike_rider.apps.bookings.models import Booking
-from .serializers import BStationSerializer, BStationDistSerializer
+from .serializers import BStationSerializer, BStationDistSerializer, BStationMaintenanceSerializer
 from bike_rider.apps.core.utils import ApproxDistance, Distance, to_float_or_none
-from bike_rider.apps.core.permissions import IsAdmin
+from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsAdminUsr, IsMaintainerOf, IsSuperAdminUsr
 
 
-class BStationViewSet(viewsets.ModelViewSet):
+class BStationMaintenanceViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [IsAdminUsr | (IsMaintenanceUsr & IsMaintainerOf)]
 
+    def get_queryset(self):
+        if self.request.user.is_superuser:
+            return BStation.objects.all()
+
+        return BStation.objects.filter(maintainer=self.request.user.id)
+
+    def get_serializer_class(self):
+        return BStationMaintenanceSerializer
+
+
+class BStationViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = [AllowAny]
 
     def get_object(self):
-        #self.get_queryset()
         o = super().get_object()
         o.bookings = Booking.objects.filter(station=o.id)
         return o
-        
-
-
-    def get_permissions(self):
-        if self.action == 'list' or self.action == 'retrieve':
-            permission_classes = [permissions.AllowAny]
-        else:
-            permission_classes = [IsAdmin]
-
-        return [permission() for permission in permission_classes]
 
     def get_queryset(self):
         queryset = BStation.objects.all()

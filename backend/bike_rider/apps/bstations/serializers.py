@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import BStation
 from bike_rider.apps.bookings.serializers import BookingBStationSerializer
 
+from ..users.serializers import ThumbnailSerializer
+
 #from bike_rider.apps.core.utils import MaintenancePrivateField
 
 class BStationSerializer(serializers.ModelSerializer):
@@ -14,7 +16,7 @@ class BStationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BStation
-        fields = ['name', 'lat', 'lon', 'image', 'nslots', 'av_slots', 'av_bike_ct', 'bk_bike_ct', 'maint_ticket_ct', 'bookings']
+        exclude = ['maintainer', 'ip']
 
     def get_av_bike_ct(self, instance):
         try:
@@ -22,10 +24,19 @@ class BStationSerializer(serializers.ModelSerializer):
         except:
             return None
 
+
+class BStationMaintenanceSerializer(serializers.ModelSerializer):
+    maintainer = ThumbnailSerializer()
+
+    class Meta:
+        model = BStation
+        fields = '__all__'
+
+ 
 class BStationDistSerializer(BStationSerializer):
     approx_dist = serializers.FloatField(read_only=True)
     dist = serializers.FloatField(read_only=True)
 
     class Meta:
         model = BStation
-        fields = ['name', 'lat', 'lon', 'image', 'nslots', 'av_slots', 'av_bike_ct', 'bk_bike_ct', 'maint_ticket_ct', 'approx_dist', 'dist']
+        exclude = ['maintainer', 'ip']

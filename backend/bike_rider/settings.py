@@ -18,6 +18,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEDIA_ROOT = '/app_data/'
 MEDIA_URL = '/api/data/'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = os.environ.get('BR_MAIL_HOST', None)
+EMAIL_PORT = os.environ.get('BR_MAIL_PORT', None)
+EMAIL_SENDER_NAME = os.environ.get('BR_MAIL_NAME', None)
+EMAIL_HOST_USER = os.environ.get('BR_MAIL_USER', None)
+EMAIL_HOST_PASSWORD = os.environ.get('BR_MAIL_PASS', None)
+EMAIL_TIMEOUT = 10
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -59,6 +66,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'bike_rider.apps.bstations.middleware.ReadStationSessionMiddleware',
 ]
 
 ROOT_URLCONF = 'bike_rider.urls'
@@ -143,7 +152,9 @@ STATIC_URL = '/api/static/'
 AUTH_USER_MODEL = 'users.User'
 
 JWT_AUTH = {
-    'JWT_SECRET_KEY': os.environ.get('JWT_PASSPHRASE'),
+    'JWT_SECRET_KEY': os.environ.get('JWT_USER_PASSPHRASE'),
+    'JWT_STATION_SECRET_KEY': os.environ.get('JWT_STATION_PASSPHRASE'),
+    'JWT_STATION_CONFIG_SECRET_KEY': os.environ.get('JWT_STATION_CONFIG_PASSPHRASE'),
     'JWT_ALGORITHM': 'HS256',
     'JWT_VERIFY': True,
     'JWT_VERIFY_EXPIRATION': True,

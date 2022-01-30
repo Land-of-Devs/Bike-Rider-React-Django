@@ -1,7 +1,7 @@
 from rest_framework import permissions
 
 
-class IsMaintenance(permissions.BasePermission):
+class IsMaintenanceUsr(permissions.BasePermission):
     message = 'You don\'t have maintenance permissions'
 
     def has_permission(self, request, view):
@@ -9,7 +9,7 @@ class IsMaintenance(permissions.BasePermission):
                 and request.user.role == 'MAINTENANCE')
 
 
-class IsSupport(permissions.BasePermission):
+class IsSupportUsr(permissions.BasePermission):
     message = 'You don\'t have support permissions'
 
     def has_permission(self, request, view):
@@ -17,7 +17,7 @@ class IsSupport(permissions.BasePermission):
                 and request.user.role == 'SUPPORT')
 
 
-class IsAdmin(permissions.BasePermission):
+class IsAdminUsr(permissions.BasePermission):
     message = 'You don\'t have admin permissions'
 
     def has_permission(self, request, view):
@@ -25,19 +25,27 @@ class IsAdmin(permissions.BasePermission):
                 and request.user.role == 'ADMIN')
 
 
-class IsPanelStaff(permissions.BasePermission):
+class IsPanelStaffUsr(permissions.BasePermission):
     message = 'You don\'t have staff permissions'
 
     def has_permission(self, request, view):
         return request.user and request.user.is_staff
 
 
-class IsSuperAdmin(permissions.BasePermission):
+class IsSuperAdminUsr(permissions.BasePermission):
     message = 'You don\'t have admin permissions'
 
     def has_permission(self, request, view):
         return (request.user and request.user.is_authenticated
                 and request.user.is_superuser)
+
+class IsMaintainerOf(permissions.BasePermission):
+
+    def has_object_permission(self, request, view, obj=None):
+        user = request.user
+
+        return (obj and obj.mantainer and user and user.is_authenticated
+                and obj.mantainer == request.user.id)
 
 
 class IsOwnerOrAdmin(permissions.BasePermission):

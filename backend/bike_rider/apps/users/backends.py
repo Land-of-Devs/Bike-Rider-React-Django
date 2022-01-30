@@ -6,9 +6,8 @@ from rest_framework import authentication, exceptions
 
 from .models import User
 
-# !!! TODO - change to allow session cookie
-class JWTAuthentication(authentication.BaseAuthentication):
-    authentication_header_prefix = 'Token'
+class StationJWTAuthentication(authentication.BaseAuthentication):
+    cookie_name = 'br_station_session'
 
     def authenticate(self, request):
         """
