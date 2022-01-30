@@ -7,13 +7,23 @@ from django.db.models import Value, IntegerField, Count, Q, F, Subquery, OuterRe
 from django.db.models.functions import Coalesce
 
 from .models import BStation
+from bike_rider.apps.bookings.models import Booking
 from .serializers import BStationSerializer, BStationDistSerializer
 from bike_rider.apps.core.utils import ApproxDistance, Distance, to_float_or_none
 from bike_rider.apps.core.permissions import IsAdmin
 
 
 class BStationViewSet(viewsets.ModelViewSet):
-    
+
+
+    def get_object(self):
+        #self.get_queryset()
+        o = super().get_object()
+        o.bookings = Booking.objects.filter(station=o.id)
+        return o
+        
+
+
     def get_permissions(self):
         if self.action == 'list' or self.action == 'retrieve':
             permission_classes = [permissions.AllowAny]
