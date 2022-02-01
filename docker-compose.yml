@@ -67,5 +67,6 @@ services:
     env_file:
       - .env
       - config/private/${ENV:-dev}/secrets.env
+      - config/private/${ENV:-dev}/super-secrets.env
     depends_on:
       - br_db

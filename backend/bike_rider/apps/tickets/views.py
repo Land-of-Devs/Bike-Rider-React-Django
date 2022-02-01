@@ -1,13 +1,37 @@
-from pprint import pprint
-from rest_framework import serializers, viewsets, mixins, status
+from rest_framework import viewsets, mixins, status
 from rest_framework.views import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from .models import SupportTicket, MaintenanceTicket
-from .serializers import TicketMaintenanceSerializer, TicketSupportSerializer
+from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsSupportUsr
+from .permissions import HisMaintenanceTickets
+from rest_framework.permissions import IsAuthenticated
+from .models import SupportTicket, MaintenanceTicket, Ticket
+from .serializers import TicketMaintenanceSerializer, TicketStatusSerializer, TicketSupportSerializer
 from django.db.models import Q
 
-class StaffListTicketViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+class ChangeTicketStatusViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    permission_classes = [HisMaintenanceTickets | IsSupportUsr]
+    serializer_class = TicketStatusSerializer
+
+    def get_queryset(self):
+        if self.request.user.role == 'MAINTENANCE' :
+            return Ticket.objects.filter(type='MAINTENANCE')
+        if self.request.user.role == 'SUPPORT':
+            return Ticket.objects.filter(type='SUPPORT')
+
+    def update(self,request, *args, **kwargs):
+            ticket = self.get_object()
+            serializer_data = request.data
+            serializer = self.serializer_class(
+                ticket,
+                data=serializer_data, 
+                partial=True
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class StaffListTicketViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    permission_classes = [IsMaintenanceUsr | IsSupportUsr ]
 
     def get_queryset(self):
         if self.request.user.role == 'MAINTENANCE' :

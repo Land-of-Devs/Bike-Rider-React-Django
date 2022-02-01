@@ -17,18 +17,21 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ['title','client','type', 'status', 'created_at']
-        read_only_fields = ['client']
+        read_only_fields = ['client', 'status']
     
     def get_created_at(self, instance):
         return instance.created_at.isoformat()
     
-    def update(self, instance):
-        status = self.context['status']
-        
-        if status is not None:
-            instance.status = status
-            instance.save()
-        
+class TicketStatusSerializer(TicketSerializer):
+    status = serializers.ChoiceField(Ticket.STATUS_TICKETS)
+
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.status = validated_data.get('status')
+        instance.save()
         return instance
 
 class TicketSupportSerializer(serializers.ModelSerializer):

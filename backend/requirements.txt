@@ -1,8 +1,8 @@
-asgiref==3.2.3
-Django==3.0.2
-djangorestframework==3.11.0
-djangorestframework-jwt==1.11.0
-PyJWT==1.7.1
+asgiref==3.5.0
+Django==4.0.2
+djangorestframework==3.13.1
+djangorestframework-simplejwt==5.0.0
+PyJWT==2.3.0
 pytz==2019.3
 redis==3.3.11
 sqlparse==0.3.0

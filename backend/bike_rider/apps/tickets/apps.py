@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class TicketsConfig(AppConfig):
-    name = 'Tickets'
+    name = 'bike_rider.apps.tickets'

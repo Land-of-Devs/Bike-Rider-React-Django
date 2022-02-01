@@ -1,18 +1,18 @@
 from django.contrib import admin
 # from django.contrib.auth import views
-from django.conf.urls import include, url
-from rest_framework_jwt.views import obtain_jwt_token
+from django.urls import include, path
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
-    url('admin/', admin.site.urls),
-    url('api/auth/login/', obtain_jwt_token),
-    # url('api/auth/logout/', views.LogoutView.as_view(), name='logout'),
-    url('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url('api/', include('bike_rider.apps.users.urls')),
-    url('api/', include('bike_rider.apps.subscriptions.urls')),
-    url('api/', include('bike_rider.apps.bookings.urls')),
-    url('api/', include('bike_rider.apps.travels.urls')),
-    url('api/', include('bike_rider.apps.bstations.urls')),
-    url('api/', include('bike_rider.apps.bikes.urls')),
-    url('api/', include('bike_rider.apps.tickets.urls')),
+    path('admin/', admin.site.urls),
+    path('api/auth/login/', TokenObtainPairView.as_view()),
+    # path('api/auth/logout/', views.LogoutView.as_view(), name='logout'),
+    path('api/auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('api/', include('bike_rider.apps.users.urls')),
+    path('api/', include('bike_rider.apps.subscriptions.urls')),
+    path('api/', include('bike_rider.apps.bookings.urls')),
+    path('api/', include('bike_rider.apps.travels.urls')),
+    path('api/', include('bike_rider.apps.bstations.urls')),
+    path('api/', include('bike_rider.apps.bikes.urls')),
+    path('api/', include('bike_rider.apps.tickets.urls')),
 ]

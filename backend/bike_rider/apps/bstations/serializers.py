@@ -38,7 +38,7 @@ class BStationConfigureSerializer(serializers.Serializer):
             s_payload,
             settings.JWT_AUTH['JWT_STATION_SECRET_KEY'],
             settings.JWT_AUTH['JWT_ALGORITHM']
-        ).decode('utf-8')
+        )
 
         return token
 

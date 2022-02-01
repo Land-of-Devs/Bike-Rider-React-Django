@@ -1,5 +1,5 @@
 from rest_framework.routers import DefaultRouter
-from django.conf.urls import include, url
+from django.urls import include, path
 
 from .views import BStationConfigureViewSet, BStationViewSet, BStationMaintenanceViewSet
 
@@ -9,6 +9,6 @@ router.register(r'maintenance', BStationMaintenanceViewSet, basename='StMaintena
 router.register(r'configure', BStationConfigureViewSet, basename='BStationConfigure')
 
 urlpatterns = [
-    url(r'stations/', include(router.urls)),
+    path('stations/', include(router.urls)),
     #url(r'bstations', BStationViewSet.as_view({'post': 'create', 'get': 'list'})),
 ]

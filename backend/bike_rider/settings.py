@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 import datetime
+from unittest.mock import DEFAULT
+
+from pprint import pprint
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,8 +22,8 @@ MEDIA_ROOT = '/app_data/'
 MEDIA_URL = '/api/data/'
 
 EMAIL_USE_TLS = True
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('BR_MAIL_HOST', None)
 EMAIL_PORT = os.environ.get('BR_MAIL_PORT', None)
 EMAIL_SENDER_NAME = os.environ.get('BR_MAIL_NAME', None)
@@ -50,6 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework_simplejwt',
     'bike_rider.apps.core',
     'bike_rider.apps.bikes',
     'bike_rider.apps.bstations',
@@ -107,6 +111,7 @@ DATABASES = {
     }
 }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -169,12 +174,14 @@ JWT_AUTH = {
     'JWT_STATION_COOKIE': 'br_station_session',
 }
 
+print(JWT_AUTH['JWT_SECRET_KEY'])
+
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'bike_rider.apps.core.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,

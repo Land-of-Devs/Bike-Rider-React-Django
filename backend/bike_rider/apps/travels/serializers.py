@@ -4,5 +4,6 @@ from .models import Travel
 class UserTravels(serializers.ModelSerializer):
     class Meta:
         model = Travel
-        fields = ['travels','client', 'status', 'created_at']
-        read_only_fields = ['client']
+        fields = ['bike_id', 'start']
+        read_only_fields = ['bike_id', 'start']
+        depth = 0

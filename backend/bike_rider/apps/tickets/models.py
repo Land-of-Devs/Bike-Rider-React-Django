@@ -17,7 +17,7 @@ class Ticket(models.Model):
     title = models.CharField(max_length=30)
     client = models.ForeignKey(User, related_name='ticket', on_delete=models.SET_NULL, null=True)
     type = models.CharField(choices=TYPE_TICKETS, max_length=40)
-    status = models.CharField(choices=STATUS_TICKETS, default='pending', max_length=40)
+    status = models.CharField(choices=STATUS_TICKETS, default='PENDING', max_length=40)
     created_at = models.DateTimeField(default=timezone.now)
 
 class MaintenanceTicket(models.Model):
