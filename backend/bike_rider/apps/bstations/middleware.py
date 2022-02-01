@@ -8,7 +8,7 @@ from .models import BStation
 
 
 class ReadStationSessionMiddleware:
-    cookie_name = 'br_station_session'
+    cookie_name = settings.JWT_AUTH['JWT_STATION_COOKIE']
 
     def __init__(self, get_response):
         self.get_response = get_response
@@ -23,16 +23,18 @@ class ReadStationSessionMiddleware:
         response = self.get_response(request)
         return response
 
-    def read_session(token):
+    def read_session(self, token):
         try:
             payload = jwt.decode(
-                token, settings.JWT_AUTH.JWT_STATION_SECRET_KEY)
+                token, settings.JWT_AUTH['JWT_STATION_SECRET_KEY'])
         except:
             msg = 'Invalid authentication. Could not decode token.'
             raise exceptions.AuthenticationFailed(msg)
 
         try:
-            user = BStation.objects.get(pk=payload['id'])
-        except User.DoesNotExist:
+            queryset = BStation.objects.filter(pk=payload['station_id'])
+            queryset = BStation.annotate_slot_info(queryset)
+            return queryset.get()
+        except BStation.DoesNotExist:
             msg = 'No station matching this token was found.'
             raise exceptions.AuthenticationFailed(msg)
