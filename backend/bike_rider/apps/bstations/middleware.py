@@ -25,8 +25,7 @@ class ReadStationSessionMiddleware:
 
     def read_session(self, token):
         try:
-            payload = jwt.decode(
-                token, settings.JWT_AUTH['JWT_STATION_SECRET_KEY'])
+            payload = jwt.decode(token, settings.JWT_AUTH['JWT_STATION_SECRET_KEY'], algorithms=settings.JWT_AUTH['ALGORITHM'])
         except:
             msg = 'Invalid authentication. Could not decode token.'
             raise exceptions.AuthenticationFailed(msg)

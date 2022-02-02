@@ -6,6 +6,7 @@ from bike_rider.apps.bstations.serializers import BStationSerializer
 from bike_rider.apps.bstations.models import BStation
 from bike_rider.apps.travels.models import Travel
 from django.utils import timezone
+from rest_framework.exceptions import NotAcceptable
 
 class BikeSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -23,21 +24,32 @@ class BikeSerializer(serializers.ModelSerializer):
 
 
 class BikeHookSerializer(BikeSerializer):
-    station = serializers.IntegerField()
-
     class Meta:
         model = Bike
         fields = '__all__'
 
     def hook(self, instance, context):
-        station = BStation.objects.get(id=self.validated_data['station'])
+        station = context['station']
+        if instance.station:
+            raise NotAcceptable('The bike already is in the station')
+
         instance.station = station
         # Close travel
-        travel = Travel.objects.filter(bike=instance, finish=None, destination=None).first()
+        travel = Travel.objects.get(bike=instance, finish=None, destination=None)
         travel.finish = timezone.now()
         travel.destination = station
         travel.save()
         instance.save()
 
-    def unhook(self, instance):
-        pprint(instance)
+    def unhook(self, instance, context):
+        if not instance.station:
+            raise NotAcceptable('The bike isn\'t in the station')
+
+        instance.station = None
+        travel = Travel.objects.create(
+            start=timezone.now(), 
+            user=context['user'], 
+            origin=context['station'], 
+            bike=instance
+        )
+        instance.save()

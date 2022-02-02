@@ -22,8 +22,8 @@ MEDIA_ROOT = '/app_data/'
 MEDIA_URL = '/api/data/'
 
 EMAIL_USE_TLS = True
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('BR_MAIL_HOST', None)
 EMAIL_PORT = os.environ.get('BR_MAIL_PORT', None)
 EMAIL_SENDER_NAME = os.environ.get('BR_MAIL_NAME', None)

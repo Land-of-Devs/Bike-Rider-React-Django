@@ -26,7 +26,7 @@ def send_station_setup_token_to_maintainer(sender, instance, *args, **kwargs):
     token = jwt.encode(
         payload,
         settings.JWT_AUTH['JWT_STATION_CONFIG_SECRET_KEY'],
-        settings.JWT_AUTH['JWT_ALGORITHM']
+        settings.JWT_AUTH['ALGORITHM']
     )
     
     print('Sending setup mail to ' + user.email)

@@ -16,9 +16,9 @@ class BStationConfigureSerializer(serializers.Serializer):
     def use_and_generate_session_token(self, from_ip):
         try:
             token = self.data['token']
-            pload = jwt.decode(token, settings.JWT_AUTH['JWT_STATION_CONFIG_SECRET_KEY'])
-        except:
-            raise exceptions.AuthenticationFailed('Invalid station token.')
+            pload = jwt.decode(token, settings.JWT_AUTH['JWT_STATION_CONFIG_SECRET_KEY'], algorithms=settings.JWT_AUTH['ALGORITHM'])
+        except Exception as e:
+            raise exceptions.AuthenticationFailed('Invalid station token.' + str(e) + token)
         
         try:
             station = BStation.objects.get(pk=pload['station_id'], ip=None)
@@ -36,7 +36,7 @@ class BStationConfigureSerializer(serializers.Serializer):
         token = jwt.encode(
             s_payload,
             settings.JWT_AUTH['JWT_STATION_SECRET_KEY'],
-            settings.JWT_AUTH['JWT_ALGORITHM']
+            settings.JWT_AUTH['ALGORITHM']
         )
 
         return token
