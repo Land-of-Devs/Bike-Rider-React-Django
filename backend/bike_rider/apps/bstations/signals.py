@@ -30,7 +30,6 @@ def send_station_setup_token_to_maintainer(sender, instance, *args, **kwargs):
     )
     
     print('Sending setup mail to ' + user.email)
-    #print('Token sent to mail: ' + token)
 
     mailer = get_connection()
     mailer.open()

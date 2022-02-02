@@ -1,4 +1,4 @@
-from pprint import pprint
+
 from rest_framework import permissions
 
 
@@ -14,6 +14,8 @@ class IsSupportUsr(permissions.BasePermission):
     message = 'You don\'t have support permissions'
 
     def has_permission(self, request, view):
+        print(request.user)
+        print('sss')
         return (request.user and request.user.is_authenticated
                 and request.user.role == 'SUPPORT')
 

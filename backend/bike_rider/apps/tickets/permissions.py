@@ -1,5 +1,4 @@
 from rest_framework import permissions
-from pprint import pp, pprint
 from django.db.models import Q
 from bike_rider.apps.tickets.models import MaintenanceTicket
 

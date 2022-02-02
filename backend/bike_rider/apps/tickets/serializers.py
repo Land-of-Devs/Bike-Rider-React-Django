@@ -1,4 +1,3 @@
-from pprint import pprint
 from rest_framework import serializers
 from bike_rider.apps.users.serializers import ThumbnailSerializer
 from bike_rider.apps.bikes.serializers import BikeSerializer

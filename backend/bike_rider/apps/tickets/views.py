@@ -1,11 +1,15 @@
-from rest_framework import viewsets, mixins, status
+from pprint import pprint
+from rest_framework import viewsets, mixins, status, views
 from rest_framework.views import Response
 from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsSupportUsr
 from .permissions import HisMaintenanceTickets
 from rest_framework.permissions import IsAuthenticated
 from .models import SupportTicket, MaintenanceTicket, Ticket
+from bike_rider.apps.core.serializers import EmailSerializer
 from .serializers import TicketMaintenanceSerializer, TicketStatusSerializer, TicketSupportSerializer
 from django.db.models import Q
+from django.core.mail import send_mail, get_connection
+from django.conf import settings
 
 class ChangeTicketStatusViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     permission_classes = [HisMaintenanceTickets | IsSupportUsr]
@@ -86,3 +90,21 @@ class UserSendTicketViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             return TicketMaintenanceSerializer(data=data, context=context)
         else:
             return TicketSupportSerializer(data=data, context=context)
+
+class SendTicketEmailViewSet(views.APIView):
+    permission_classes= ( IsAuthenticated, IsSupportUsr, )
+    serializer_class = EmailSerializer
+    
+    def post(self, request): 
+
+        try:
+            serializer_data = request.data
+            serializer = self.serializer_class(
+                data=serializer_data
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.send()
+            
+            return Response({'message': 'Message Send Correctly!'}, status=200)
+        except Exception as e:
+            raise e

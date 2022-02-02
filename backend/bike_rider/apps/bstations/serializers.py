@@ -1,5 +1,4 @@
 import jwt
-from pprint import pprint
 
 from django.conf import settings
 from rest_framework import serializers, exceptions

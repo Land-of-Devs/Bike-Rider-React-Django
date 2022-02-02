@@ -159,32 +159,36 @@ STATIC_URL = '/api/static/'
 AUTH_USER_MODEL = 'users.User'
 
 JWT_AUTH = {
-    'JWT_SECRET_KEY': os.environ.get('JWT_USER_PASSPHRASE'),
+    'SIGNING_KEY': os.environ.get('JWT_USER_PASSPHRASE'),
     'JWT_STATION_SECRET_KEY': os.environ.get('JWT_STATION_PASSPHRASE'),
     'JWT_STATION_CONFIG_SECRET_KEY': os.environ.get('JWT_STATION_CONFIG_PASSPHRASE'),
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_VERIFY': True,
-    'JWT_VERIFY_EXPIRATION': True,
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+    'ALGORITHM': 'HS256',
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=14),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=14),
+    'UPDATE_LAST_LOGIN': True,
 
-    'JWT_ALLOW_REFRESH': True,
-
-    'JWT_AUTH_HEADER_PREFIX': 'Token',
+    'AUTH_HEADER_TYPES': ('Token', 'Bearer',),
     'JWT_AUTH_COOKIE': 'brsession',
+    'JWT_REFRESH_COOKIE': 'brrefresh',
     'JWT_STATION_COOKIE': 'br_station_session',
 }
 
-print(JWT_AUTH['JWT_SECRET_KEY'])
+SIMPLE_JWT = JWT_AUTH
+
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'bike_rider.apps.core.exceptions.core_exception_handler',
     'NON_FIELD_ERRORS_KEY': 'error',
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'bike_rider.apps.users.backends.CookieJWTAuthentication',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.MultiPartParser'
+    ],
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
