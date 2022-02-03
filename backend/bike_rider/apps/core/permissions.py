@@ -28,13 +28,6 @@ class IsAdminUsr(permissions.BasePermission):
                 and request.user.role == 'ADMIN')
 
 
-class IsPanelStaffUsr(permissions.BasePermission):
-    message = 'You don\'t have staff permissions'
-
-    def has_permission(self, request, view):
-        return request.user and request.user.is_staff
-
-
 class IsSuperAdminUsr(permissions.BasePermission):
     message = 'You don\'t have admin permissions'
 

@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from rest_framework import mixins, viewsets, status
 from rest_framework.views import Response
-from .serializers import BikeHookSerializer, BikeStatusSerializer
+from .serializers import BikeHookSerializer, BikeStatusSerializer, BikeStationMaintainerSerializer
 from pprint import pprint
 from .models import Bike
 from .permissions import IsMaintainerBike
-from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsStation
+from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsStation, IsAdminUsr
 from rest_framework.permissions import IsAuthenticated
 
 class BikeHookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
@@ -34,14 +34,22 @@ class ChangeBikeStatusViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = BikeStatusSerializer
     queryset = Bike.objects.all()
     def update(self,request, *args, **kwargs):
-            bike = self.get_object()
-            serializer_data = request.data
-            serializer = self.serializer_class(
-                bike,
-                data=serializer_data, 
-                partial=True
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+        bike = self.get_object()
+        serializer_data = request.data
+        serializer = self.serializer_class(
+            bike,
+            data=serializer_data, 
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
 
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+class BikeMaintainerListViewSet(viewsets.ReadOnlyModelViewSet):
+    permission_classes = (IsMaintenanceUsr | IsAdminUsr,)
+    serializer_class = BikeStationMaintainerSerializer
+
+    def get_queryset(self):
+        # Shows all bikes that aren't hooked to a station at the moment
+        return Bike.objects.filter(station=None)
