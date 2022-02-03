@@ -4,14 +4,20 @@ from rest_framework.views import Response
 from .serializers import BikeHookSerializer, BikeStatusSerializer, BikeStationMaintainerSerializer
 from pprint import pprint
 from .models import Bike
-from .permissions import IsMaintainerBike
+from .permissions import IsMaintainerBike, NotActiveTravels
 from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsStation, IsAdminUsr
 from rest_framework.permissions import IsAuthenticated
 
 class BikeHookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     serializer_class = BikeHookSerializer
     queryset = Bike.objects.all()
-    permission_classes = [IsStation, IsAuthenticated]
+
+    def get_permissions(self):
+        if (self.request.path.startswith("/api/bikes/hook/")):
+            self.permission_classes = [IsStation, IsAuthenticated]
+        else :
+            self.permission_classes = [IsStation, IsAuthenticated, NotActiveTravels]
+        return [permission() for permission in self.permission_classes]
 
     def update(self, request, *args, **kwargs):
         serializer_context = {

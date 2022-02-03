@@ -1,0 +1,1 @@
+default_app_config = 'bike_rider.apps.core.apps.CoreConfig'

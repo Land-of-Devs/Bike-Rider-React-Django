@@ -8,6 +8,7 @@ from django.conf import settings
 
 from .models import BStation
 from bike_rider.apps.users.models import User
+from bike_rider.apps.core.threads import queue_message
 
 @receiver(post_save, sender=BStation)
 def send_station_setup_token_to_maintainer(sender, instance, *args, **kwargs):
@@ -31,17 +32,10 @@ def send_station_setup_token_to_maintainer(sender, instance, *args, **kwargs):
     
     print('Sending setup mail to ' + user.email)
 
-    mailer = get_connection()
-    mailer.open()
-
-    send_mail(
+    queue_message((
         'Setup token for station ' + str(instance.id),
         'Hello, this is the setup token for station #' + str(instance.id) + '\r\n'
         + 'Token: ' + token,
         settings.EMAIL_HOST_USER,
         [user.email],
-        fail_silently=False,
-        connection=mailer
-    )
-
-    mailer.close()
+    ))

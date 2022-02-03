@@ -37,11 +37,11 @@ class UserAdmin(AdminPanel):
     list_display = [f.name for f in User._meta.fields]
     list_filter = ()
     fieldsets = (
-        ('Account', {'fields': ('email', 'password', 'dni', 'last_login',)}),
+        ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription')}),
         ('Permissions', {'fields': ('is_superuser','role')}),
     )
     add_fieldsets = (
-        ('Account', {'fields': ('email', 'password', 'dni', 'last_login',)}),
+        ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription')}),
         ('Permissions', {'fields': ('is_superuser','role')}),
     )
     search_fields = ('email','dni')
