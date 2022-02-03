@@ -21,7 +21,6 @@ class BikeHookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
         bike = self.get_object()
         serializer = self.serializer_class()
         hook = request.path.startswith("/api/bikes/hook/")
-        pprint(request.user)
 
         if hook:
             serializer.hook(bike, serializer_context)
