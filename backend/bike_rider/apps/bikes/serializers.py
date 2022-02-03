@@ -3,8 +3,8 @@ from rest_framework.fields import SerializerMethodField
 from .models import Bike
 from pprint import pprint
 from bike_rider.apps.bstations.serializers import BStationSerializer
-from bike_rider.apps.bstations.models import BStation
 from bike_rider.apps.travels.models import Travel
+from bike_rider.apps.bstations.models import BStation
 from django.utils import timezone
 from rest_framework.exceptions import NotAcceptable
 
@@ -22,6 +22,12 @@ class BikeSerializer(serializers.ModelSerializer):
     def get_last_check(self, instance):
         return instance.last_check.isoformat()
 
+class BikeStationMaintainerSerializer(BikeSerializer):
+    station = None
+    
+    class Meta:
+        model = Bike
+        exclude = ['station']
 
 class BikeHookSerializer(BikeSerializer):
     class Meta:

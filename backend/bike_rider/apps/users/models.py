@@ -43,7 +43,6 @@ class UserManager(BaseUserManager):
 
       user = self.create_user(dni, email, password, role)
       user.is_superuser = True
-      user.is_staff = True
       user.save()
 
       return user
@@ -64,11 +63,20 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     subscription = models.ForeignKey(Subscription, related_name='user', on_delete=models.CASCADE, default=None, blank=True, null=True)
     image = models.FileField(upload_to='users', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
 
-    # The `is_staff` flag is expected by Django to determine who can and cannot
-    # log into the Django admin site. For most users, this flag will always be
-    # falsed.
-    is_staff = models.BooleanField(default=False)
-
     USERNAME_FIELD = 'dni'
     REQUIRED_FIELDS = ['email', 'role']
     objects = UserManager()
+
+    @property
+    def is_staff(self):
+        return self.role == 'ADMIN'
+
+    def has_perm(self, perm, obj=None):
+        if self.is_staff and not perm.split('.')[1].startswith('delete_'):
+            return True
+
+        return super().has_perm(perm, obj)
+    
+    def has_module_perms(self, app_label):
+        return self.is_staff or super().has_module_perms(app_label)
+        

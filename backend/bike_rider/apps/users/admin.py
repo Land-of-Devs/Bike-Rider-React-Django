@@ -38,11 +38,11 @@ class UserAdmin(AdminPanel):
     list_filter = ()
     fieldsets = (
         ('Account', {'fields': ('email', 'password', 'dni', 'last_login',)}),
-        ('Permissions', {'fields': ('is_superuser','is_staff','role')}),
+        ('Permissions', {'fields': ('is_superuser','role')}),
     )
     add_fieldsets = (
         ('Account', {'fields': ('email', 'password', 'dni', 'last_login',)}),
-        ('Permissions', {'fields': ('is_superuser','is_staff','role')}),
+        ('Permissions', {'fields': ('is_superuser','role')}),
     )
     search_fields = ('email','dni')
     ordering = ('dni',)

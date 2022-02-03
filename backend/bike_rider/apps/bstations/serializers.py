@@ -6,6 +6,8 @@ from rest_framework import serializers, exceptions
 from .models import BStation
 from bike_rider.apps.bookings.serializers import BookingBStationSerializer
 from ..users.serializers import ThumbnailSerializer
+from ..bikes.models import Bike
+from .relations import BikeRelatedField
 
 #from bike_rider.apps.core.utils import MaintenancePrivateField
 
@@ -44,7 +46,7 @@ class BStationConfigureSerializer(serializers.Serializer):
 
 class BStationSerializer(serializers.ModelSerializer):
     av_slots = serializers.IntegerField(read_only=True)
-    av_bike_ct = serializers.SerializerMethodField(read_only=True, method_name='get_av_bike_ct')
+    av_bike_ct = serializers.IntegerField(read_only=True)
     bk_bike_ct = serializers.IntegerField(read_only=True)
     bookings = BookingBStationSerializer(read_only=True, many=True)
     
@@ -54,19 +56,16 @@ class BStationSerializer(serializers.ModelSerializer):
         model = BStation
         exclude = ['maintainer', 'ip']
 
-    def get_av_bike_ct(self, instance):
-        try:
-            return instance.av_bike_ct - instance.bk_bike_ct
-        except:
-            return None
-
 
 class BStationMaintenanceSerializer(serializers.ModelSerializer):
     maintainer = ThumbnailSerializer()
+    bike = BikeRelatedField(many=True, read_only=True)
+    # serializers.PrimaryKeyRelatedField(source='bike', read_only=True)
 
     class Meta:
         model = BStation
-        fields = '__all__'
+        fields = ['id', 'maintainer', 'name', 'lat', 'lon', 'image', 'nslots', 'ip', 'bike']
+        depth = 1
 
  
 class BStationDistSerializer(BStationSerializer):
