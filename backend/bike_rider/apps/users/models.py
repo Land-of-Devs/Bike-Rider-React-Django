@@ -57,12 +57,12 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         ('ADMIN', 'admin')
     ]
     dni = models.CharField(max_length=9, validators=[MinLengthValidator(9)], unique=True, db_index=True)
-    password = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     role = models.CharField(choices=ROLE_CHOICES, default='user', max_length=32)
-    subscription = models.ForeignKey(Subscription, related_name='user', on_delete=models.CASCADE, default=None, blank=True, null=True)
     image = models.FileField(upload_to='users', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
-
+    subscription = models.ForeignKey(Subscription, related_name='user', on_delete=models.CASCADE, default=None, blank=True, null=True)
+    password = models.CharField(max_length=255)
+    
     USERNAME_FIELD = 'dni'
     REQUIRED_FIELDS = ['email', 'role']
     objects = UserManager()

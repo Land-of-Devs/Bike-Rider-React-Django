@@ -15,6 +15,9 @@ class BStation(models.Model):
     nslots = models.IntegerField(validators=[MinValueValidator(1)])
     ip = models.GenericIPAddressField(null=True, blank=True)
 
+    def __str__(self):
+        return self.name
+
     def annotate_slot_info(queryset):
         return queryset.annotate(
             av_slots=F('nslots') - Count('bike'),

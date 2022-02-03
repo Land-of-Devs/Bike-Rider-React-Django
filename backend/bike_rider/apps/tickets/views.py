@@ -1,4 +1,3 @@
-from pprint import pprint
 from rest_framework import viewsets, mixins, status, views
 from rest_framework.views import Response
 from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsSupportUsr
@@ -8,8 +7,6 @@ from .models import SupportTicket, MaintenanceTicket, Ticket
 from bike_rider.apps.core.serializers import EmailSerializer
 from .serializers import TicketMaintenanceSerializer, TicketStatusSerializer, TicketSupportSerializer
 from django.db.models import Q
-from django.core.mail import send_mail, get_connection
-from django.conf import settings
 
 class ChangeTicketStatusViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
     permission_classes = [HisMaintenanceTickets | IsSupportUsr]

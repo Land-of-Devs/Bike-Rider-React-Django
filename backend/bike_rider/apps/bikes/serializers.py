@@ -22,6 +22,18 @@ class BikeSerializer(serializers.ModelSerializer):
     def get_last_check(self, instance):
         return instance.last_check.isoformat()
 
+class BikeStatusSerializer(BikeSerializer):
+    status = serializers.ChoiceField(Bike.STATUS_CHOICES)
+    station = None
+    class Meta:
+        model = Bike
+        fields = '__all__'
+
+    def update(self, instance, validated_data):
+        instance.status = validated_data.get('status')
+        instance.save()
+        return instance
+
 class BikeStationMaintainerSerializer(BikeSerializer):
     station = None
     

@@ -8,3 +8,6 @@ class Booking(models.Model):
     time_end = models.DateTimeField()
     user = models.ForeignKey(User, related_name='booking', on_delete=models.CASCADE)
     station = models.ForeignKey(BStation, related_name='booking', on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return str(self.user) + ' ('+ str(self.id) +')'
