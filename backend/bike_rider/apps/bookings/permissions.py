@@ -1,19 +1,28 @@
 from rest_framework import permissions
 from .models import Booking
-
+from django.utils import timezone
 class HasNotBooking(permissions.BasePermission):
-    message = 'You don\'t have access to this action!'
+    message = 'You already have a reservation!'
 
     def has_permission(self, request, view):
-        return True
-
-    def has_object_permission(self, request, view, obj):
         try:
-            print("HASNOT")
             booking = Booking.objects.filter(
-                user=request.user
+                user=request.user,
+                time_end__gt=timezone.now()
             ).exists()
-            
+            return booking == False
+        except Exception as e:
+            return False
+
+class HasBooking(permissions.BasePermission):
+    message = 'You don\'t have a reservation!'
+
+    def has_permission(self, request, view):
+        try:
+            booking = Booking.objects.filter(
+                user=request.user,
+                time_end__gt=timezone.now()
+            ).exists()
             return booking
         except Exception as e:
             return False
