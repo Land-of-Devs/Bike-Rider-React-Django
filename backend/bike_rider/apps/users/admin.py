@@ -35,14 +35,15 @@ class UserAdmin(AdminPanel):
     form = UserChangeForm
     add_form = UserCreationForm
     list_display = [f.name for f in User._meta.fields]
+    list_display.remove('password')
     list_filter = ()
     fieldsets = (
         ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription')}),
-        ('Permissions', {'fields': ('is_superuser','role')}),
+        ('Permissions', {'fields': ('role', 'groups')}),
     )
     add_fieldsets = (
         ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription')}),
-        ('Permissions', {'fields': ('is_superuser','role')}),
+        ('Permissions', {'fields': ('role', 'groups')}),
     )
     search_fields = ('email','dni')
     ordering = ('dni',)

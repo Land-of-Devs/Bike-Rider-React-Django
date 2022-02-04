@@ -11,7 +11,7 @@ class UserManager(BaseUserManager):
     """
     Django requires that custom users define their own Manager class. By
     inheriting from `BaseUserManager`, we get a lot of the same code used by
-    Django to create a `User` for free. 
+    Django to create a `User` for free.
 
     All we have to do is override the `create_user` function which we will use
     to create `User` objects.
@@ -41,8 +41,7 @@ class UserManager(BaseUserManager):
       if password is None:
           raise TypeError('Superusers must have a password.')
 
-      user = self.create_user(dni, email, password, role)
-      user.is_superuser = True
+      user = self.create_user(dni, email, password, 'SUPERADMIN')
       user.save()
 
       return user
@@ -54,7 +53,8 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
         ('USER', 'user'),
         ('SUPPORT', 'support'),
         ('MAINTENANCE', 'maintenance'),
-        ('ADMIN', 'admin')
+        ('ADMIN', 'admin'),
+        ('SUPERADMIN', 'superadmin')
     ]
     dni = models.CharField(max_length=9, validators=[MinLengthValidator(9)], unique=True, db_index=True)
     password = models.CharField(max_length=255)
@@ -63,21 +63,15 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     image = models.FileField(upload_to='users', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
     subscription = models.ForeignKey(Subscription, related_name='user', on_delete=models.CASCADE, default=None, blank=True, null=True)
     password = models.CharField(max_length=255)
-    
+
     USERNAME_FIELD = 'dni'
     REQUIRED_FIELDS = ['email', 'role']
     objects = UserManager()
 
     @property
     def is_staff(self):
-        return self.role == 'ADMIN'
+        return self.role == 'ADMIN' or self.role == 'SUPERADMIN'
 
-    def has_perm(self, perm, obj=None):
-        if self.is_staff and not perm.split('.')[1].startswith('delete_'):
-            return True
-
-        return super().has_perm(perm, obj)
-    
-    def has_module_perms(self, app_label):
-        return self.is_staff or super().has_module_perms(app_label)
-        
+    @property
+    def is_superuser(self):
+        return self.role == 'SUPERADMIN'

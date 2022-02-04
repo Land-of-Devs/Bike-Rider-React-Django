@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'bike_rider',
     'bike_rider.apps.core',
     'bike_rider.apps.bikes',
     'bike_rider.apps.bstations',
