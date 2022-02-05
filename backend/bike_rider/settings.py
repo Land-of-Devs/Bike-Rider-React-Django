@@ -32,13 +32,12 @@ EMAIL_TIMEOUT = 10
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'h59bi9deh^@004i7*w#z@x74cq=&%9#60230%v=)@v3nc_tata'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'test')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('ENV', None) != 'prod'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 
@@ -101,11 +100,11 @@ WSGI_APPLICATION = 'bike_rider.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ['DB_DATABASE'],
-        'USER': os.environ['DB_USERNAME'],
-        'PASSWORD': os.environ['DB_PASSWORD'],
-        'HOST': os.environ['DB_HOST'],
-        'PORT': os.environ['DB_PORT']
+        'NAME': os.environ.get('DB_DATABASE', None),
+        'USER': os.environ.get('DB_USERNAME', None),
+        'PASSWORD': os.environ.get('DB_PASSWORD', None),
+        'HOST': os.environ.get('DB_HOST', None),
+        'PORT': os.environ.get('DB_PORT', None)
     }
 }
 
@@ -147,7 +146,18 @@ USE_TZ = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, '/api/static/')
+renderers = [
+        'rest_framework.renderers.JSONRenderer',
+]
+
+if os.environ.get('ENV', None) != 'prod':
+    renderers.append('rest_framework.renderers.BrowsableAPIRenderer')
+    static = os.path.join(BASE_DIR, '/api/static/')
+else:
+    static = '/app_data/static/'
+
+
+STATIC_ROOT = static
 STATIC_URL = '/api/static/'
 
 # Tell Django about the custom `User` model we created. The string
@@ -157,9 +167,9 @@ STATIC_URL = '/api/static/'
 AUTH_USER_MODEL = 'users.User'
 
 JWT_AUTH = {
-    'SIGNING_KEY': os.environ.get('JWT_USER_PASSPHRASE'),
-    'JWT_STATION_SECRET_KEY': os.environ.get('JWT_STATION_PASSPHRASE'),
-    'JWT_STATION_CONFIG_SECRET_KEY': os.environ.get('JWT_STATION_CONFIG_PASSPHRASE'),
+    'SIGNING_KEY': os.environ.get('JWT_USER_PASSPHRASE', None),
+    'JWT_STATION_SECRET_KEY': os.environ.get('JWT_STATION_PASSPHRASE', None),
+    'JWT_STATION_CONFIG_SECRET_KEY': os.environ.get('JWT_STATION_CONFIG_PASSPHRASE', None),
     'ALGORITHM': 'HS256',
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=14),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=14),
@@ -172,7 +182,6 @@ JWT_AUTH = {
 }
 
 SIMPLE_JWT = JWT_AUTH
-
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'bike_rider.apps.core.exceptions.core_exception_handler',
@@ -187,8 +196,5 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
         'rest_framework.parsers.MultiPartParser'
     ],
-    'DEFAULT_RENDERER_CLASSES': [
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
+    'DEFAULT_RENDERER_CLASSES': renderers
 }

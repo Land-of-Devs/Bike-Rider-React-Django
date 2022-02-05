@@ -1,6 +1,6 @@
 FROM python:3-alpine
 ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1
-RUN python -m pip install django
+    PYTHONUNBUFFERED=1 \
+    ENV=dev
 EXPOSE 8080
 WORKDIR /app

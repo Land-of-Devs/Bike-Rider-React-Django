@@ -1,0 +1,37 @@
+version: "3"
+services:
+  br_db:
+    image: postgres:alpine
+    container_name: "br_db"
+    env_file:
+      - .env
+      - config/private/prod/secrets.env 
+      
+  br_server:
+    build:
+      context: ./
+      dockerfile: ./config/docker/django/prod/Dockerfile
+    image: br_server
+    container_name: "br_server"
+    volumes:
+      - ./data:/app_data
+    env_file:
+      - .env
+      - config/private/prod/secrets.env
+      - config/private/prod/super-secrets.env
+    depends_on:
+      - br_db
+
+  br_web:
+    build:
+      context: ./
+      dockerfile: ./config/docker/web/prod/Dockerfile
+    image: "br_web"
+    container_name: br_web
+    ports:
+      - "80:80"
+    volumes:
+      - ./data:/app_data
+    depends_on:
+      - br_server
+

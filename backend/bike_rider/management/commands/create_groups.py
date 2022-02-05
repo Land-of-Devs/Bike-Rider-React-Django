@@ -27,14 +27,12 @@ class Command(BaseCommand):
                         perm_instance = Permission.objects.get(codename=perm_name)
                         perm_list.append(perm_instance)
                     except Permission.DoesNotExist:
-                        print("Permission not found with name '{}'.".format(name))
+                        print("Permission not found with name '{}'.".format(perm_name))
 
         try:
             group_instance = Group.objects.create(
                 name='Admins'
             )
-
-            print(perm_list)
             group_instance.permissions.set(perm_list)
 
             print("Created the Staff group and permissions.")
