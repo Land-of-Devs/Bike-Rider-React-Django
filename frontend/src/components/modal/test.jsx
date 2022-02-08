@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 
 
-const TestModal = ({close}) => {
+const TestModal = (props) => {
+  console.log(props)
   return (
     <div>Component modal test</div>
   )

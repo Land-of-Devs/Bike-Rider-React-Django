@@ -15,8 +15,8 @@ import {
 
 import LoginForm from '../global/auth/loginForm';
 import WebMenu from './menu';
-import eventBus from '/src/utils/eventBus';
 import useAuth from '/src/hooks/useAuth';
+import { openCustomModal } from '../modal/modal';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -35,7 +35,7 @@ const WebHeader = () => {
   };
 
   const login = () => {
-    eventBus.dispatch('modal/open', LoginForm)
+    openCustomModal(LoginForm);
   }
 
   return (

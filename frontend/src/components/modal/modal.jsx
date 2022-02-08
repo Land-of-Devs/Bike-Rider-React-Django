@@ -1,8 +1,6 @@
 import { Box, Modal } from "@mui/material";
 import { forwardRef } from "react";
-import { useEffect } from "react";
 import { useState } from "react";
-import eventBus from "../../utils/eventBus";
 
 const style = {
   position: 'absolute',
@@ -16,22 +14,17 @@ const style = {
   p: 4,
 };
 
-const CustomModal = () => {
 
+export var openCustomModal;
+
+export const CustomModal = () => {
   const [opened, setOpened] = useState(false);
   const [Component, setComponent] = useState(forwardRef(() => <div></div>));
-  const onOpen = (C) => {
-    setComponent(forwardRef(() => <C close={() => setOpened(false)} />));
-    setOpened(true);
-  }
-  
-  // onMount
-  useEffect(() => {
-    eventBus.on('modal/open', onOpen);
-  }, []);
 
-  // onDestroy
-  useEffect(() => () => eventBus.remove('modal/open', onOpen), []);
+  openCustomModal = (C, props) => {
+    setComponent(forwardRef(() => <C { ...props } close={() => setOpened(false)} />));
+    setOpened(true);
+  };
 
   return (
     <Modal
@@ -48,6 +41,3 @@ const CustomModal = () => {
   );
 
 };
-
-
-export default CustomModal;
