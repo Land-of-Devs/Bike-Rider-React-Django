@@ -13,12 +13,12 @@ import {
   Icon
 } from "@mui/material";
 
-import TestModal from '../modal/test';
-import CustomMenu from '../global/menu';
+import LoginForm from '../global/auth/loginForm';
+import WebMenu from './menu';
 import eventBus from '/src/utils/eventBus';
 import useAuth from '/src/hooks/useAuth';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 const WebHeader = () => {
@@ -35,16 +35,16 @@ const WebHeader = () => {
   };
 
   const login = () => {
-    eventBus.dispatch('modal/open', TestModal)
+    eventBus.dispatch('modal/open', LoginForm)
   }
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <CustomMenu pages={pages}/>
+          <WebMenu />
           {!isLogged ?
-            <Box sx={{ flexGrow: 0}}>
+            <Box sx={{ flexGrow: 0 }}>
               <IconButton onClick={login} sx={{ p: 0 }}>
                 <Icon>star</Icon>
               </IconButton>
@@ -73,7 +73,7 @@ const WebHeader = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseNavMenu}>
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}

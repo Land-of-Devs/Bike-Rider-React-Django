@@ -20,17 +20,18 @@ const CustomModal = () => {
 
   const [opened, setOpened] = useState(false);
   const [Component, setComponent] = useState(forwardRef(() => <div></div>));
-
+  const onOpen = (C) => {
+    setComponent(forwardRef(() => <C close={() => setOpened(false)} />));
+    setOpened(true);
+  }
+  
   // onMount
   useEffect(() => {
-    eventBus.on('modal/open', (C) => {
-      setComponent(forwardRef(() => <C close={() => setOpened(false)} />));
-      setOpened(true);
-    });
+    eventBus.on('modal/open', onOpen);
   }, []);
 
   // onDestroy
-  useEffect(() => () => eventBus.remove('modal/open'), []);
+  useEffect(() => () => eventBus.remove('modal/open', onOpen), []);
 
   return (
     <Modal

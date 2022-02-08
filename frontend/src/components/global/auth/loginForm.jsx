@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { useLocation } from "react-router-dom"
-import useAuth from 'hooks/useAuth'
+import { useNavigate } from "react-router-dom"
+import useAuth from '/src/hooks/useAuth'
 import { useEffect } from "react";
 
 const LoginForm = ({ onLogin }) => {
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
-  const [navigate] = useLocation()
+  const navigate = useNavigate()
   const { isLoginLoading, hasLoginError, login, isLogged } = useAuth()
 
   useEffect(() => {

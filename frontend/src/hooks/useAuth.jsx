@@ -11,7 +11,7 @@ export default function useAuth() {
     setState({ loading: true, error: false })
     authService.login({ dni, password })
       .then(session => {
-
+        console.log(session)
         setState({ loading: false, error: false })
         setSession(session)
       })

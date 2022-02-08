@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   IconButton,
@@ -9,15 +10,37 @@ import {
   Button
 } from '@mui/material';
 
-const CustomMenu = ({ pages }) => {
-  console.log(pages)
+const WebMenu = () => {
+
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  const goPanel = () => {
+    console.log('a')
+    navigate('/panel/')
+  };
+
+  const goAdmin = () => {
+    console.log('a')
+    navigate('/admin/')
+  };
+
+  const modalTicket = () => {
+    console.log("modal")
+  };
+
+  const pages = [
+    {name: 'Panel', click: goPanel}, 
+    {name: 'Tickets', click: modalTicket},
+    {name: 'Admin', click: goAdmin}
+  ];
+
   return (
     <>
       <Typography
@@ -58,8 +81,8 @@ const CustomMenu = ({ pages }) => {
           }}
         >
           {pages.map((page) => (
-            <MenuItem key={page} onClick={handleCloseNavMenu}>
-              <Typography textAlign="center">{page}</Typography>
+            <MenuItem key={page.name} onClick={() => page.click() && handleCloseNavMenu}>
+              <Typography textAlign="center">{page.name}</Typography>
             </MenuItem>
           ))}
         </Menu>
@@ -75,11 +98,11 @@ const CustomMenu = ({ pages }) => {
       <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
         {pages.map((page) => (
           <Button
-            key={page}
-            onClick={handleCloseNavMenu}
+            key={page.name}
+            onClick={() => page.click() && handleCloseNavMenu }
             sx={{ my: 2, color: 'white', display: 'block' }}
           >
-            {page}
+            {page.name}
           </Button>
         ))}
       </Box>
@@ -87,4 +110,4 @@ const CustomMenu = ({ pages }) => {
   )
 }
 
-export default CustomMenu;
+export default WebMenu;
