@@ -11,6 +11,7 @@ const PanelPage = React.lazy(() => import("../pages/panel"));
 const StationPage = React.lazy(() => import("../pages/station"));
 
 const RouterView = () => {
+  
   return (
     <StationContextProvider>
       <UserContextProvider>
