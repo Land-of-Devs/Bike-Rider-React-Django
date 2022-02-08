@@ -10,4 +10,4 @@ const PanelLayout = () => {
   )
 }
 
-export default PanelLayout;
+export default PanelLayout
