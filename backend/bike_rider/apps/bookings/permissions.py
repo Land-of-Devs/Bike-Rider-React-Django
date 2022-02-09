@@ -1,6 +1,7 @@
 from rest_framework import permissions
 from .models import Booking
 from django.utils import timezone
+
 class HasNotBooking(permissions.BasePermission):
     message = 'You already have a reservation!'
 

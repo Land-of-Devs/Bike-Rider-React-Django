@@ -6,7 +6,8 @@ STAFF_PERMS = {
     (
         'booking', 'travel', 'bike',
         'bstation', 'ticket', 'supportticket',
-        'maintenanceticket', 'subscription'
+        'maintenanceticket', 'subscription',
+        'coupon'
     ): ['view', 'change', 'add'],
 
     ('user', 'logentry', 'permission'): ['view']

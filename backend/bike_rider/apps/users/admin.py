@@ -38,11 +38,11 @@ class UserAdmin(AdminPanel):
     list_display.remove('password')
     list_filter = ()
     fieldsets = (
-        ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription')}),
+        ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription', 'free_minutes')}),
         ('Permissions', {'fields': ('role', 'groups')}),
     )
     add_fieldsets = (
-        ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription')}),
+        ('Account', {'fields': ('email', 'password', 'dni', 'last_login','subscription', 'free_minutes')}),
         ('Permissions', {'fields': ('role', 'groups')}),
     )
     search_fields = ('email','dni')

@@ -62,7 +62,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     role = models.CharField(choices=ROLE_CHOICES, default='USER', max_length=32)
     image = models.FileField(upload_to='users', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
     subscription = models.ForeignKey(Subscription, related_name='user', on_delete=models.CASCADE, default=None, blank=True, null=True)
-    password = models.CharField(max_length=255)
+    free_minutes = models.IntegerField(default=0)
 
     USERNAME_FIELD = 'dni'
     REQUIRED_FIELDS = ['email', 'role']
