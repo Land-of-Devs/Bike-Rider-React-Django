@@ -1,11 +1,14 @@
 import jwt
+import json
+import datetime
+from urllib.parse import quote, quote_plus
 
 from django.conf import settings
 
 from rest_framework import authentication, exceptions
 
 from .models import BStation
-
+from .serializers import BStationSerializer
 
 class ReadStationSessionMiddleware:
     cookie_name = settings.JWT_AUTH['JWT_STATION_COOKIE']
@@ -21,6 +24,16 @@ class ReadStationSessionMiddleware:
             request.station = self.read_session(scookie)
 
         response = self.get_response(request)
+
+        if scookie:
+            serializer = BStationSerializer(request.station)
+            response.set_cookie(
+                'brstation',
+                quote(json.dumps(serializer.data)),
+                expires=datetime.datetime.strptime('9999', '%Y'),
+                samesite='Lax'
+            )
+
         return response
 
     def read_session(self, token):

@@ -1,16 +1,40 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useCallback } from 'react';
+import { StationMap } from '../components/web/stationmap';
+import { useStations } from '../hooks/useStations';
 
 const Web = () => {
-  var [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const [timeLoaded, setTimeLoaded] = useState(false);
+  const stations = useStations();
 
   useEffect(async () => {
     await new Promise((res) => {
-      setTimeout(res, 1000);
+      setTimeout(res, 100);
     });
-    setLoaded(true);
-  }, []);
+    setTimeLoaded(true);
+  }, [setTimeLoaded]);
 
-  return (<div>{loaded ? 'Web' : 'Loading 2'}</div>)
+  useEffect(() => {
+    stations.loadClientStations();
+  }, [stations.loadClientStations]);
+
+  const isLoaded = useCallback(() => !stations.state.loading && timeLoaded, [stations.state.loading, timeLoaded]);
+
+  return (
+    <>
+      {isLoaded() ? (
+        <>
+          <StationMap/>
+        </>
+      ) :
+      <div>
+        <div>Loading 2</div>
+        <div>{'s'+stations.state.loading}</div>
+        <div>{'t'+timeLoaded}</div>
+      </div>}
+    </>)
 };
 
 export default Web;

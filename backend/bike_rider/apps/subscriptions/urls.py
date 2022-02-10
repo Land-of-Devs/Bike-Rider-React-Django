@@ -2,7 +2,7 @@ from .views import SubscriptionsViewSet, ChangeUserSubscriptionViewSet
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
-router = DefaultRouter(trailing_slash=False)
+router = DefaultRouter()
 router.register(r'list', SubscriptionsViewSet, basename='Subscriptions')
 
 urlpatterns = [

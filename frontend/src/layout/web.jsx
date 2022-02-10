@@ -1,3 +1,4 @@
+import './web.scss'
 import { Outlet } from "react-router-dom";
 import WebHeader from "../components/web/header";
 import { CustomModal } from "../components/global/modal";
@@ -8,7 +9,9 @@ const WebLayout = () => {
     <>
       <CustomModal />
       <WebHeader />
-      <Outlet />
+      <div className="main-view">
+        <Outlet />
+      </div>
       <WebFooter />
     </>
   )

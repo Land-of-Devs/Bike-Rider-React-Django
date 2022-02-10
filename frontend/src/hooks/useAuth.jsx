@@ -1,7 +1,8 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import Context from '../context/user';
 import * as authService from '../services/auth';
-import { getCookieJson } from '/src/utils/cookie';
+import { getCookieJson, watchCookies } from '/src/utils/cookie';
+import { shallowEqual } from '/src/utils/misc';
 
 export default function useAuth() {
   const { session, setSession } = useContext(Context)
@@ -22,44 +23,22 @@ export default function useAuth() {
 
   const logout = useCallback(() => {
       authService.logout()
-  }, [setSession])
-
-  const reloadChanges = () => {
-    setSession(getCookieJson('bruser'));
-  };
+  }, [setSession]);
 
   useEffect(() => {
-    var interval = null;
-    try {
-      if ('cookieStore' in window) {
-        window.cookieStore.addEventListener('change', reloadChanges);
-      } else {
-        var checkCookie = function () {
-          var lastCookie = document.cookie;
-          return function () {
-            var currentCookie = document.cookie;
-  
-            if (currentCookie != lastCookie) {
-              lastCookie = currentCookie;
-              reloadChanges();
-            }
-          };
-        }();
+    return watchCookies(() => {
+      console.log('reload cookies');
 
-        interval = window.setInterval(checkCookie, 250);
+      var newSession = getCookieJson('bruser');
+      if (!shallowEqual(session, newSession)) {
+        console.log('new bruser')
+        console.log(JSON.stringify(session))
+        console.log(JSON.stringify(newSession))
+        setSession(newSession);
       }
-    } catch (e) {
-      console.error(e);
-    }
+    });
+  }, [session]);
 
-    return () => {
-      clearInterval(interval);
-      if ('cookieStore' in window) {
-        window.cookieStore.removeEventListener('change', reloadChanges);
-      }
-    }
-  }, [])
-  
   const adminAcces = useCallback((session) => {
     if(session){
       return session.role === 'ADMIN' || session.role === 'SUPERADMIN';
@@ -92,4 +71,4 @@ export default function useAuth() {
     logout,
     //register,
   }
-} 
+}

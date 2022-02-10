@@ -3,7 +3,7 @@ from django.urls import include, path
 
 from .views import BStationConfigureViewSet, BStationViewSet, BStationMaintenanceViewSet
 
-router = DefaultRouter(trailing_slash=False)
+router = DefaultRouter()
 router.register(r'client', BStationViewSet, basename='StClient')
 router.register(r'maintenance', BStationMaintenanceViewSet, basename='StMaintenance')
 router.register(r'configure', BStationConfigureViewSet, basename='BStationConfigure')

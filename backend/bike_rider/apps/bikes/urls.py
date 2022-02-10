@@ -3,7 +3,7 @@ from django.urls import include, path
 
 from .views import BikeHookViewSet, ChangeBikeStatusViewSet, BikeMaintainerListViewSet
 
-router = DefaultRouter(trailing_slash=False)
+router = DefaultRouter()
 router.register(r'hook', BikeHookViewSet, basename='StBikeHook')
 router.register(r'unhook', BikeHookViewSet, basename='StBikeUnhook')
 router.register(r'status', ChangeBikeStatusViewSet, basename='ChangeBikeStatus')
