@@ -1,3 +1,4 @@
+import json
 from django.conf import settings
 from django.shortcuts import render
 from rest_framework.viewsets import GenericViewSet
@@ -5,15 +6,21 @@ from rest_framework.response import Response
 from rest_framework import mixins, permissions, views
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from .serializers import CookieTokenRefreshSerializer, UserRegisterSerializer
-
+from .models import User
+from .serializers import SessionSerializer
+from urllib.parse import quote
 
 class CookieTokenObtainPairView(TokenObtainPairView):
     permission_classes = [~permissions.IsAuthenticated]
 
     def finalize_response(self, request, response, *args, **kwargs):
-
         if response.data.get('access'):
             cookie_max_age = 3600 * 24 * 14  # 14 days
+            user = User.objects.get(dni=request.data['dni'])
+            serializer = SessionSerializer(user)
+            response.set_cookie(
+                'bruser', quote(json.dumps(serializer.data)), max_age=cookie_max_age 
+            )
             response.set_cookie(
                 settings.JWT_AUTH['JWT_AUTH_COOKIE'], response.data['access'], max_age=cookie_max_age, httponly=True)
 
@@ -51,4 +58,5 @@ class LogoutView(views.APIView):
         response = Response({'ok': True})
         response.delete_cookie(settings.JWT_AUTH['JWT_AUTH_COOKIE'])
         response.delete_cookie(settings.JWT_AUTH['JWT_REFRESH_COOKIE'])
+        response.delete_cookie('bruser')
         return response

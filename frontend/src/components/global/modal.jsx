@@ -1,4 +1,4 @@
-import { Box, Modal } from "@mui/material";
+import { Box, Modal, Icon, IconButton } from "@mui/material";
 import { forwardRef } from "react";
 import { useState } from "react";
 
@@ -22,21 +22,28 @@ export const CustomModal = () => {
   const [Component, setComponent] = useState(forwardRef(() => <div></div>));
 
   openCustomModal = (C, props) => {
-    setComponent(forwardRef(() => <C { ...props } close={() => setOpened(false)} />));
+    setComponent(forwardRef(() => <C {...props} close={() => setOpened(false)} />));
     setOpened(true);
   };
 
   return (
     <Modal
-    aria-labelledby="modal-modal-title"
-    aria-describedby="modal-modal-description"
-    open={opened}
-    onClose={ () => setOpened(false) }
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+      open={opened}
+      onClose={() => setOpened(false)}
     >
       <Box sx={style}>
-        <Component />
+        <Box sx={{mb: 2, display: 'flex', justifyContent: 'flex-end', flexDirection: 'row'}}>
+          <IconButton onClick={() => setOpened(false)}>
+            <Icon color="error">close</Icon>
+          </IconButton>
+        </Box>
+        <Box>
+          <Component />
+        </Box>
       </Box>
-      
+
     </Modal>
   );
 

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom"
 import useAuth from '/src/hooks/useAuth'
 import { useEffect } from "react";
 
-const LoginForm = ({ onLogin }) => {
+const LoginForm = ({ close, onLogin }) => {
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate()
@@ -18,7 +18,7 @@ const LoginForm = ({ onLogin }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ dni, password })
+    login({ dni, password }).then(() => close())
   };
 
   return (

@@ -21,14 +21,13 @@ const WebMenu = () => {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+  
   const goPanel = () => {
-    console.log('a')
     navigate('/panel/')
   };
 
   const goAdmin = () => {
-    console.log('a')
-    navigate('/admin/')
+    window.location.href = '/admin/'
   };
 
   const modalTicket = () => {
@@ -82,7 +81,7 @@ const WebMenu = () => {
         >
           {pages.map((page) => (
             <MenuItem key={page.name} onClick={() => page.click() && handleCloseNavMenu}>
-              <Typography textAlign="center">{page.name}</Typography>
+              <Typography textAlign="center" color="white">{page.name}</Typography>
             </MenuItem>
           ))}
         </Menu>

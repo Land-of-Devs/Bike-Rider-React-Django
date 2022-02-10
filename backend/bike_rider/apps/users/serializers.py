@@ -16,7 +16,7 @@ class CookieTokenRefreshSerializer(TokenRefreshSerializer):
 
 class ThumbnailSerializer(serializers.ModelSerializer):
     dni = serializers.CharField(read_only=True)
-    email = serializers.CharField()
+    email = serializers.CharField(read_only=True)
     image = serializers.CharField(allow_blank=True, required=False)
 
 
@@ -24,6 +24,15 @@ class ThumbnailSerializer(serializers.ModelSerializer):
         model = User
         fields = ['dni', 'email', 'image']
         read_only_fields = ['dni',]
+
+
+class SessionSerializer(ThumbnailSerializer):
+    role = serializers.CharField(read_only=True)
+    subscription = None
+
+    class Meta:
+        model = User
+        fields = ['role', 'subscription', 'dni', 'email', 'image']
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, style={'input_type': 'password'})

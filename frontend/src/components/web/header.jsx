@@ -3,54 +3,21 @@ import {
   AppBar,
   Container,
   Toolbar,
-  Typography,
-  Tooltip,
   Box,
   IconButton,
-  Menu,
-  MenuItem,
-  Avatar,
   Icon
 } from "@mui/material";
 
 import LoginForm from '../global/auth/loginForm';
 import WebMenu from './menu';
+import UserThumbnail from './thumbnail';
 import useAuth from '/src/hooks/useAuth';
-import { openCustomModal } from '../modal/modal';
-import Coupon from '../global/modals/coupon';
+import { openCustomModal } from '../global/modal';
+
 
 const WebHeader = () => {
 
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { isLogged, logout } = useAuth();
-
-  const settings = {
-    Profile() {
-
-    }, 
-    Account() {
-
-    }, 
-    Dashboard() {
-
-    }, 
-    Coupon() {
-      console.log('a')
-      openCustomModal(Coupon)
-    }, 
-    Logout() {
-
-    }
-  };
-
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   const login = () => {
     openCustomModal(LoginForm);
   }
@@ -62,40 +29,12 @@ const WebHeader = () => {
           <WebMenu />
           {!isLogged ?
             <Box sx={{ flexGrow: 0 }}>
-              <IconButton onClick={login} sx={{ p: 0 }}>
-                <Icon>star</Icon>
+              <IconButton size='large' color="white" onClick={login} sx={{ p: 0}}>
+                <Icon fontSize='large'>login</Icon>
               </IconButton>
             </Box>
             :
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open settings">
-                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '45px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                {Object.entries(settings).map(([setting, f]) => (
-                  <MenuItem key={setting} onClick={() => (f(), handleCloseUserMenu())}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
+            <UserThumbnail func={logout}/>
           }
         </Toolbar>
       </Container>
