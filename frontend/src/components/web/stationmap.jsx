@@ -46,7 +46,7 @@ const StationMapComponent = ({ stations = [] }) => {
       onUnmount={onUnmount}
     >
       { // Child components, such as markers, info windows, etc.
-        stations.map(station => (<Marker position={{ lat: stations.lat, lng: stations.lon }} />))
+        stations.map(station => (<Marker key={station.id} position={{ lat: station.lat, lng: station.lon }} />))
       }
     </GoogleMap>
   ) : (<Box sx={containerStyle}><CircularProgress /></Box>)

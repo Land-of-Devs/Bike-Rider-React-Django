@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, createContext } from 'react'
 import * as bookingService from '../services/bookings'
 import { getCookieJson } from '../utils/cookie'
 
-const Context = React.createContext({})
+const UserContext = createContext({})
 
 export function UserContextProvider({ children }) {
   const [reservation, setReservation] = useState({})
@@ -18,14 +18,14 @@ export function UserContextProvider({ children }) {
     bookingService.myReservation().then(setReservation, notReservation)
   }, [session])
 
-  return <Context.Provider value={{
+  return <UserContext.Provider value={{
     reservation,
     session,
     setReservation,
     setSession
   }}>
     {children}
-  </Context.Provider>
+  </UserContext.Provider>
 }
 
-export default Context;
+export default UserContext;

@@ -10,11 +10,10 @@ export const useStations = () => {
     setState({loading: true, error});
 
     try {
-      setStationList(await loadStations());
+      setStationList((await loadStations()).results);
     } catch (e) {
       setStationList([]);
       error = e.response.data;
-      console.error(error);
     }
 
     setState({loading: false, error});

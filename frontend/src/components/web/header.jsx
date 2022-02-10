@@ -12,12 +12,11 @@ import LoginForm from '../global/auth/loginForm';
 import WebMenu from './menu';
 import UserThumbnail from './thumbnail';
 import useAuth from '/src/hooks/useAuth';
-import { openCustomModal } from '../global/modal';
-
+import useModal from '/src/hooks/useModal';
 
 const WebHeader = () => {
-
   const { isLogged, logout } = useAuth();
+  const openCustomModal = useModal();
   const login = () => {
     openCustomModal(LoginForm);
   }

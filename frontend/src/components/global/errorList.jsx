@@ -1,20 +1,18 @@
 import React from 'react'
-import { useFormikContext } from 'formik'
-import { isEmpty } from 'lodash-es'
 
-function ErrorList() {
-  const { errors } = useFormikContext()
+function ErrorList({errors = {}}) {
 
-  if (isEmpty(errors)) return null
+  if (errors.length == 0) return null
 
   return (
     <ul className="error-messages">
-      {Object.entries(errors).map(([key, messages]) =>
-        (messages).map((message) => (
-          <li key={`${key} ${message}`}>
-            {key} {message}
+      {Object.entries(errors).map(([key, messages]) => {
+        return (messages).map((message) => (
+          <li color="error" key={`${key}: ${message}`}>
+            {key.toUpperCase()}: {message}
           </li>
         ))
+      }
       )}
     </ul>
   )

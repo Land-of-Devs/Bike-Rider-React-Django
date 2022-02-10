@@ -1,9 +1,13 @@
 import { BrowserRouter as Router, Routes, Navigate } from "react-router-dom";
 
-export const AppRouter = ({ children }) => {
+export const AppRouter = ({ contexts, children }) => {
   return (
     <Router>
-      <Routes children={children} />
+      {contexts.reduce((current, Next) => {
+        return (<Next>
+          {current}
+        </Next>)
+      }, < Routes children={children} />)}
     </Router>
   );
 }

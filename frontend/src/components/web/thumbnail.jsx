@@ -8,11 +8,13 @@ import {
   MenuItem,
   Typography
 } from '@mui/material';
-import { openCustomModal } from '../global/modal';
+import useModal from '/src/hooks/useModal';
 import Coupon from './modals/coupon';
 
 const UserThumbnail = ({ func }) => {
 
+  const openCustomModal = useModal();
+  
   const settings = [
     { name: 'Reservation', func: () => { } },
     { name: 'Coupon', func: () => openCustomModal(Coupon)},

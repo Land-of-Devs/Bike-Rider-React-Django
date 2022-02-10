@@ -9,12 +9,13 @@ import {
   Typography,
   Button
 } from '@mui/material';
+import useAuth from '/src/hooks/useAuth';
 
 const WebMenu = () => {
 
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  
+  const {isAdmin, isSupport, isMaintainer, isLogged} = useAuth();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -35,9 +36,9 @@ const WebMenu = () => {
   };
 
   const pages = [
-    {name: 'Panel', click: goPanel}, 
-    {name: 'Tickets', click: modalTicket},
-    {name: 'Admin', click: goAdmin}
+    {name: 'Panel', click: goPanel, access: isSupport || isMaintainer}, 
+    {name: 'Tickets', click: modalTicket, access: isLogged},
+    {name: 'Admin', click: goAdmin, access: isAdmin}
   ];
 
   return (
@@ -79,7 +80,7 @@ const WebMenu = () => {
             display: { xs: 'block', md: 'none' }
           }}
         >
-          {pages.map((page) => (
+          {pages.map((page) => page.access && (
             <MenuItem key={page.name} onClick={() => page.click() && handleCloseNavMenu}>
               <Typography textAlign="center" color="white">{page.name}</Typography>
             </MenuItem>
@@ -95,7 +96,7 @@ const WebMenu = () => {
         LOGO
       </Typography>
       <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-        {pages.map((page) => (
+        {pages.map((page) => page.access && (
           <Button
             key={page.name}
             onClick={() => page.click() && handleCloseNavMenu }

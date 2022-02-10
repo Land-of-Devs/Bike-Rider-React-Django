@@ -1,11 +1,10 @@
+import { CircularProgress } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useCallback } from 'react';
 import { StationMap } from '../components/web/stationmap';
 import { useStations } from '../hooks/useStations';
 
 const Web = () => {
-  const [loaded, setLoaded] = useState(false);
-
   const [timeLoaded, setTimeLoaded] = useState(false);
   const stations = useStations();
 
@@ -26,14 +25,10 @@ const Web = () => {
     <>
       {isLoaded() ? (
         <>
-          <StationMap/>
+          <StationMap stations={stations.stationList}/>
         </>
       ) :
-      <div>
-        <div>Loading 2</div>
-        <div>{'s'+stations.state.loading}</div>
-        <div>{'t'+timeLoaded}</div>
-      </div>}
+      <CircularProgress sx={{margin: 'auto'}}/>}
     </>)
 };
 

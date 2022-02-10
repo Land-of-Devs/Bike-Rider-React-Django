@@ -1,23 +1,41 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
-import Context from '../context/user';
+import UserContext from '../context/user';
 import * as authService from '../services/auth';
 import { getCookieJson, watchCookies } from '/src/utils/cookie';
 import { shallowEqual } from '/src/utils/misc';
 
 export default function useAuth() {
-  const { session, setSession } = useContext(Context)
+  const { session, setSession } = useContext(UserContext)
   const [state, setState] = useState({ loading: false, error: false })
 
+  const changeState = (msg, bool) => {
+    setState({loading: false, error: msg});
+    return bool;
+  }
 
   const login = useCallback(({ dni, password }) => {
     setState({ loading: true, error: false })
     return authService.login({ dni, password })
       .then( () => {
-        setState({ loading: false, error: false })
+        return changeState(false, true)
       })
       .catch(err => {
-        setState({ loading: false, error: true })
-        console.error(err)
+        const msg = err.response.data.errors || {Fail: [err.response.data.detail]};
+        return changeState(msg, false);
+      })
+  }, [setSession])
+
+  const register = useCallback(({ dni, email, password }) => {
+    setState({ loading: true, error: false })
+    return authService.register({ dni, email, password })
+      .then(() => {
+        setState({ loading: false, error: false })
+        return true;
+      })
+      .catch(err => {
+        const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
+        setState({ loading: false, error: msg })
+        return false;
       })
   }, [setSession])
 
@@ -27,17 +45,12 @@ export default function useAuth() {
 
   useEffect(() => {
     return watchCookies(() => {
-      console.log('reload cookies');
-
       var newSession = getCookieJson('bruser');
       if (!shallowEqual(session, newSession)) {
-        console.log('new bruser')
-        console.log(JSON.stringify(session))
-        console.log(JSON.stringify(newSession))
         setSession(newSession);
       }
     });
-  }, [session]);
+  }, [setSession, session]);
 
   const adminAcces = useCallback((session) => {
     if(session){
@@ -65,10 +78,10 @@ export default function useAuth() {
     isAdmin: adminAcces(session),
     isSupport: supportAccess(session),
     isMaintenance: maintenanceAccess(session),
-    isLoginLoading: state.loading,
-    hasLoginError: state.error,
+    isLoading: state.loading,
+    hasError: state.error,
     login,
     logout,
-    //register,
+    register,
   }
 }
