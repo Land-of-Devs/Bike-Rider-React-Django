@@ -17,14 +17,31 @@ import LoginForm from '../global/auth/loginForm';
 import WebMenu from './menu';
 import useAuth from '/src/hooks/useAuth';
 import { openCustomModal } from '../modal/modal';
-
-
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+import Coupon from '../global/modals/coupon';
 
 const WebHeader = () => {
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const { isLogged, logout } = useAuth();
+
+  const settings = {
+    Profile() {
+
+    }, 
+    Account() {
+
+    }, 
+    Dashboard() {
+
+    }, 
+    Coupon() {
+      console.log('a')
+      openCustomModal(Coupon)
+    }, 
+    Logout() {
+
+    }
+  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -72,8 +89,8 @@ const WebHeader = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                {Object.entries(settings).map(([setting, f]) => (
+                  <MenuItem key={setting} onClick={() => (f(), handleCloseUserMenu())}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}

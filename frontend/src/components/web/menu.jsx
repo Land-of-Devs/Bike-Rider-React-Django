@@ -77,7 +77,7 @@ const WebMenu = () => {
           open={Boolean(anchorElNav)}
           onClose={handleCloseNavMenu}
           sx={{
-            display: { xs: 'block', md: 'none' },
+            display: { xs: 'block', md: 'none' }
           }}
         >
           {pages.map((page) => (
@@ -100,7 +100,8 @@ const WebMenu = () => {
           <Button
             key={page.name}
             onClick={() => page.click() && handleCloseNavMenu }
-            sx={{ my: 2, color: 'white', display: 'block' }}
+            sx={{ my: 2, display: 'block' }}
+            color="white"
           >
             {page.name}
           </Button>
