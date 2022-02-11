@@ -56,7 +56,7 @@ const Form = ({children}) => {
                         {c.props.children && errorWraper(c.props.children, renderErr)}
                 </c.type>
         } else if (c.props.children) {
-          return <c.type key={v}>{errorWraper(c.props.children, renderErr)}</c.type>
+          return <c.type {...c.props} key={v}>{errorWraper(c.props.children, renderErr)}</c.type>
         }
       } 
       return c;

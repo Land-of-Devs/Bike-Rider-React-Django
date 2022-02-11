@@ -60,7 +60,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimestampedModel):
     password = models.CharField(max_length=255)
     email = models.EmailField(max_length=255, unique=True)
     role = models.CharField(choices=ROLE_CHOICES, default='USER', max_length=32)
-    image = models.FileField(upload_to='users', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
+    image = models.FileField(upload_to='img/users', validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
     subscription = models.ForeignKey(Subscription, related_name='user', on_delete=models.CASCADE, default=None, blank=True, null=True)
     free_minutes = models.IntegerField(default=0)
 
