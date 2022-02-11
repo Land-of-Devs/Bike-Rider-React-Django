@@ -19,36 +19,37 @@ const RouterView = () => {
 
   return (
     <UserContextProvider>
+      <ModalContextProvider>
+        <Suspense fallback={<CircularProgress sx={{margin: 'auto'}}/>}>
+          <AppRouter contexts={[
+            ModalContextProvider,
+            ToastContextProvider
+          ]}>
+            <Route path="/" element={<StationListContextProvider />}>
 
-      <Suspense fallback={<CircularProgress sx={{margin: 'auto'}}/>}>
-        <AppRouter contexts={[
-          ModalContextProvider,
-          ToastContextProvider
-        ]}>
-          <Route path="/" element={<StationListContextProvider />}>
+              <Route path="" element={<WebLayout />}>
+                <Route index element={<WebPage />} />
+              </Route>
 
-            <Route path="" element={<WebLayout />}>
-              <Route index element={<WebPage />} />
+              <Route path="panel" element={
+                <Restrict guards={[isStaff]}>
+                  <PanelLayout />
+                </Restrict>
+              } >
+                <Route index element={<PanelPage />} />
+              </Route>
+
             </Route>
-
-            <Route path="panel" element={
-              <Restrict guards={[isStaff]}>
-                <PanelLayout />
+            <Route path="/station" element={
+              <Restrict guards={[() => true]}>
+                <StationContextProvider>
+                  <StationPage />
+                </StationContextProvider>
               </Restrict>
-            } >
-              <Route index element={<PanelPage />} />
-            </Route>
-
-          </Route>
-          <Route path="/station" element={
-            <Restrict guards={[() => true]}>
-              <StationContextProvider>
-                <StationPage />
-              </StationContextProvider>
-            </Restrict>
-          } />
-        </AppRouter>
-      </Suspense >
+            } />
+          </AppRouter>
+        </Suspense >
+      </ModalContextProvider>
     </UserContextProvider>
   )
 }

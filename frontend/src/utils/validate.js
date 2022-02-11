@@ -27,6 +27,7 @@ export const rules = {
   password: (value) => (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(value) || !value )|| 'Needs 8 chars, min 1 upper, 1 lower and 1 number and can contain special chars',
   minLength: (minLength) => (value) => (value && value.length >= minLength) || `Min length ${minLength}`,
   maxLength: (maxLength) => (value) => (value && value.length <= maxLength) || `Max length ${maxLength}`,
-  dni: (value) => validate_dni(value) || 'Invalid dni'
+  dni: (value) => validate_dni(value) || 'Invalid dni',
+  coupon: (value) => (/^[0-9A-Z]{8}$/.test(value)) || 'Invalid coupon'
 };
 

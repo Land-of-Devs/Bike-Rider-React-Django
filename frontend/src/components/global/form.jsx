@@ -9,9 +9,11 @@ const Form = ({children}) => {
   function validate(c) {
     for (let rule of c.props.rules) {
       let r = rule(c.props.getter);
-      r = r === true ? false : r;
-      return r;
+      if (r !== true) {
+        return r;
+      } 
     }
+    return false;
   }
 
   const errList = [];
@@ -32,11 +34,13 @@ const Form = ({children}) => {
     componentArr = componentArr.map((c, v) => {
       if (c.props) {
         if (c.props.onSubmit) {
-          return <c.type key={v} onClick={() => {
+          return <c.type {...c.props} key={v} onClick={() => {
             setCount(count+1);
             onSubmit = c.props.onSubmit;
+            
           }}>{c.props.children}</c.type>
         }
+        
         if (c.props && c.props.getter != undefined && c.props.rules) {
           const err = renderErr ? validate(c) : false;
           if (err) errList.push(err);
@@ -47,6 +51,7 @@ const Form = ({children}) => {
                       value: c.props.getter,
                       key: v,
                       onChange: (event) => c.props.setter(event.target.value),
+                      ...c.props
                     })} >
                         {c.props.children && errorWraper(c.props.children, renderErr)}
                 </c.type>

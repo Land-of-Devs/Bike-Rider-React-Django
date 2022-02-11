@@ -1,25 +1,29 @@
 import { Button, Input, TextField } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import UserContext from "../../../context/user";
+import * as coupons from "../../../services/coupons";
 import { rules } from "../../../utils/validate";
 import Form from "../../global/form";
 
 
 const Coupon = () => {
 
-  const [coupon, setCoupon] = useState('')
-  const [email, setEmail] = useState('')
+  const [coupon, setCoupon] = useState('');
+  const uctx = useContext(UserContext);
+  const [error, setError] = useState('');
 
   return (
     <Form>
+      <div>{error}</div>
       <div>
-        <TextField getter={coupon} setter={setCoupon} rules={[rules.email]}></TextField>
+        <TextField getter={coupon} setter={setCoupon} rules={[rules.coupon]}></TextField>
       </div>
-      <div>
-        <div>
-          <TextField getter={email} setter={setEmail} rules={[rules.email]}></TextField>
-        </div>
-      </div>
-      <Button onSubmit={() => {console.log('submit')}}>Submit</Button>
+      <Button onSubmit={() => {
+        coupons.use(coupon).catch(e => {
+          console.log('aaaaaaa')
+          console.log(e)
+        });
+      }}>Submit</Button>
     </Form>
   );
 };

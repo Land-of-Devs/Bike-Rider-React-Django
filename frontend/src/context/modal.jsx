@@ -36,7 +36,7 @@ export function ModalContextProvider({ children }) {
         onClose={() => setOpened(false)}
       >
         <Box sx={style}>
-          <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end', flexDirection: 'row' }}>
+          <Box sx={{ position: 'absolute', right: '0', top: '0' }}>
             <IconButton onClick={() => setOpened(false)}>
               <Icon color="error">close</Icon>
             </IconButton>

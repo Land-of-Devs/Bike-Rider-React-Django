@@ -13,12 +13,16 @@ import WebMenu from './menu';
 import UserThumbnail from './thumbnail';
 import useAuth from '/src/hooks/useAuth';
 import useModal from '/src/hooks/useModal';
+import ModalContext from '../../context/modal';
+import { useContext } from 'react';
 
 const WebHeader = () => {
   const { isLogged, logout } = useAuth();
   const openCustomModal = useModal();
+  const modalContext = useContext(ModalContext);
+  
   const login = () => {
-    openCustomModal(LoginForm);
+    modalContext(LoginForm);
   }
 
   return (

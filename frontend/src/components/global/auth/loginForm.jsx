@@ -7,6 +7,8 @@ import useModal from "/src/hooks/useModal"
 import RegisterForm from "./registerForm";
 import ErrorList from "../errorList";
 import useToast from "/src/hooks/useToast";
+import Form from "../form";
+import { rules } from "../../../utils/validate";
 
 const LoginForm = ({ close }) => {
   const [dni, setDni] = useState("");
@@ -25,7 +27,6 @@ const LoginForm = ({ close }) => {
   useEffect(() => { hasError && addToast({ msg: <ErrorList errors={hasError} />, type: 'error' })},[hasError])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     if (await login({ dni, password })) {
       addToast({ msg: 'Welcome to Bike Rider!', type: 'success' })
       close();
@@ -33,7 +34,7 @@ const LoginForm = ({ close }) => {
   };
 
   return (
-    <>
+    <Form>
       <Box
         sx={{
           display: 'flex',
@@ -44,18 +45,18 @@ const LoginForm = ({ close }) => {
         <Typography component="h1" variant="h5">
           Sign In
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="dni"
             label="DNI"
             name="dni"
             autoComplete="dni"
             autoFocus
-            onChange={(e) => setDni(e.target.value)}
-            value={dni}
+            getter={dni}
+            rules={[rules.required, rules.dni]}
+            setter={setDni}
           />
           <TextField
             margin="normal"
@@ -64,17 +65,17 @@ const LoginForm = ({ close }) => {
             name="password"
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            getter={password}
+            setter={setPassword}
+            rules={[rules.required]}
           />
           <Button
             disabled={isLoading}
-            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onSubmit={handleSubmit}
           >
             {!isLoading ? 'Sign In' : <CircularProgress />}
           </Button>
@@ -92,7 +93,7 @@ const LoginForm = ({ close }) => {
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Form>
   );
 }
 
