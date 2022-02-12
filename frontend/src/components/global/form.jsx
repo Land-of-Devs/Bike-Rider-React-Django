@@ -11,7 +11,7 @@ const Form = ({children}) => {
       let r = rule(c.props.getter);
       if (r !== true) {
         return r;
-      } 
+      }
     }
     return false;
   }
@@ -37,28 +37,29 @@ const Form = ({children}) => {
           return <c.type {...c.props} key={v} onClick={() => {
             setCount(count+1);
             onSubmit = c.props.onSubmit;
-            
+
           }}>{c.props.children}</c.type>
         }
-        
+
         if (c.props && c.props.getter != undefined && c.props.rules) {
           const err = renderErr ? validate(c) : false;
           if (err) errList.push(err);
-          return <c.type  
-                  { ...({ 
-                      error: !!err, 
+          return <c.type
+                  { ...({
+                      error: !!err,
                       helperText: err,
                       value: c.props.getter,
                       key: v,
                       onChange: (event) => c.props.setter(event.target.value),
-                      ...c.props
+                      ...c.props,
+                      setter: undefined
                     })} >
                         {c.props.children && errorWraper(c.props.children, renderErr)}
                 </c.type>
         } else if (c.props.children) {
           return <c.type {...c.props} key={v}>{errorWraper(c.props.children, renderErr)}</c.type>
         }
-      } 
+      }
       return c;
     })
     return componentArr
@@ -68,7 +69,7 @@ const Form = ({children}) => {
     <div>
       {errorWraper(children, count != 0)}
     </div>
-    
+
   );
 };
 
