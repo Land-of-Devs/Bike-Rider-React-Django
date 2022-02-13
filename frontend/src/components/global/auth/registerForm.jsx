@@ -5,6 +5,8 @@ import LoginForm from "./loginForm";
 import ErrorList from "../errorList";
 import useModal from "/src/hooks/useModal";
 import useToast from "/src/hooks/useToast";
+import { rules } from "/src/utils/validate";
+import Form from "../form";
 
 const RegisterForm = ({ close }) => {
   const [dni, setDni] = useState("");
@@ -12,20 +14,19 @@ const RegisterForm = ({ close }) => {
   const [password, setPassword] = useState("");
   const openCustomModal = useModal();
   const addToast = useToast();
-  const { isLoading, hasError, register } = useAuth()
-  
+  const { isLoading, hasError, register } = useAuth();
+
   useEffect(() => { hasError && addToast({ msg: <ErrorList errors={hasError} />, type: 'error' }) }, [hasError])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (await register({ dni, email, password })) { 
+    if (await register({ dni, email, password })) {
       addToast({ msg: 'You have successfuly registered!', type: 'success' })
-      close(); 
+      close();
     }
   };
 
   return (
-    <>
+    <Form>
       <Box
         sx={{
           display: 'flex',
@@ -36,30 +37,30 @@ const RegisterForm = ({ close }) => {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="dni"
             label="DNI"
             name="dni"
             autoComplete="dni"
             autoFocus
-            onChange={(e) => setDni(e.target.value)}
-            value={dni}
+            getter={dni}
+            rules={[rules.required, rules.dni]}
+            setter={setDni}
           />
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
             label="Email Address"
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
+            getter={email}
+            rules={[rules.required, rules.email]}
+            setter={setEmail}
           />
           <TextField
             margin="normal"
@@ -68,17 +69,17 @@ const RegisterForm = ({ close }) => {
             name="password"
             label="Password"
             type="password"
-            id="password"
             autoComplete="current-password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
+            setter={setPassword}
+            rules={[rules.required, rules.password]}
+            getter={password}
           />
           <Button
             disabled={isLoading}
-            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
+            onSubmit={handleSubmit}
           >
             {!isLoading ? 'Sign In' : <CircularProgress />}
           </Button>
@@ -96,7 +97,7 @@ const RegisterForm = ({ close }) => {
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Form>
   );
 }
 

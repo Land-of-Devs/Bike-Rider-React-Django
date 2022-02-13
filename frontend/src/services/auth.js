@@ -5,7 +5,7 @@ export async function login(form) {
 }
 
 export async function refreshSession() {
-    return (await api.get('/auth/login/refresh/')).data;
+    return (await api.post('/auth/login/refresh/')).data;
 }
 
 export async function logout() {

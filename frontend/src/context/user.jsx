@@ -6,6 +6,7 @@ const UserContext = createContext({})
 
 export function UserContextProvider({ children }) {
   const [reservation, setReservation] = useState({})
+  const [subscription, setSubscription] = useState('None')
   const [session, setSession] = useState(
     () => getCookieJson('bruser')
   )
@@ -15,12 +16,15 @@ export function UserContextProvider({ children }) {
   }
   useEffect(() => {
     if (!session) return setReservation({})
+    setSubscription(session.subscription ? session.subscription : 'None')
     bookingService.myReservation().then(setReservation, notReservation)
   }, [session])
 
   return <UserContext.Provider value={{
     reservation,
     session,
+    subscription,
+    setSubscription,
     setReservation,
     setSession
   }}>

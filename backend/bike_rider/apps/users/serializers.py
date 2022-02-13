@@ -3,15 +3,16 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.exceptions import InvalidToken
 from django.contrib.auth import get_user_model
 from .models import User
+from bike_rider.apps.subscriptions.serializers import SubscriptionSerializer
 
 class CookieTokenRefreshSerializer(TokenRefreshSerializer):
     refresh = None
     def validate(self, attrs):
-        attrs['refresh'] = self.context['request'].COOKIES.get('refresh_token')
+        attrs['refresh'] = self.context['request'].COOKIES.get('brrefresh')
         if attrs['refresh']:
             return super().validate(attrs)
         else:
-            raise InvalidToken('No valid token found in cookie \'refresh_token\'')
+            raise InvalidToken('No valid token found in cookie \'brrefresh\'')
 
 
 class ThumbnailSerializer(serializers.ModelSerializer):
@@ -28,8 +29,7 @@ class ThumbnailSerializer(serializers.ModelSerializer):
 
 class SessionSerializer(ThumbnailSerializer):
     role = serializers.CharField(read_only=True)
-    subscription = None
-
+    subscription = SubscriptionSerializer(read_only=True)
     class Meta:
         model = User
         fields = ['role', 'subscription', 'dni', 'email', 'image']

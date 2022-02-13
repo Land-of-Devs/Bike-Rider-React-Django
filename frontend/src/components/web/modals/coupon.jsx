@@ -1,6 +1,5 @@
-import { Button, Input, TextField } from "@mui/material";
-import { useContext, useState } from "react";
-import UserContext from "../../../context/user";
+import { Button, TextField } from "@mui/material";
+import { useState } from "react";
 import * as coupons from "../../../services/coupons";
 import { rules } from "../../../utils/validate";
 import Form from "../../global/form";
@@ -10,7 +9,6 @@ import useToast from "/src/hooks/useToast";
 const Coupon = ({close}) => {
 
   const [coupon, setCoupon] = useState('');
-  const uctx = useContext(UserContext);
   const [error, setError] = useState('');
   const addToast = useToast();
 

@@ -12,17 +12,16 @@ import LoginForm from '../global/auth/loginForm';
 import WebMenu from './menu';
 import UserThumbnail from './thumbnail';
 import useAuth from '/src/hooks/useAuth';
+import useBooking from '../../hooks/useBooking';
 import useModal from '/src/hooks/useModal';
-import ModalContext from '../../context/modal';
-import { useContext } from 'react';
 
 const WebHeader = () => {
   const { isLogged, logout } = useAuth();
+  const { getReservation } = useBooking();
   const openCustomModal = useModal();
-  const modalContext = useContext(ModalContext);
-  
+
   const login = () => {
-    modalContext(LoginForm);
+    openCustomModal(LoginForm);
   }
 
   return (
@@ -32,12 +31,15 @@ const WebHeader = () => {
           <WebMenu />
           {!isLogged ?
             <Box sx={{ flexGrow: 0 }}>
-              <IconButton size='large' color="white" onClick={login} sx={{ p: 0}}>
+              <IconButton size='large' color="white" onClick={login} sx={{ p: 0 }}>
                 <Icon fontSize='large'>login</Icon>
               </IconButton>
             </Box>
             :
-            <UserThumbnail func={logout}/>
+            <UserThumbnail
+              logout={logout}
+              reservation={getReservation}
+            />
           }
         </Toolbar>
       </Container>

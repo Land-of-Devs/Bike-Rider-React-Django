@@ -19,7 +19,6 @@ const RouterView = () => {
 
   return (
     <UserContextProvider>
-      <ModalContextProvider>
         <Suspense fallback={<CircularProgress sx={{margin: 'auto'}}/>}>
           <AppRouter contexts={[
             ModalContextProvider,
@@ -49,7 +48,6 @@ const RouterView = () => {
             } />
           </AppRouter>
         </Suspense >
-      </ModalContextProvider>
     </UserContextProvider>
   )
 }

@@ -24,9 +24,9 @@ const LoginForm = ({ close }) => {
     }
   }, [isLogged, navigate])
 
-  useEffect(() => { hasError && addToast({ msg: <ErrorList errors={hasError} />, type: 'error' })},[hasError])
+  useEffect(() => { hasError && addToast({ msg: <ErrorList errors={hasError} />, type: 'error' }) }, [hasError])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     if (await login({ dni, password })) {
       addToast({ msg: 'Welcome to Bike Rider!', type: 'success' })
       close();
@@ -34,66 +34,68 @@ const LoginForm = ({ close }) => {
   };
 
   return (
-    <Form>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography component="h1" variant="h5">
-          Sign In
-        </Typography>
-        <Box component="form" noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="DNI"
-            name="dni"
-            autoComplete="dni"
-            autoFocus
-            getter={dni}
-            rules={[rules.required, rules.dni]}
-            setter={setDni}
-          />
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            getter={password}
-            setter={setPassword}
-            rules={[rules.required]}
-          />
-          <Button
-            disabled={isLoading}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-            onSubmit={handleSubmit}
-          >
-            {!isLoading ? 'Sign In' : <CircularProgress />}
-          </Button>
-        </Box>
-        <Grid container>
-          <Grid item>
-            <Link
-              component="button"
-              variant="body2"
-              onClick={() => {
-                openCustomModal(RegisterForm) && close()
-              }}>
-              {"Don't have an account? Sign Up"}
-            </Link>
+    <>
+      <Form>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Sign In
+          </Typography>
+          <Box component="form" noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              label="DNI"
+              name="dni"
+              autoComplete="dni"
+              autoFocus
+              getter={dni}
+              rules={[rules.required, rules.dni]}
+              setter={setDni}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              getter={password}
+              setter={setPassword}
+              rules={[rules.required]}
+            />
+            <Button
+              disabled={isLoading}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onSubmit={handleSubmit}
+            >
+              {!isLoading ? 'Sign In' : <CircularProgress />}
+            </Button>
+          </Box>
+          <Grid container>
+            <Grid item>
+              <Link
+                component="button"
+                variant="body2"
+                onClick={() => {
+                  openCustomModal(RegisterForm) && close()
+                }}>
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </Form>
+        </Box>
+      </Form>
+    </>
   );
 }
 

@@ -10,15 +10,18 @@ import {
 } from '@mui/material';
 import useModal from '/src/hooks/useModal';
 import Coupon from './modals/coupon';
+import Reservation from './modals/reservation';
+import Subscription from './modals/subscription';
 
-const UserThumbnail = ({ func }) => {
+const UserThumbnail = ({ logout, reservation }) => {
 
   const openCustomModal = useModal();
   
   const settings = [
-    { name: 'Reservation', func: () => { } },
+    { name: 'Reservation', func: () => reservation() && openCustomModal(Reservation) },
+    { name: 'Subscription', func: () => openCustomModal(Subscription) },
     { name: 'Coupon', func: () => openCustomModal(Coupon)},
-    { name: 'Logout', func: func }
+    { name: 'Logout', func: logout }
   ];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -29,6 +32,7 @@ const UserThumbnail = ({ func }) => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
   return (
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">

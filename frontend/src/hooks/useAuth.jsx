@@ -9,38 +9,49 @@ export default function useAuth() {
   const [state, setState] = useState({ loading: false, error: false })
 
   const changeState = (msg, bool) => {
-    setState({loading: false, error: msg});
+    setState({ loading: false, error: msg });
     return bool;
   }
 
   const login = useCallback(({ dni, password }) => {
     setState({ loading: true, error: false })
     return authService.login({ dni, password })
-      .then( () => {
+      .then(() => {
         return changeState(false, true)
       })
       .catch(err => {
-        const msg = err.response.data.errors || {Fail: [err.response.data.detail]};
+        const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
         return changeState(msg, false);
       })
   }, [setSession])
+
+  const refresh = useCallback(() => {
+    setState({ loading: true, error: false })
+    return authService.refreshSession()
+      .then(() => {
+        return changeState(false, true)
+      })
+      .catch(err => {
+        const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
+        return changeState(msg, false);
+      })
+  }, [setSession])
+
 
   const register = useCallback(({ dni, email, password }) => {
     setState({ loading: true, error: false })
     return authService.register({ dni, email, password })
       .then(() => {
-        setState({ loading: false, error: false })
-        return true;
+        return changeState(false, true)
       })
       .catch(err => {
         const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
-        setState({ loading: false, error: msg })
-        return false;
+        return changeState(msg, false);
       })
   }, [setSession])
 
   const logout = useCallback(() => {
-      authService.logout()
+    authService.logout()
   }, [setSession]);
 
   useEffect(() => {
@@ -50,10 +61,10 @@ export default function useAuth() {
         setSession(newSession);
       }
     });
-  }, [setSession, session]);
+  }, [setSession]);
 
   const adminAcces = useCallback((session) => {
-    if(session){
+    if (session) {
       return session.role === 'ADMIN' || session.role === 'SUPERADMIN';
     }
     return false;
@@ -83,5 +94,6 @@ export default function useAuth() {
     login,
     logout,
     register,
+    refresh
   }
 }
