@@ -41,7 +41,7 @@ class BStationConfigureViewSet(viewsets.ViewSet):
             httponly=True,
             samesite='Lax' # TODO: change to strict on prod
         )
-        
+
         return response
 
 
@@ -71,14 +71,14 @@ class BStationViewSet(viewsets.ReadOnlyModelViewSet):
 
         lat = to_float_or_none(self.request.query_params.get('lat'))
         lon = to_float_or_none(self.request.query_params.get('lon'))
-        max_dist_km = 250
+        max_dist_km = 80
 
         if lat is not None and lon is not None:
             queryset = queryset.annotate(
                 # First quick approx distance pass to filter many unneeded stations
                 approx_dist=ApproxDistance('lat', 'lon', lat, lon)
             ).filter(
-                approx_dist__lte=max_dist_km*1.5
+                approx_dist__lte=max_dist_km*2
             ).annotate(
                 dist=Distance('lat', 'lon', lat, lon),
             ).filter(

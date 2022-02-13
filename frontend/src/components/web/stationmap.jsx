@@ -1,8 +1,7 @@
-import React, { useCallback, useState } from 'react'
-import { GoogleMap, Marker, useJsApiLoader, InfoWindow, StandaloneSearchBox } from '@react-google-maps/api';
+import React, { useCallback, useState, useEffect } from 'react'
+import { GoogleMap, Marker, useJsApiLoader, InfoWindow, StandaloneSearchBox, Circle, OverlayView, InfoBox } from '@react-google-maps/api';
 import { Box, CircularProgress } from '@mui/material'
-
-const libraries = ['places'];
+import { useStations } from '../../hooks/useStations';
 
 const containerStyle = {
   display: 'flex',
@@ -20,14 +19,41 @@ const center = {
   lng: -3.8196206
 };
 
-const StationMapComponent = ({ stations = [] }) => {
+const options = {
+  strokeColor: '#11DD11',
+  strokeOpacity: 0.8,
+  strokeWeight: 2,
+  fillOpacity: 0,
+  clickable: false,
+  draggable: false,
+  editable: false,
+  visible: true,
+  radius: 80000,
+  zIndex: 1
+}
+
+const StationMapComponent = ({ type = "client" }) => {
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: import.meta.env.VITE_GMAPS_PUBLIC_KEY || "NONE",
-    libraries
   });
 
   const [map, setMap] = useState(null);
+  const [circleCenter, setCircleCenter] = useState({ ...center });
+  const [infoWindows, setInfoWindows] = useState([]);
+  const stations = useStations();
+
+  const addInfoWindow = useCallback(win => {
+    setInfoWindows([...infoWindows.filter(w => w.key != win.key), win]);
+  }, [infoWindows, setInfoWindows]);
+
+  const closeInfoWindow = useCallback(winKey => {
+    setInfoWindows([...infoWindows.filter(w => w.key != winKey)]);
+  }, [infoWindows, setInfoWindows]);
+
+  useEffect(() => { // clean windows
+    setInfoWindows([...infoWindows.filter(w => stations.stationList.find(v => v.id == w.key))]);
+  }, [stations.stationList, setInfoWindows]);
 
   const onLoad = useCallback(map => {
     /*const bounds = new window.google.maps.LatLngBounds();
@@ -39,7 +65,27 @@ const StationMapComponent = ({ stations = [] }) => {
     setMap(null)
   }, []);
 
-  const onPlacesChanged = () => console.log(this.searchBox.getPlaces());
+  const onCenterChanged = () => {
+    if (!map) {
+      return;
+    }
+
+    const c = map.getCenter();
+    setCircleCenter({ lat: c.lat(), lng: c.lng() });
+  };
+
+  const requestReload = () => {
+    console.log(stations.stationList)
+    switch (type) {
+      case 'client':
+        stations.loadClientStations(circleCenter.lat, circleCenter.lng);
+        break;
+
+      case 'maintenance':
+        stations.loadMaintenanceStations(circleCenter.lat, circleCenter.lng);
+        break;
+    }
+  };
 
   return isLoaded ? (
     <GoogleMap
@@ -49,53 +95,45 @@ const StationMapComponent = ({ stations = [] }) => {
       zoom={7}
       onLoad={onLoad}
       onUnmount={onUnmount}
+      onCenterChanged={onCenterChanged}
+      onIdle={requestReload}
     >
-      { // Child components, such as markers, info windows, etc.
-        stations.map(station => (<Marker key={station.id} position={{ lat: station.lat, lng: station.lon }} />))
-      }
-      {/* <InfoBox
-      options={{ closeBoxURL: '', enableEventPropagation: true }}
-      position={center}
-    >
-      <div style={{ backgroundColor: 'yellow', opacity: 0.75, padding: 12 }}>
-        <div style={{ fontSize: 16, fontColor: `#08233B` }}>
-          Hello, World!
-        </div>
-      </div>
-    </InfoBox> */}
-    <InfoWindow
-position={center}
-    >
-      <div>
-        <h1>InfoWindow</h1>
-      </div>
-    </InfoWindow>
-    <StandaloneSearchBox
-      onPlacesChanged={
-        onPlacesChanged
-      }
-    >
-      <input
-        type="text"
-        placeholder="Search stations..."
-        style={{
-          boxSizing: `border-box`,
-          border: `1px solid transparent`,
-          width: `240px`,
-          height: `32px`,
-          padding: `0 12px`,
-          borderRadius: `3px`,
-          boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-          fontSize: `14px`,
-          outline: `none`,
-          textOverflow: `ellipses`,
-          position: "absolute",
-          left: "50%",
-          marginLeft: "-120px",
-          marginTop: '20px'
-        }}
+      <Circle
+        center={circleCenter}
+        options={options}
       />
-    </StandaloneSearchBox>
+
+      { // Markers
+        stations.stationList.map(station => (
+          <Marker
+            key={station.id}
+            title={station.name}
+            position={{ lat: station.lat, lng: station.lon }}
+            label={type === 'maintenance' ? station.maint_ticket_ct.toString() : undefined}
+            onClick={() => addInfoWindow(
+              <InfoWindow
+                key={station.id}
+                position={{ lat: station.lat, lng: station.lon }}
+                onCloseClick={() => closeInfoWindow(station.id)}
+              >
+                <div>
+                  <img style={{maxWidth: '20vw'}} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
+                  <h2>{station.name}</h2>
+                  <p>Distance from center of circle: {station.dist.toFixed(2)} km</p>
+                  <p>Available bikes: {station.av_bike_ct}</p>
+                  <p>Available slots: {station.av_slots}</p>
+                  <p>Number of booked bikes: {station.av_bike_ct}</p>
+                  { station.maint_ticket_ct >= 0 && <p>Number of maintainer tickets: {station.av_bike_ct}</p> }
+                </div>
+              </InfoWindow>
+            )}
+          />
+        ))
+      }
+
+      { // Currently open InfoWindows
+        infoWindows
+      }
     </GoogleMap>
   ) : (<Box sx={containerStyle}><CircularProgress /></Box>)
 }
