@@ -7,6 +7,7 @@ from bike_rider.apps.travels.models import Travel
 from bike_rider.apps.bstations.models import BStation
 from django.utils import timezone
 from rest_framework.exceptions import NotAcceptable
+from .relation import TicketRelatedField
 
 class BikeSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -36,6 +37,7 @@ class BikeStatusSerializer(BikeSerializer):
 
 class BikeStationMaintainerSerializer(BikeSerializer):
     station = None
+    maintenance_ticket = TicketRelatedField(many=True, read_only=True)
     
     class Meta:
         model = Bike
