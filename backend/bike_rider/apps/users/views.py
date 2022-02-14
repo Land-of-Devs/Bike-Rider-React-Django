@@ -18,9 +18,16 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     authentication_classes = (CookieJWTAuthentication,)
 
     def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get('access'):
+        origin = request.query_params['origin']
+        if origin == 'station':
+            cookie_max_age = 60 * 3 # 3 min
+        else:
             cookie_max_age = 3600 * 24 * 14  # 14 days
+
+        if response.data.get('access'):
+            
             user = User.objects.get(dni=request.data['dni'])
+            print(user)
             serializer = SessionSerializer(user)
             response.set_cookie(
                 'bruser', quote(json.dumps(serializer.data)), max_age=cookie_max_age 
@@ -29,7 +36,6 @@ class CookieTokenObtainPairView(TokenObtainPairView):
                 settings.JWT_AUTH['JWT_AUTH_COOKIE'], response.data['access'], max_age=cookie_max_age, httponly=True)
 
         if response.data.get('refresh'):
-            cookie_max_age = 3600 * 24 * 14  # 14 days
             response.set_cookie(settings.JWT_AUTH['JWT_REFRESH_COOKIE'],
                                 response.data['refresh'], max_age=cookie_max_age, httponly=True)
             del response.data['refresh']
@@ -43,8 +49,13 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CookieTokenRefreshSerializer
 
     def finalize_response(self, request, response, *args, **kwargs):
-        if response.data.get('access'):
+        origin = request.query_params['origin']
+        if origin == 'station':
+            cookie_max_age = 60 * 5 # 5 min
+        else: 
             cookie_max_age = 3600 * 24 * 14  # 14 days
+
+        if response.data.get('access'):
             user = User.objects.get(dni=request.user.dni)
             serializer = SessionSerializer(user)
             response.set_cookie(
@@ -54,7 +65,6 @@ class CookieTokenRefreshView(TokenRefreshView):
                 settings.JWT_AUTH['JWT_AUTH_COOKIE'], response.data['access'], max_age=cookie_max_age, httponly=True)
 
         if response.data.get('refresh'):
-            cookie_max_age = 3600 * 24 * 14  # 14 days
             response.set_cookie(settings.JWT_AUTH['JWT_REFRESH_COOKIE'],
                                 response.data['refresh'], max_age=cookie_max_age, httponly=True)
             del response.data['refresh']

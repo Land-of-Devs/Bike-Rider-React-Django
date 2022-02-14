@@ -52,7 +52,7 @@ export default function useBooking() {
         const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
         return changeState(msg, false);
       })
-  }, [])
+  }, [setReservation])
 
   return {
     isLoading: state.loading,

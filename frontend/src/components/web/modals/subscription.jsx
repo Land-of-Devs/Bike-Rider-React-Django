@@ -7,7 +7,8 @@ import {
   MenuItem,
   InputLabel,
   Select,
-  CircularProgress
+  CircularProgress,
+  Divider
 } from "@mui/material";
 import useToast from "/src/hooks/useToast";
 import useSubscription from "/src/hooks/useSubscription";
@@ -18,12 +19,11 @@ const Subscription = ({ close }) => {
   const { changeSubscription, subscription, subscriptions, subscriptionList, isLoading } = useSubscription();
 
   const handleChange = (e) => {
-    console.log(subscription, newSubs)
     setNewSubs(e.target.value);
   }
 
   const handleSubmit = () => {
-    changeSubscription({sub: newSubs})
+    changeSubscription({ sub: newSubs })
     addToast({ msg: 'You have change your subscription!', type: 'success' })
   }
 
@@ -32,20 +32,40 @@ const Subscription = ({ close }) => {
   }, [])
 
   return (
-    <Box sx={{ maxWidth: 345, display: "flex", flexDirection: "column" }} >
+    <Box sx={{ width: 300, display: "flex", flexDirection: "column" }} >
       <Typography variant="h4" textAlign="center">
         Subscription
       </Typography>
-      <Box>
-        {!subscription ?
-        <Typography>
-          You don't have a reservation!
+      <Box mt="20px" mb="10px">
+        <Typography variant="h6" mb="20px">
+          Actual:
         </Typography>
-        :
-        subscription.name
+        {subscription == 'None' ?
+          <Typography>
+            You don't have any subscription!
+          </Typography>
+          :
+          <>
+          <Typography>
+            <strong>Name: </strong>
+            {subscription.name}
+          </Typography>
+          <Typography>
+            <strong>Free Minutes: </strong>
+            {subscription.min_minutes}
+          </Typography>
+            <Typography>
+              <strong>Cent per Minutes: </strong>
+              {subscription.cent_minute}¢
+            </Typography>
+          </>
         }
       </Box>
+      <Divider  mt="10px" mb="10px" color="primary" />
       <Box sx={{ mt: "10px" }}>
+        <Typography variant="h6" mb="20px">
+          New:
+        </Typography>
         {!isLoading ?
           <FormControl fullWidth variant="standard" sx={{ m: 1 }}>
             <InputLabel id="subscriptions">Subscriptions</InputLabel>

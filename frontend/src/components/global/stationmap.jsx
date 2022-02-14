@@ -80,6 +80,7 @@ const StationMapComponent = ({ type = "client" }) => {
 
       case 'maintenance':
         stations.loadMaintenanceStations(circleCenter.lat, circleCenter.lng);
+        console.log(stations.stationList)
         break;
     }
   };

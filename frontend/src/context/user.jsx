@@ -14,6 +14,7 @@ export function UserContextProvider({ children }) {
   const notReservation = () => {
     setReservation({});
   }
+  
   useEffect(() => {
     if (!session) return setReservation({})
     setSubscription(session.subscription ? session.subscription : 'None')

@@ -27,7 +27,7 @@ export default function useSubscription() {
         return changeState(msg, false);
       })
     return true;
-  }, [])
+  }, [setSubscriptions])
 
   const changeSubscription = useCallback(({ sub }) => {
     setState({ loading: true, error: false })

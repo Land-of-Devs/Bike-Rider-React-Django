@@ -22,7 +22,7 @@ export const rules = {
   username: (value) => /^[a-zA-Z0-9]+$/.test(value) && value.length >= 4 || 'Invalid Username, minimun 4 chars alphanumerics!',
   email: (value) => /\S+@\S+\.\S+/.test(value) || 'Must be an Email',
   number: (value) => (!isNaN(parseInt(value)) && parseInt(+value) >= 1) || 'It needs to be a positive number, including 0',
-  string: (value) => (/^[a-z0-9.\-:;()\\!? \n]+$/i.test(value)) || 'Needs to be a string and can contain [,-:;()]',
+  string: (value) => (/^[a-z0-9.\,-:;()\\!? \n]+$/i.test(value)) || 'Needs to be a string and can contain [,-:;()]',
   name: (value) => (/^((?:\w+)\s{0,1}(?:\w*)){1,4}$/gm.test(value)) || 'Only 4 spaces are allowed',
   password: (value) => (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/gm.test(value) || !value )|| 'Needs 8 chars, min 1 upper, 1 lower and 1 number and can contain special chars',
   minLength: (minLength) => (value) => (value && value.length >= minLength) || `Min length ${minLength}`,

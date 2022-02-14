@@ -10,10 +10,13 @@ import {
   Button
 } from '@mui/material';
 import useAuth from '/src/hooks/useAuth';
+import useModal from '/src/hooks/useModal';
+import ticketForm from '../global/tickets/ticketForm';
 
 const WebMenu = () => {
 
   const navigate = useNavigate();
+  const openCustomModal = useModal();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const {isAdmin, isSupport, isMaintenance, isLogged} = useAuth();
   const handleOpenNavMenu = (event) => {
@@ -32,7 +35,7 @@ const WebMenu = () => {
   };
 
   const modalTicket = () => {
-    console.log("modal")
+    openCustomModal(ticketForm)
   };
 
   const pages = [
