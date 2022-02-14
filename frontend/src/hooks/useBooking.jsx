@@ -39,7 +39,7 @@ export default function useBooking() {
     }
 
     return true;
-  }, [])
+  }, [reservation])
 
   const cancelReservation = useCallback(() => {
     setState({ loading: true, error: false })

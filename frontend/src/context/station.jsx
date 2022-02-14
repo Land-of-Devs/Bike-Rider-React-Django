@@ -1,11 +1,22 @@
-import React from "react";
-const Context = React.createContext({});
+import React, { useState } from "react";
+import { Outlet } from "react-router-dom";
+import { getCookieJson } from "../utils/cookie";
+const StationContext = React.createContext({});
 
 export function StationContextProvider({ children }) {
-  const a = true;
+  const [station, setStation] = useState(
+    () => getCookieJson('brstation')
+  );
+
   return (
-    <Context.Provider value={{ a }}>{children}</Context.Provider>
+    <StationContext.Provider value={{
+      station,
+      setStation
+    }}>
+      <Outlet/>
+      {children}
+    </StationContext.Provider>
   );
 }
 
-export default Context;
+export default StationContext;

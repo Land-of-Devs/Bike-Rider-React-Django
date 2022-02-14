@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 const PanelHeader = () => {
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{zIndex: 1}}>
       <AppBar position="static">
         <Toolbar variant="dense">
           <Link to="/">

@@ -25,7 +25,7 @@ const WebHeader = () => {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{zIndex: 1}}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <WebMenu />

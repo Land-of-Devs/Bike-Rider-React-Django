@@ -61,7 +61,7 @@ export default function useAuth() {
         setSession(newSession);
       }
     });
-  }, [setSession]);
+  }, [setSession, session]);
 
   const adminAcces = useCallback((session) => {
     if (session) {

@@ -9,5 +9,5 @@ export async function maintenanceStations() {
 }
 
 export async function configure(token) {
-    return (await api.post('/stations/configure/', token)).data;
+    return (await api.post('/stations/configure/', {token})).data;
 }

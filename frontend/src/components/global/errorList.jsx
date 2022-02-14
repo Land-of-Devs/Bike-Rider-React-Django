@@ -7,7 +7,7 @@ function ErrorList({errors = {}}) {
   return (
     <ul className="error-messages">
       {Object.entries(errors).map(([key, messages]) => {
-        return (messages).map((message) => (
+        return (Array.isArray(messages) ? messages : [messages]).map((message) => (
           <li color="error" key={`${key}: ${message}`}>
             {key.toUpperCase()}: {message}
           </li>

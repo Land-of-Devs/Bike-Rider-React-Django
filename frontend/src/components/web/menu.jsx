@@ -15,14 +15,14 @@ const WebMenu = () => {
 
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const {isAdmin, isSupport, isMaintainer, isLogged} = useAuth();
+  const {isAdmin, isSupport, isMaintenance, isLogged} = useAuth();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
-  
+
   const goPanel = () => {
     navigate('/panel/')
   };
@@ -36,7 +36,7 @@ const WebMenu = () => {
   };
 
   const pages = [
-    {name: 'Panel', click: goPanel, access: isSupport || isMaintainer}, 
+    {name: 'Panel', click: goPanel, access: isSupport || isMaintenance},
     {name: 'Tickets', click: modalTicket, access: isLogged},
     {name: 'Admin', click: goAdmin, access: isAdmin}
   ];

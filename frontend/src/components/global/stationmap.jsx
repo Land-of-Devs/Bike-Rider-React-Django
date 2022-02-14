@@ -1,5 +1,5 @@
 import React, { useCallback, useState, useEffect } from 'react'
-import { GoogleMap, Marker, useJsApiLoader, InfoWindow, StandaloneSearchBox, Circle, OverlayView, InfoBox } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader, InfoWindow, Circle } from '@react-google-maps/api';
 import { Box, CircularProgress } from '@mui/material'
 import { useStations } from '../../hooks/useStations';
 
@@ -51,18 +51,16 @@ const StationMapComponent = ({ type = "client" }) => {
     setInfoWindows([...infoWindows.filter(w => w.key != winKey)]);
   }, [infoWindows, setInfoWindows]);
 
-  useEffect(() => { // clean windows
-    setInfoWindows([...infoWindows.filter(w => stations.stationList.find(v => v.id == w.key))]);
-  }, [stations.stationList, setInfoWindows]);
+  // useEffect(() => { // clean windows
+  //   setInfoWindows([...infoWindows.filter(w => stations.stationList.find(v => v.id == w.key))]);
+  // }, [stations.stationList, setInfoWindows]);
 
   const onLoad = useCallback(map => {
-    /*const bounds = new window.google.maps.LatLngBounds();
-    map.fitBounds(bounds);*/
-    setMap(map)
+    setMap(map);
   }, []);
 
   const onUnmount = useCallback(map => {
-    setMap(null)
+    setMap(null);
   }, []);
 
   const onCenterChanged = () => {
@@ -75,7 +73,6 @@ const StationMapComponent = ({ type = "client" }) => {
   };
 
   const requestReload = () => {
-    console.log(stations.stationList)
     switch (type) {
       case 'client':
         stations.loadClientStations(circleCenter.lat, circleCenter.lng);
@@ -98,10 +95,12 @@ const StationMapComponent = ({ type = "client" }) => {
       onCenterChanged={onCenterChanged}
       onIdle={requestReload}
     >
-      <Circle
-        center={circleCenter}
-        options={options}
-      />
+      {type === 'client' && (
+        <Circle
+          center={circleCenter}
+          options={options}
+        />
+      )}
 
       { // Markers
         stations.stationList.map(station => (
@@ -109,21 +108,27 @@ const StationMapComponent = ({ type = "client" }) => {
             key={station.id}
             title={station.name}
             position={{ lat: station.lat, lng: station.lon }}
-            label={type === 'maintenance' ? station.maint_ticket_ct.toString() : undefined}
+            label={type === 'maintenance' ? station.maint_ticket_ct+'/'+station.bike.length: undefined}
             onClick={() => addInfoWindow(
               <InfoWindow
                 key={station.id}
                 position={{ lat: station.lat, lng: station.lon }}
                 onCloseClick={() => closeInfoWindow(station.id)}
               >
-                <div>
-                  <img style={{maxWidth: '20vw'}} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                  <img style={{maxWidth: '20vmin', margin: 'auto'}} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
                   <h2>{station.name}</h2>
-                  <p>Distance from center of circle: {station.dist.toFixed(2)} km</p>
-                  <p>Available bikes: {station.av_bike_ct}</p>
-                  <p>Available slots: {station.av_slots}</p>
-                  <p>Number of booked bikes: {station.av_bike_ct}</p>
-                  { station.maint_ticket_ct >= 0 && <p>Number of maintainer tickets: {station.av_bike_ct}</p> }
+                  {station.dist >= 0 && <div>Distance from center of circle: {station.dist.toFixed(2)} km</div>}
+                  <div>Available bikes: {station.av_bike_ct}</div>
+                  <div>Available slots: {station.av_slots}</div>
+                  <div>Number of booked bikes: {station.av_bike_ct}</div>
+                  {
+                    type === 'maintenance' && (
+                      <>
+                        {station.maint_ticket_ct >= 0 && <div>Number of maintainer tickets: {station.av_bike_ct}</div>}
+                      </>
+                    )
+                  }
                 </div>
               </InfoWindow>
             )}
