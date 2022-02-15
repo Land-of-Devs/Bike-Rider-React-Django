@@ -6,5 +6,6 @@ export const isStation = () => {
     if (isStation) {
         return true;
     }
+
     return '/station/configure';
 }

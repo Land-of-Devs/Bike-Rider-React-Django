@@ -10,7 +10,7 @@ const MainScreen = ({slots}) => {
           slots.map((bike, i) => (
             <Paper key={i} sx={{ p: 2, m: 1 }}>
               <div>Slot {i + 1}</div>
-              {bike ? (
+              {bike && !isFinite(bike) ? (
                 <>
                   <div>Bike {bike.id}</div>
                   <div>Status {bike.status}</div>

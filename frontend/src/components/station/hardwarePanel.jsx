@@ -2,21 +2,22 @@ import { Box, Button, TextField, ButtonGroup } from "@mui/material";
 import { useState } from "react";
 import Form from '../global/form';
 
-const HardwarePanel = ({slots}) => {
+const HardwarePanel = ({slots, fakeHardwareAwaitBikeOnSlot}) => {
   const [fakeHardwareBikeId, setFakeHardwareBikeId] = useState('');
-  
-  const handleFakeHardwareEvent = (action) => {
+
+  const handleFakeHardwareEvent = (action, slotNum) => {
     console.log(action, fakeHardwareBikeId)
     /** TODO */
     switch (action) {
       case 'hook':
+        fakeHardwareAwaitBikeOnSlot(slotNum, +fakeHardwareBikeId);
         break;
 
       case 'unhook':
         break;
     }
   };
-  
+
   return (
     <Form> {/* Fake Station controls */}
       <Box sx={{ backgroundColor: '#EEEEEE', p: 1, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap' }}>
@@ -38,7 +39,7 @@ const HardwarePanel = ({slots}) => {
               <ButtonGroup variant="contained" sx={{ m: 2 }}>
                 <Button
                   disabled={!!bike}
-                  onClick={() => handleFakeHardwareEvent('hook')}
+                  onClick={() => handleFakeHardwareEvent('hook', i + 1)}
                 >
                   Hook
                 </Button>

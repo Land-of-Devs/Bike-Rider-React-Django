@@ -8,7 +8,7 @@ import { deepEqual } from '/src/utils/misc';
 import UserContext from "../context/user";
 
 export default function useStationAuth() {
-  const { station, setStation, slots } = useContext(StationContext);
+  const { station, setStation, slots, setSlots } = useContext(StationContext);
   const [ state, setState ] = useState({ loading: false, error: false });
 
   useEffect(() => {
@@ -35,11 +35,18 @@ export default function useStationAuth() {
     return error === false;
   }, [setState]);
 
+  const fakeHardwareAwaitBikeOnSlot = useCallback((slotNum, bikeId) => {
+    const newSlots = [...slots];
+    newSlots[slotNum - 1] = bikeId;
+    setSlots(newSlots);
+  }, [slots]);
+
   return {
     isStation: Boolean(station),
     station,
     state,
     configure,
-    slots
+    slots,
+    fakeHardwareAwaitBikeOnSlot
   };
 }

@@ -17,7 +17,7 @@ const StationConfig = () => {
     if (state.error) {
       addToast({ msg: <ErrorList errors={state.error} />, type: 'error' });
     }
-  }, [state.error])
+  }, [station, state.error])
 
   const handleSubmit = useCallback(async () => {
     if (await configure(token)) {

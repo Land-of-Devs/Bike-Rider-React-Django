@@ -1,6 +1,6 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { GoogleMap, Marker, useJsApiLoader, InfoWindow, Circle } from '@react-google-maps/api';
-import { Box, CircularProgress } from '@mui/material'
+import { Box, Button, CircularProgress } from '@mui/material'
 import { useStations } from '../../hooks/useStations';
 
 const containerStyle = {
@@ -123,6 +123,11 @@ const StationMapComponent = ({ type = "client" }) => {
                   <div>Available bikes: {station.av_bike_ct}</div>
                   <div>Available slots: {station.av_slots}</div>
                   <div>Number of booked bikes: {station.av_bike_ct}</div>
+                  {type === 'client' && (
+                    <>
+                      <Button sx={{mt: 1}} fullWidth variant="contained">Book a Bike</Button>
+                    </>
+                  )}
                   {
                     type === 'maintenance' && (
                       <>
