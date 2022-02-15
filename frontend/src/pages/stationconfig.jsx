@@ -13,6 +13,7 @@ const StationConfig = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (station) navigate('/station')
     if (state.error) {
       addToast({ msg: <ErrorList errors={state.error} />, type: 'error' });
     }

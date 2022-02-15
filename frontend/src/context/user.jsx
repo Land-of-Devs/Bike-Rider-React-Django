@@ -14,12 +14,12 @@ export function UserContextProvider({ children }) {
   const notReservation = () => {
     setReservation({});
   }
-  
+
   useEffect(() => {
     if (!session) return setReservation({})
     setSubscription(session.subscription ? session.subscription : 'None')
     bookingService.myReservation().then(setReservation, notReservation)
-  }, [session])
+  }, [session,])
 
   return <UserContext.Provider value={{
     reservation,
@@ -27,7 +27,7 @@ export function UserContextProvider({ children }) {
     subscription,
     setSubscription,
     setReservation,
-    setSession
+    setSession,
   }}>
     {children}
   </UserContext.Provider>

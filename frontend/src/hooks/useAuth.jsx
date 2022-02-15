@@ -2,10 +2,10 @@ import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import UserContext from '../context/user';
 import * as authService from '../services/auth';
 import { getCookieJson, watchCookies } from '/src/utils/cookie';
-import { shallowEqual } from '/src/utils/misc';
+import { deepEqual } from '/src/utils/misc';
 
 export default function useAuth() {
-  const { session, setSession } = useContext(UserContext)
+  const { session, setSession} = useContext(UserContext)
   const [state, setState] = useState({ loading: false, error: false })
   const isMounted = useRef(false);
 
@@ -22,9 +22,9 @@ export default function useAuth() {
     return bool;
   }
 
-  const login = useCallback(({ dni, password }) => {
+  const login = useCallback(({ dni, password }, params) => {
     setState({ loading: true, error: false })
-    return authService.login({ dni, password })
+    return authService.login({ dni, password }, params)
       .then(() => {
         return changeState(false, true)
       })
@@ -66,7 +66,7 @@ export default function useAuth() {
   useEffect(() => {
     return watchCookies(() => {
       var newSession = getCookieJson('bruser');
-      if (!shallowEqual(session, newSession)) {
+      if (!deepEqual(session, newSession)) {
         setSession(newSession);
       }
     });

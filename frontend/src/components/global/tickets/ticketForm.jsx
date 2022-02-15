@@ -20,7 +20,7 @@ import { rules } from "../../../utils/validate";
 import * as formatter from "/src/utils/formatter";
 
 const TicketForm = ({ close, stationID }) => {
-
+  
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [message, setMessage] = useState("");

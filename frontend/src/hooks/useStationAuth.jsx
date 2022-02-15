@@ -5,9 +5,10 @@ import StationContext from "../context/station";
 import { getCookieJson, watchCookies } from "../utils/cookie";
 import * as stationService from '../services/stations';
 import { deepEqual } from '/src/utils/misc';
+import UserContext from "../context/user";
 
 export default function useStationAuth() {
-  const { station, setStation } = useContext(StationContext);
+  const { station, setStation, slots } = useContext(StationContext);
   const [ state, setState ] = useState({ loading: false, error: false });
 
   useEffect(() => {
@@ -38,6 +39,7 @@ export default function useStationAuth() {
     isStation: Boolean(station),
     station,
     state,
-    configure
+    configure,
+    slots
   };
 }

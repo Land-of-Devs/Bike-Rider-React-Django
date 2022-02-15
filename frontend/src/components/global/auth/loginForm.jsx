@@ -27,7 +27,8 @@ const LoginForm = ({ close, stationLogin = false }) => {
   useEffect(() => { hasError && addToast({ msg: <ErrorList errors={hasError} />, type: 'error' }) }, [hasError])
 
   const handleSubmit = async () => {
-    if (await login({ dni, password })) {
+    let params = stationLogin ? {origin: 'station'} : {origin: 'web'}
+    if (await login({ dni, password }, params)) {
       if (!stationLogin) { addToast({ msg: 'Welcome to Bike Rider!', type: 'success' }); }
       if (close) { close(); }
     }
