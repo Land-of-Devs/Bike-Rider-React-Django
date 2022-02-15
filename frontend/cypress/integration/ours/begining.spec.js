@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 describe('beging', () => {
     beforeEach(() => {
-        cy.visit('http://localhost/')
+        cy.visit('/')
     })
 
     it('Should have a login button', () => {
