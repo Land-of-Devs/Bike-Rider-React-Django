@@ -21,7 +21,7 @@ class BStationConfigureSerializer(serializers.Serializer):
             pload = jwt.decode(token, settings.JWT_AUTH['JWT_STATION_CONFIG_SECRET_KEY'], algorithms=settings.JWT_AUTH['ALGORITHM'])
         except Exception as e:
             raise exceptions.AuthenticationFailed('Invalid station token.' + str(e) + token)
-        
+
         try:
             station = BStation.objects.get(pk=pload['station_id'], ip=None)
         except:
@@ -41,7 +41,7 @@ class BStationConfigureSerializer(serializers.Serializer):
             settings.JWT_AUTH['ALGORITHM']
         )
 
-        return token
+        return (token, station)
 
 
 class BStationSerializer(serializers.ModelSerializer):
@@ -49,9 +49,16 @@ class BStationSerializer(serializers.ModelSerializer):
     av_bike_ct = serializers.IntegerField(read_only=True)
     bk_bike_ct = serializers.IntegerField(read_only=True)
     bookings = BookingBStationSerializer(read_only=True, many=True)
-    
+
     maint_ticket_ct = serializers.IntegerField(read_only=True, required=False)
 
+    class Meta:
+        model = BStation
+        exclude = ['maintainer', 'ip']
+
+
+class BStationCookieSerializer(BStationSerializer):
+    bikes = BikeRelatedField(many=True, read_only=True)
     class Meta:
         model = BStation
         exclude = ['maintainer', 'ip']
@@ -67,7 +74,7 @@ class BStationMaintenanceSerializer(serializers.ModelSerializer):
         fields = ['id', 'maintainer', 'name', 'lat', 'lon', 'image', 'nslots', 'ip', 'bike']
         depth = 1
 
- 
+
 class BStationDistSerializer(BStationSerializer):
     approx_dist = serializers.FloatField(read_only=True)
     dist = serializers.FloatField(read_only=True)

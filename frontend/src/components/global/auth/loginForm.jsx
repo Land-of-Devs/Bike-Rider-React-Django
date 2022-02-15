@@ -10,7 +10,7 @@ import useToast from "/src/hooks/useToast";
 import Form from "../form";
 import { rules } from "../../../utils/validate";
 
-const LoginForm = ({ close }) => {
+const LoginForm = ({ close, stationLogin = false }) => {
   const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   const openCustomModal = useModal();
@@ -19,7 +19,7 @@ const LoginForm = ({ close }) => {
   const addToast = useToast();
 
   useEffect(() => {
-    if (isLogged) {
+    if (isLogged && !stationLogin) {
       navigate('/');
     }
   }, [isLogged, navigate])
@@ -28,8 +28,8 @@ const LoginForm = ({ close }) => {
 
   const handleSubmit = async () => {
     if (await login({ dni, password })) {
-      addToast({ msg: 'Welcome to Bike Rider!', type: 'success' })
-      close();
+      if (!stationLogin) { addToast({ msg: 'Welcome to Bike Rider!', type: 'success' }); }
+      if (close) { close(); }
     }
   };
 
@@ -81,18 +81,20 @@ const LoginForm = ({ close }) => {
               {!isLoading ? 'Sign In' : <CircularProgress />}
             </Button>
           </Box>
-          <Grid container>
-            <Grid item>
-              <Link
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  openCustomModal(RegisterForm) && close()
-                }}>
-                {"Don't have an account? Sign Up"}
-              </Link>
+          {!stationLogin && (
+            <Grid container>
+              <Grid item>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    openCustomModal(RegisterForm) && close && close()
+                  }}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
+          )}
         </Box>
       </Form>
     </>

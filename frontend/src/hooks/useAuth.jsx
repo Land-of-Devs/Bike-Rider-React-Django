@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import UserContext from '../context/user';
 import * as authService from '../services/auth';
 import { getCookieJson, watchCookies } from '/src/utils/cookie';
@@ -7,9 +7,18 @@ import { shallowEqual } from '/src/utils/misc';
 export default function useAuth() {
   const { session, setSession } = useContext(UserContext)
   const [state, setState] = useState({ loading: false, error: false })
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => { isMounted.current = false; }
+  }, []);
 
   const changeState = (msg, bool) => {
-    setState({ loading: false, error: msg });
+    if (isMounted.current) {
+      setState({ loading: false, error: msg });
+    }
+
     return bool;
   }
 
@@ -23,7 +32,7 @@ export default function useAuth() {
         const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
         return changeState(msg, false);
       })
-  }, [setSession])
+  }, [setSession, setState])
 
   const refresh = useCallback(() => {
     setState({ loading: true, error: false })

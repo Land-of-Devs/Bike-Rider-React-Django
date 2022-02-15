@@ -109,7 +109,7 @@ const StationMapComponent = ({ type = "client" }) => {
             key={station.id}
             title={station.name}
             position={{ lat: station.lat, lng: station.lon }}
-            label={type === 'maintenance' ? station.maint_ticket_ct+'/'+station.bike.length: undefined}
+            label={type === 'maintenance' ? station.maint_ticket_ct : undefined}
             onClick={() => addInfoWindow(
               <InfoWindow
                 key={station.id}

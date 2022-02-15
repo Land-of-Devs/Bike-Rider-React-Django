@@ -4,7 +4,7 @@ import { useContext, useEffect } from "react";
 import StationContext from "../context/station";
 import { getCookieJson, watchCookies } from "../utils/cookie";
 import * as stationService from '../services/stations';
-import { shallowEqual } from '/src/utils/misc';
+import { deepEqual } from '/src/utils/misc';
 
 export default function useStationAuth() {
   const { station, setStation } = useContext(StationContext);
@@ -13,7 +13,7 @@ export default function useStationAuth() {
   useEffect(() => {
     return watchCookies(() => {
       var newStation = getCookieJson('brstation');
-      if (!shallowEqual(station, newStation)) {
+      if (!deepEqual(station, newStation)) {
         setStation(newStation);
       }
     });

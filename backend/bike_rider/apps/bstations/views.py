@@ -1,5 +1,7 @@
 import datetime
 import jwt
+import json
+from urllib.parse import quote, quote_plus
 
 from rest_framework import viewsets, views
 from rest_framework.exceptions import NotFound
@@ -8,11 +10,11 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from django.db.models import Count, Q, F, Subquery, OuterRef
 from django.conf import settings
-from pprint import pprint
 
 from .models import BStation
 from bike_rider.apps.bookings.models import Booking
-from .serializers import BStationConfigureSerializer, BStationSerializer, BStationDistSerializer, BStationMaintenanceSerializer
+from bike_rider.apps.bikes.models import Bike
+from .serializers import BStationConfigureSerializer, BStationSerializer, BStationCookieSerializer, BStationDistSerializer, BStationMaintenanceSerializer
 from bike_rider.apps.core.utils import ApproxDistance, Distance, to_float_or_none
 from bike_rider.apps.core.permissions import IsMaintenanceUsr, IsAdminUsr, IsMaintainerOf, IsSuperAdminUsr
 
@@ -30,7 +32,7 @@ class BStationConfigureViewSet(viewsets.ViewSet):
         serializer.is_valid(raise_exception=True)
 
         ip = request.META.get('REMOTE_ADDR')
-        token = serializer.use_and_generate_session_token(ip)
+        token, station = serializer.use_and_generate_session_token(ip)
 
         response = Response(status=200)
 
@@ -40,6 +42,16 @@ class BStationConfigureViewSet(viewsets.ViewSet):
             expires=datetime.datetime.strptime('9999', '%Y'),
             httponly=True,
             samesite='Lax' # TODO: change to strict on prod
+        )
+
+        station.bookings = Booking.objects.filter(station_id=station.id)
+        station.bikes = Bike.objects.filter(station_id=station.id)
+        serializer = BStationCookieSerializer(station)
+        response.set_cookie(
+            'brstation',
+            quote(json.dumps(serializer.data)),
+            expires=datetime.datetime.strptime('9999', '%Y'),
+            samesite='Lax'
         )
 
         return response

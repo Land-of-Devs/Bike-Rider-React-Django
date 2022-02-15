@@ -6,7 +6,13 @@ export const getCookie = name => {
 
 export const getCookieJson = name => {
   try {
-    return JSON.parse(getCookie(name));
+    /* ugly fix for django bug */
+    var c = getCookie(name);
+    if (c.startsWith('"') && c.endsWith('"')) {
+      c = c.substring(1, c.length - 1);
+    }
+
+    return JSON.parse(c);
   } catch (e) {
     return null;
   }

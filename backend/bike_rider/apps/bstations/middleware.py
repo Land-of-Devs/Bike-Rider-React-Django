@@ -7,8 +7,10 @@ from django.conf import settings
 
 from rest_framework import authentication, exceptions
 
+from bike_rider.apps.bookings.models import Booking
+from bike_rider.apps.bikes.models import Bike
 from .models import BStation
-from .serializers import BStationSerializer
+from .serializers import BStationCookieSerializer
 
 class ReadStationSessionMiddleware:
     cookie_name = settings.JWT_AUTH['JWT_STATION_COOKIE']
@@ -26,7 +28,9 @@ class ReadStationSessionMiddleware:
         response = self.get_response(request)
 
         if scookie:
-            serializer = BStationSerializer(request.station)
+            request.station.bookings = Booking.objects.filter(station_id=request.station.id)
+            request.station.bikes = Bike.objects.filter(station_id=request.station.id)
+            serializer = BStationCookieSerializer(request.station)
             response.set_cookie(
                 'brstation',
                 quote(json.dumps(serializer.data)),
