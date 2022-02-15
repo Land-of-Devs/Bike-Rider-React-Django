@@ -18,10 +18,12 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     authentication_classes = (CookieJWTAuthentication,)
 
     def finalize_response(self, request, response, *args, **kwargs):
+        
         origin = request.query_params['origin']
+        
         if origin == 'station':
             cookie_max_age = 60 * 3 # 3 min
-        else:
+        else :
             cookie_max_age = 3600 * 24 * 14  # 14 days
 
         if response.data.get('access'):

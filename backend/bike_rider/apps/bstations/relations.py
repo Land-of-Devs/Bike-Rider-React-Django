@@ -7,3 +7,9 @@ class BikeRelatedField(serializers.RelatedField):
     def to_representation(self, value):
         from bike_rider.apps.bikes.serializers import BikeStationMaintainerSerializer
         return BikeStationMaintainerSerializer(value).data
+
+class BikeCookieRelatedField(serializers.RelatedField):
+    
+    def to_representation(self, value):
+        from bike_rider.apps.bikes.serializers import BikeCookieSerializer
+        return BikeCookieSerializer(value).data

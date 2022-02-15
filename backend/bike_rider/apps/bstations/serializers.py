@@ -7,7 +7,7 @@ from .models import BStation
 from bike_rider.apps.bookings.serializers import BookingBStationSerializer
 from ..users.serializers import ThumbnailSerializer
 from ..bikes.models import Bike
-from .relations import BikeRelatedField
+from .relations import BikeRelatedField, BikeCookieRelatedField
 
 #from bike_rider.apps.core.utils import MaintenancePrivateField
 
@@ -58,10 +58,11 @@ class BStationSerializer(serializers.ModelSerializer):
 
 
 class BStationCookieSerializer(BStationSerializer):
-    bikes = BikeRelatedField(many=True, read_only=True)
+    bikes = BikeCookieRelatedField(many=True, read_only=True)
     class Meta:
         model = BStation
         exclude = ['maintainer', 'ip']
+        depth = 0
 
 
 class BStationMaintenanceSerializer(serializers.ModelSerializer):

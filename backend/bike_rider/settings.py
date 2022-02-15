@@ -178,7 +178,7 @@ JWT_AUTH = {
     'AUTH_HEADER_TYPES': ('Token', 'Bearer',),
     'JWT_AUTH_COOKIE': 'brsession',
     'JWT_REFRESH_COOKIE': 'brrefresh',
-    'JWT_STATION_COOKIE': 'br_station_session',
+    'JWT_STATION_COOKIE': 'brsessionstation',
 }
 
 SIMPLE_JWT = JWT_AUTH

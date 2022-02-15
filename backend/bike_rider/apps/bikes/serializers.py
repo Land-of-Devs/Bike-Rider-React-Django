@@ -23,6 +23,14 @@ class BikeSerializer(serializers.ModelSerializer):
     def get_last_check(self, instance):
         return instance.last_check.isoformat()
 
+class BikeCookieSerializer(BikeSerializer):
+    station = None
+    class Meta:
+        model = Bike
+        exclude = ['station']
+        depth = 1
+
+
 class BikeStatusSerializer(BikeSerializer):
     status = serializers.ChoiceField(Bike.STATUS_CHOICES)
     station = None
