@@ -1,7 +1,10 @@
 import React, { useCallback, useState, useEffect } from 'react'
 import { GoogleMap, Marker, useJsApiLoader, InfoWindow, Circle } from '@react-google-maps/api';
-import { Box, Button, CircularProgress } from '@mui/material'
+import { Box, Button, CircularProgress, Divider, List, ListItem, ListItemText } from '@mui/material'
 import { useStations } from '../../hooks/useStations';
+import Counter from './counter';
+import useBooking from '../../hooks/useBooking';
+import useAuth from '../../hooks/useAuth';
 
 const containerStyle = {
   display: 'flex',
@@ -30,6 +33,73 @@ const options = {
   visible: true,
   radius: 80000,
   zIndex: 1
+}
+
+const StationBookingList = ({ stationId }) => {
+  const [bookings, setBookings] = useState([]);
+  const stations = useStations();
+  const { isLogged } = useAuth();
+  const { reservation, createReservation, setReservation } = useBooking();
+
+  useEffect(() => {
+    stations.loadClientDetails(stationId);
+  }, [stations.loadClientDetails, reservation]);
+
+  useEffect(() => {
+    if (!stations.state.error && stations.stationDetails) {
+      setBookings(stations.stationDetails.bookings || []);
+    }
+  }, [stations.stationDetails]);
+
+  return (
+    <>
+      {isLogged && (
+        <Button
+          sx={{ mt: 1 }}
+          disabled={stations.stationDetails?.av_bike_ct <= 0 || !!reservation?.id}
+          fullWidth
+          variant="contained"
+          onClick={() => createReservation(stationId)}
+        >Book a Bike</Button>
+      )}
+      <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+        {stations.state.loading ? (
+          <CircularProgress />
+        ) : (
+          <List sx={{ maxHeight: '20vmin', overflowY: 'auto' }}>
+            <Divider />
+            {bookings.length === 0 && (
+              <>
+                <ListItem>
+                  <ListItemText primary="No bookings on this station." />
+                </ListItem>
+                <Divider />
+              </>
+            )}
+            {bookings.map(b =>
+              <React.Fragment key={b.id}>
+                <ListItem sx={{ display: 'flex', flexDirection: 'column', }}>
+                  <ListItemText
+                    primary={(reservation?.id === b.id ? 'Your' : 'A') + ' bike is booked until:'}
+                  />
+                  <Counter
+                    date={b.time_end}
+                    width="100%"
+                    timeUp={() => {
+                      stations.loadClientDetails(stationId);
+                      if (reservation?.id === b.id) {
+                        setReservation({});
+                      }
+                    }}
+                  />
+                </ListItem>
+                <Divider />
+              </React.Fragment>
+            )}
+          </List>)}
+      </Box>
+    </>
+  );
 }
 
 const StationMapComponent = ({ type = "client" }) => {
@@ -116,26 +186,30 @@ const StationMapComponent = ({ type = "client" }) => {
                 position={{ lat: station.lat, lng: station.lon }}
                 onCloseClick={() => closeInfoWindow(station.id)}
               >
-                <div style={{display: 'flex', flexDirection: 'column'}}>
-                  <img style={{maxWidth: '20vmin', margin: 'auto'}} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
-                  <h2>{station.name}</h2>
-                  {station.dist >= 0 && <div>Distance from center of circle: {station.dist.toFixed(2)} km</div>}
-                  <div>Available bikes: {station.av_bike_ct}</div>
-                  <div>Available slots: {station.av_slots}</div>
-                  <div>Number of booked bikes: {station.av_bike_ct}</div>
-                  {type === 'client' && (
-                    <>
-                      <Button sx={{mt: 1}} fullWidth variant="contained">Book a Bike</Button>
-                    </>
-                  )}
-                  {
-                    type === 'maintenance' && (
+                <Box sx={{ display: 'flex' }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <img style={{ maxWidth: '20vmin', margin: 'auto' }} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
+                    <h2>{station.name}</h2>
+                    {station.dist >= 0 && <div>Distance from center of circle: {station.dist.toFixed(2)} km</div>}
+                    <div>Available bikes: {station.av_bike_ct}</div>
+                    <div>Available slots: {station.av_slots}</div>
+                    <div>Number of booked bikes: {station.av_bike_ct}</div>
+                    {
+                      type === 'maintenance' && (
+                        <>
+                          {station.maint_ticket_ct >= 0 && <div>Number of maintainer tickets: {station.av_bike_ct}</div>}
+                        </>
+                      )
+                    }
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    {type === 'client' && (
                       <>
-                        {station.maint_ticket_ct >= 0 && <div>Number of maintainer tickets: {station.av_bike_ct}</div>}
+                        <StationBookingList stationId={station.id} />
                       </>
-                    )
-                  }
-                </div>
+                    )}
+                  </Box>
+                </Box>
               </InfoWindow>
             )}
           />

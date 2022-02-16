@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import UserContext from '../context/user';
 import * as bookingService from '../services/bookings';
 
@@ -11,19 +11,29 @@ export default function useBooking() {
     return bool;
   }
 
+  useEffect(() => {
+    if (reservation?.id) {
+      const end = new Date(reservation.time_end);
+      end.setHours(end.getHours() + 1);
+      if (Date.now() >= end.getTime()) {
+        setReservation({});
+      }
+    }
+  }, []);
+
   const getReservation = useCallback(() => {
     setState({ loading: true, error: false })
 
     const booking = () => {
       bookingService.myReservation()
-        .then((booking) => {
-          setReservation(booking)
-          return changeState(false, true)
-        })
-        .catch(err => {
-          const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
-          return changeState(msg, false);
-        })
+      .then((booking) => {
+        setReservation(booking)
+        return changeState(false, true)
+      })
+      .catch(err => {
+        const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
+        return changeState(msg, false);
+      })
     };
 
     if (Object.keys(reservation).length > 0) {
@@ -38,7 +48,21 @@ export default function useBooking() {
       booking()
     }
     return true;
-  }, [reservation])
+  }, [reservation]);
+
+  const createReservation = useCallback((stationId) => {
+    setState({ loading: true, error: false })
+    bookingService.create({ station: stationId })
+      .then(() => {
+        setReservation({})
+        getReservation();
+        return changeState(false, false)
+      })
+      .catch(err => {
+        const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
+        return changeState(msg, false);
+      })
+  }, [setReservation, getReservation]);
 
   const cancelReservation = useCallback(() => {
     setState({ loading: true, error: false })
@@ -48,6 +72,7 @@ export default function useBooking() {
         return changeState(false, false)
       })
       .catch(err => {
+        setReservation({});
         const msg = err.response.data.errors || { Fail: [err.response.data.detail] };
         return changeState(msg, false);
       })
@@ -59,6 +84,7 @@ export default function useBooking() {
     reservation,
     setReservation,
     getReservation,
+    createReservation,
     cancelReservation,
   }
 }

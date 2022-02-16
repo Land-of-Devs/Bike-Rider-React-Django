@@ -18,21 +18,21 @@ class CookieTokenObtainPairView(TokenObtainPairView):
     authentication_classes = (CookieJWTAuthentication,)
 
     def finalize_response(self, request, response, *args, **kwargs):
-        
-        origin = request.query_params['origin']
-        
+
+        origin = request.query_params.get('origin', None)
+
         if origin == 'station':
             cookie_max_age = 60 * 3 # 3 min
         else :
             cookie_max_age = 3600 * 24 * 14  # 14 days
 
         if response.data.get('access'):
-            
+
             user = User.objects.get(dni=request.data['dni'])
             print(user)
             serializer = SessionSerializer(user)
             response.set_cookie(
-                'bruser', quote(json.dumps(serializer.data)), max_age=cookie_max_age 
+                'bruser', quote(json.dumps(serializer.data)), max_age=cookie_max_age
             )
             response.set_cookie(
                 settings.JWT_AUTH['JWT_AUTH_COOKIE'], response.data['access'], max_age=cookie_max_age, httponly=True)
@@ -51,17 +51,17 @@ class CookieTokenRefreshView(TokenRefreshView):
     serializer_class = CookieTokenRefreshSerializer
 
     def finalize_response(self, request, response, *args, **kwargs):
-        origin = request.query_params['origin']
+        origin = request.query_params.get('origin', None)
         if origin == 'station':
             cookie_max_age = 60 * 5 # 5 min
-        else: 
+        else:
             cookie_max_age = 3600 * 24 * 14  # 14 days
 
         if response.data.get('access'):
             user = User.objects.get(dni=request.user.dni)
             serializer = SessionSerializer(user)
             response.set_cookie(
-                'bruser', quote(json.dumps(serializer.data)), max_age=cookie_max_age 
+                'bruser', quote(json.dumps(serializer.data)), max_age=cookie_max_age
             )
             response.set_cookie(
                 settings.JWT_AUTH['JWT_AUTH_COOKIE'], response.data['access'], max_age=cookie_max_age, httponly=True)

@@ -25,7 +25,7 @@ const Reservation = ({ close }) => {
           <Typography variant="h4" textAlign="center">
            Reservation
           </Typography>
-          <Counter height={"100px"} width={"200px"} text={"40px"} date={reservation.time_end} timeUp={handleReservation} />
+          <Counter height={"100px"} width={"100%"} text={"40px"} date={reservation.time_end} timeUp={handleReservation} />
           <Box sx={{mt: "10px"}}>
             <Typography variant="h6">
                 Station:

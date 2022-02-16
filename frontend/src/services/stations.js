@@ -4,6 +4,10 @@ export async function clientStations(lat, lon) {
     return (await api.get('/stations/client/', lat + lon ? {lat, lon} : {})).data;
 }
 
+export async function clientStationDetails(stationId) {
+    return (await api.get('/stations/client/' + stationId + '/')).data;
+}
+
 export async function maintenanceStations() {
     return (await api.get('/stations/maintenance/')).data;
 }

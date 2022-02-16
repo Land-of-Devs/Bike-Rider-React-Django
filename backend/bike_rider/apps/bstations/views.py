@@ -44,7 +44,7 @@ class BStationConfigureViewSet(viewsets.ViewSet):
             samesite='Lax' # TODO: change to strict on prod
         )
 
-        station.bookings = Booking.objects.filter(station_id=station.id)
+        station.bookings = Booking.objects.filter(station_id=station.id, time_end__gt=datetime.datetime.today())
         station.bikes = Bike.objects.filter(station_id=station.id)
         serializer = BStationCookieSerializer(station)
         response.set_cookie(
@@ -75,7 +75,10 @@ class BStationViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_object(self):
         o = super().get_object()
-        o.bookings = Booking.objects.filter(station=o.id)
+        o.bookings = Booking.objects.filter(
+            station=o.id,
+            time_end__gt=datetime.datetime.today()
+        )
         return o
 
     def get_queryset(self):

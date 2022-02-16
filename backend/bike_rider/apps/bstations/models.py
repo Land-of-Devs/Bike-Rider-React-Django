@@ -27,14 +27,14 @@ class BStation(models.Model):
                 ).annotate(
                     bk_bike_ct=Count(
                         'booking',
-                        filter=Q(booking__time_end__date__gt=datetime.date.today()))
+                        filter=Q(booking__time_end__gt=datetime.datetime.today()))
                 ).values('bk_bike_ct')),
             av_bike_ct=Count(
                 'bike',
                 filter=Q(bike__status='OK')
             ) - F('bk_bike_ct'), # not great, repeats query
         )
-    
+
     def annotate_maint_ticket_ct(queryset):
         return queryset.annotate(
             maint_ticket_ct=Subquery(
