@@ -19,7 +19,7 @@ export function UserContextProvider({ children }) {
     if (!session) return setReservation({})
     setSubscription(session.subscription ? session.subscription : 'None')
     bookingService.myReservation().then(setReservation, notReservation)
-  }, [session,])
+  }, [session , setSubscription])
 
   return <UserContext.Provider value={{
     reservation,

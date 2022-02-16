@@ -11,7 +11,7 @@ import HardwarePanel from "../components/station/hardwarePanel";
 
 /** This function would implement the hardware slot bike reading */
 const Station = () => {
-  const { station, slots, fakeHardwareAwaitBikeOnSlot } = useStationAuth();
+  const { station, slots, fakeHardwareAwaitBikeOnSlot, unhook } = useStationAuth();
   const { isLogged } = useAuth();
   const addToast = useToast();
 
@@ -28,7 +28,7 @@ const Station = () => {
                 </Paper>
               </Grid>
             ) : (
-              <MainScreen slots={slots} />
+              <MainScreen slots={slots} unhook={unhook} />
             )}
           </Grid>
         </Container>

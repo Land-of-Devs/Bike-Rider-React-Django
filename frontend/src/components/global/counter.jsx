@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 
-function Counter({ date = null, timeUp }) {
+function Counter({ date = null, timeUp, width, height, text }) {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -46,8 +46,8 @@ function Counter({ date = null, timeUp }) {
   return (
     <>
       <Box
-        height="100px"
-        width="300px"
+        height={height}
+        width={width}
         sx={
           {
             display: "flex",
@@ -63,7 +63,7 @@ function Counter({ date = null, timeUp }) {
         }
       >
         {!loading
-          ? < Typography variant="h3" color="white" component="div">
+          ? < Typography fontSize={text} color="white" component="div">
             {(minutes + ':' + ((seconds >= 10) ? seconds : '0' + seconds))}
           </Typography>
           : <CircularProgress color="white" />

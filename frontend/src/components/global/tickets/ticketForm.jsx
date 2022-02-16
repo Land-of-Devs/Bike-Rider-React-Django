@@ -20,7 +20,7 @@ import { rules } from "../../../utils/validate";
 import * as formatter from "/src/utils/formatter";
 
 const TicketForm = ({ close, stationID }) => {
-  
+
   const [title, setTitle] = useState("");
   const [type, setType] = useState("");
   const [message, setMessage] = useState("");
@@ -157,12 +157,15 @@ const TicketForm = ({ close, stationID }) => {
                         fullWidth
                         onChange={handleBike}
                         label="Travels"
+                        MenuProps={{ PaperProps: { sx: { maxHeight: 150} } }}
                       >
-                        {travels.map(travel => (
-                          <MenuItem key={travel.bike_id} value={travel.bike_id} name={formatter.date(travel.start)}>
-                            <em>{formatter.date(travel.start)}</em>
-                          </MenuItem>
-                        ))}
+                        {
+                          travels.map(travel => (
+                            <MenuItem key={travel.bike_id} value={travel.bike_id} name={formatter.date(travel.start)}>
+                              <em>{formatter.date(travel.start)}</em>
+                            </MenuItem>
+                          ))
+                        }
 
                       </Select>
                     </>
@@ -208,7 +211,7 @@ const TicketForm = ({ close, stationID }) => {
                 (
                   !type ||
                   (type == 'SUPPORT' && !subject) ||
-                  (type == 'MAINTENANCE' && 
+                  (type == 'MAINTENANCE' &&
                     (
                       !object || (object == 'BIKES' && !bike)
                     )

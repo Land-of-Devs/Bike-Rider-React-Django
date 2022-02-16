@@ -37,7 +37,6 @@ export default function useBooking() {
     } else {
       booking()
     }
-
     return true;
   }, [reservation])
 

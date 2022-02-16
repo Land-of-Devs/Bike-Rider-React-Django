@@ -75,6 +75,7 @@ const Subscription = ({ close }) => {
               value={newSubs}
               onChange={handleChange}
               label="Subscriptions"
+              MenuProps={{ PaperProps: { sx: { maxHeight: 150 } } }}
             >
               {subscriptions.map(sub => (
                 <MenuItem key={sub.id} value={sub.id} name={sub.name}>

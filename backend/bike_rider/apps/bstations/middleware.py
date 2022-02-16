@@ -28,7 +28,7 @@ class ReadStationSessionMiddleware:
         response = self.get_response(request)
 
         if scookie:
-            request.station.bookings = Booking.objects.filter(station_id=request.station.id)
+            request.station.bookings = Booking.objects.filter(station_id=request.station.id, time_end__gt=datetime.datetime.today())
             request.station.bikes = Bike.objects.filter(station_id=request.station.id)
             serializer = BStationCookieSerializer(request.station)
             response.set_cookie(

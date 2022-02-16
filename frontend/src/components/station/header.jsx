@@ -11,7 +11,7 @@ const StationHeader = ({ station }) => {
 
   return (
     <Box sx={{ p: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'center', bgcolor: 'primary.main'}}>
-      <Typography ml="5px" component="h2" variant="h6" color="white.main">
+      <Typography ml="50px" component="h1" fontWeight="900" variant="h6" color="white.main">
         Welcome to {station.name}
       </Typography>
       {isLogged &&
