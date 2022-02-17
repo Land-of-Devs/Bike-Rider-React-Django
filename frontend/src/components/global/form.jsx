@@ -10,9 +10,11 @@ const Form = ({ children }) => {
     for (let rule of c.props.rules) {
       let r = rule(c.props.getter);
       if (r !== true) {
+        // If is okay
         return r;
       }
     }
+    // If is string
     return false;
   }
 
@@ -41,7 +43,7 @@ const Form = ({ children }) => {
           }}>{c.props.children}</c.type>
         }
 
-        if (c.props && c.props.getter != undefined && c.props.rules) {
+        if (c.props && c.props.getter != undefined && c.props.rules) { // TextField
           const err = renderErr ? validate(c) : false;
           if (err) errList.push(err);
           return <c.type

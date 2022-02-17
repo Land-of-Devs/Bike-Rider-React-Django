@@ -1,4 +1,3 @@
-import { Box, Typography } from "@mui/material";
 
 export const TabPanel = ({ children, value, index, style = {}, ...other }) => {
   const hidden = value !== index;

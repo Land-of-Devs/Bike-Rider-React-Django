@@ -19,7 +19,7 @@ const Coupon = ({close}) => {
         <TextField getter={coupon} setter={setCoupon} rules={[rules.coupon]}></TextField>
       </div>
       <Button onSubmit={() => {
-        coupons.use(coupon).then(() => (addToast({ msg: 'Coupon redeemed', type: 'success' })), close())
+        coupons.use(coupon).then(() => (addToast({ msg: 'Coupon redeemed', type: 'success' }), close()))
         .catch(e => {
           if (e.response.data && e.response.data.detail) { 
             setError(e.response.data.detail);

@@ -15,7 +15,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        fields = ['title','client','type', 'status', 'created_at']
+        fields = ['id', 'title','client','type', 'status', 'created_at']
         read_only_fields = ['client', 'status']
     
     def get_created_at(self, instance):

@@ -15,6 +15,8 @@ const style = {
   p: 4,
 };
 
+let onClose;
+
 export default ModalContext;
 
 export function ModalContextProvider({ children }) {
@@ -22,8 +24,15 @@ export function ModalContextProvider({ children }) {
   const [Component, setComponent] = useState(forwardRef(() => <div></div>));
 
   const openCustomModal = useCallback((C, props) => {
-    setComponent(forwardRef(() => <C {...props} close={() => setOpened(false)} />));
+    onClose = () => {
+      setOpened(false);
+      if (props && props.onClose) {
+        props.onClose();
+      }
+    }
+    setComponent(forwardRef(() => <C {...props} close={onClose} />));
     setOpened(true);
+    
   }, [setOpened, setComponent]);
 
   return (
@@ -33,11 +42,11 @@ export function ModalContextProvider({ children }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
         open={opened}
-        onClose={() => setOpened(false)}
+        onClose={onClose}
       >
         <Box sx={style}>
           <Box sx={{ position: 'absolute', right: '0', top: '0' }}>
-            <IconButton onClick={() => setOpened(false)}>
+            <IconButton onClick={onClose}>
               <Icon color="error">close</Icon>
             </IconButton>
           </Box>
@@ -45,7 +54,6 @@ export function ModalContextProvider({ children }) {
             <Component />
           </Box>
         </Box>
-
       </Modal>
     </ModalContext.Provider>
   );
