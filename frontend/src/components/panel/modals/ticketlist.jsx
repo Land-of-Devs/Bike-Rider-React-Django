@@ -1,7 +1,5 @@
 import { ButtonBase, List, ListItem, ListItemText } from "@mui/material";
-import { useState } from "react";
-import { forwardRef } from "react";
-import TicketModal from "./ticketlist";
+import TicketModal from "./ticketview";
 import useModal from '/src/hooks/useModal';
 
 const TicketList = ({tickets}) => {
