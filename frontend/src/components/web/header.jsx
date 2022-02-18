@@ -16,7 +16,7 @@ import useBooking from '../../hooks/useBooking';
 import useModal from '/src/hooks/useModal';
 
 const WebHeader = () => {
-  const { isLogged, logout } = useAuth();
+  const { isLogged, logout, image, dni } = useAuth();
   const { getReservation } = useBooking();
   const openCustomModal = useModal();
 
@@ -39,6 +39,8 @@ const WebHeader = () => {
             <UserThumbnail
               logout={logout}
               reservation={getReservation}
+              dni={dni}
+              image={image}
             />
           }
         </Toolbar>

@@ -7,9 +7,9 @@ const WebLayout = () => {
   return (
     <>
       <WebHeader />
-      <div className="main-view">
+      <main className="main-view">
         <Outlet />
-      </div>
+      </main>
       <WebFooter />
     </>
   )

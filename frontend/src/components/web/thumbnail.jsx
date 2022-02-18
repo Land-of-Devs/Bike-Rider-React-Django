@@ -13,10 +13,10 @@ import Coupon from './modals/coupon';
 import Reservation from './modals/reservation';
 import Subscription from './modals/subscription';
 
-const UserThumbnail = ({ logout, reservation }) => {
+const UserThumbnail = ({ logout, reservation, image, dni }) => {
 
   const openCustomModal = useModal();
-  
+
   const settings = [
     { name: 'Reservation', func: () => reservation() && openCustomModal(Reservation) },
     { name: 'Subscription', func: () => openCustomModal(Subscription) },
@@ -37,7 +37,7 @@ const UserThumbnail = ({ logout, reservation }) => {
     <Box sx={{ flexGrow: 0 }}>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-          <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+          <Avatar alt={(dni||"G").slice(-1)} title={dni||"Guest"} src={image ? `/api/data/${image||""}` : ''} />
         </IconButton>
       </Tooltip>
       <Menu
@@ -61,7 +61,7 @@ const UserThumbnail = ({ logout, reservation }) => {
             key={setting.name}
             onClick={() => {
               setting.func();
-              handleCloseUserMenu 
+              handleCloseUserMenu
             }}>
             <Typography textAlign="center">{setting.name}</Typography>
           </MenuItem>

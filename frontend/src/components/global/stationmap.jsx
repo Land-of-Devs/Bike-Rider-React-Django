@@ -5,6 +5,9 @@ import { useStations } from '../../hooks/useStations';
 import Counter from './counter';
 import useBooking from '../../hooks/useBooking';
 import useAuth from '../../hooks/useAuth';
+import useModal from '../../hooks/useModal';
+import TicketList from '../panel/modals/ticketlist';
+import { BikeList } from '../panel/modals/bikelist';
 
 const containerStyle = {
   display: 'flex',
@@ -96,11 +99,80 @@ const StationBookingList = ({ stationId }) => {
                 <Divider />
               </React.Fragment>
             )}
-          </List>)}
+          </List>
+        )}
       </Box>
     </>
   );
-}
+};
+
+const StationClientInfoWindow = ({ station, closeCb }) => {
+  return (
+    <InfoWindow
+      position={{ lat: station.lat, lng: station.lon }}
+      onCloseClick={closeCb}
+    >
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <img style={{ maxWidth: '20vmin', margin: 'auto' }} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
+          <h2>{station.name}</h2>
+          {station.dist >= 0 && <div>Distance from center of circle: {station.dist.toFixed(2)} km</div>}
+          <div>Available bikes: {station.av_bike_ct}</div>
+          <div>Available slots: {station.av_slots}</div>
+          <div>Number of booked bikes: {station.av_bike_ct}</div>
+        </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <StationBookingList stationId={station.id} />
+        </Box>
+      </Box>
+    </InfoWindow>
+  )
+};
+
+const StationMaintainerInfoWindow = ({ station, closeCb }) => {
+  const openCustomModal = useModal();
+
+  const openBikeModal = () => openCustomModal(BikeList, {bikes: station.bike, onTicketClosed: openBikeModal});
+
+  return (
+    <InfoWindow
+      key={station.id}
+      position={{ lat: station.lat, lng: station.lon }}
+      onCloseClick={closeCb}
+    >
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <img style={{ maxWidth: '20vmin', margin: 'auto' }} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
+        </Box>
+        <Box sx={{ display: 'flex', ml: 2, mb: 2, flexDirection: 'column' }}>
+          <h2>Station Info:</h2>
+          <div>Station name: {station.name}</div>
+          <div>Station ID: {station.id}</div>
+          <div>Station IP: {station.ip ?? '(None)'}</div>
+          <div>GPS Coords: {station.lat}, {station.lon}</div>
+          <div>Maintainer: {station.maintainer?.dni ?? '(None)'}</div>
+          <div>Number of slots: {station.nslots}</div>
+          <div>Number of maintainer tickets: {station.maintenance_ticket.length}</div>
+          <Button
+            sx={{ mt: 1 }}
+            disabled={station.maintenance_ticket.length === 0}
+            fullWidth
+            variant="contained"
+            onClick={() => openCustomModal(TicketList, {tickets: station.maintenance_ticket})}
+          >View Tickets ({station.maintenance_ticket.length})</Button>
+
+          <Button
+            sx={{ mt: 1 }}
+            disabled={station.bike.length === 0}
+            fullWidth
+            variant="contained"
+            onClick={openBikeModal}
+          >View Bikes ({station.bike.length})</Button>
+        </Box>
+      </Box>
+    </InfoWindow>
+  );
+};
 
 const StationMapComponent = ({ type = "client" }) => {
   const { isLoaded } = useJsApiLoader({
@@ -150,7 +222,6 @@ const StationMapComponent = ({ type = "client" }) => {
 
       case 'maintenance':
         stations.loadMaintenanceStations(circleCenter.lat, circleCenter.lng);
-        console.log(stations.stationList)
         break;
     }
   };
@@ -181,36 +252,20 @@ const StationMapComponent = ({ type = "client" }) => {
             position={{ lat: station.lat, lng: station.lon }}
             label={type === 'maintenance' ? station.maint_ticket_ct : undefined}
             onClick={() => addInfoWindow(
-              <InfoWindow
-                key={station.id}
-                position={{ lat: station.lat, lng: station.lon }}
-                onCloseClick={() => closeInfoWindow(station.id)}
-              >
-                <Box sx={{ display: 'flex' }}>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <img style={{ maxWidth: '20vmin', margin: 'auto' }} src={station.image} alt={`Station ${station.id}`} title={`Station ${station.id}`} />
-                    <h2>{station.name}</h2>
-                    {station.dist >= 0 && <div>Distance from center of circle: {station.dist.toFixed(2)} km</div>}
-                    <div>Available bikes: {station.av_bike_ct}</div>
-                    <div>Available slots: {station.av_slots}</div>
-                    <div>Number of booked bikes: {station.av_bike_ct}</div>
-                    {
-                      type === 'maintenance' && (
-                        <>
-                          {station.maint_ticket_ct >= 0 && <div>Number of maintainer tickets: {station.av_bike_ct}</div>}
-                        </>
-                      )
-                    }
-                  </Box>
-                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    {type === 'client' && (
-                      <>
-                        <StationBookingList stationId={station.id} />
-                      </>
-                    )}
-                  </Box>
-                </Box>
-              </InfoWindow>
+              <React.Fragment key={station.id}>
+                {type === 'client' && (
+                  <StationClientInfoWindow
+                    station={station}
+                    closeCb={() => closeInfoWindow(station.id)}
+                  />
+                )}
+                {type === 'maintenance' && (
+                  <StationMaintainerInfoWindow
+                    station={station}
+                    closeCb={() => closeInfoWindow(station.id)}
+                  />
+                )}
+              </React.Fragment>
             )}
           />
         ))
@@ -220,7 +275,11 @@ const StationMapComponent = ({ type = "client" }) => {
         infoWindows
       }
     </GoogleMap>
-  ) : (<Box sx={containerStyle}><CircularProgress /></Box>)
+  ) : (
+    <Box sx={containerStyle}>
+      <CircularProgress />
+    </Box>
+  );
 }
 
 export const StationMap = React.memo(StationMapComponent);

@@ -18,7 +18,7 @@ const BikeView = ({bike, close}) => {
           </TableRow>
           <TableRow>
             <TableCell><b>Station: </b></TableCell>
-            <TableCell>{!bike_s.station && 'No station'}</TableCell>
+            <TableCell>{bike_s.station?.id || bike_s.station || 'No station'}</TableCell>
           </TableRow>
           <TableRow>
             <TableCell><b>Status: </b></TableCell>
@@ -34,7 +34,7 @@ const BikeView = ({bike, close}) => {
       </Table>
       <Button disabled={!changed} onClick={() => saveStatus().then(() => close())} variant="contained" sx={{alignSelf: 'center', marginTop: '30px'}}>Save</Button>
     </div>
-    
+
   );
 };
 

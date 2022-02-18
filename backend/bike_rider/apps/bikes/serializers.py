@@ -46,10 +46,10 @@ class BikeStatusSerializer(BikeSerializer):
 class BikeStationMaintainerSerializer(BikeSerializer):
     station = None
     maintenance_ticket = TicketRelatedField(many=True, read_only=True)
-    
+
     class Meta:
         model = Bike
-        exclude = ['station']
+        exclude = []
 
 class BikeHookSerializer(BikeSerializer):
     class Meta:
@@ -75,9 +75,9 @@ class BikeHookSerializer(BikeSerializer):
 
         instance.station = None
         travel = Travel.objects.create(
-            start=timezone.now(), 
-            user=context['user'], 
-            origin=context['station'], 
+            start=timezone.now(),
+            user=context['user'],
+            origin=context['station'],
             bike=instance
         )
         instance.save()

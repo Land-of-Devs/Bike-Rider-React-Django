@@ -5,22 +5,22 @@ import ClientView from './clientview';
 import BikeView from './bikeview';
 import usePanelTicket from '../../../hooks/usePanelTicket';
 
-const TicketModal = ({ticket, onClose, usePreviousState, close}) => {
+const TicketModal = ({ ticket, onClose, usePreviousState, close }) => {
   const openCustomModal = useModal();
   const { dispatch, saveStatus, changed, ticket_s } = usePanelTicket(ticket, usePreviousState);
 
   function handleClick(c, props) {
     openCustomModal(
-      c, 
+      c,
       {
-        onClose: () => openCustomModal(TicketModal, {onClose, ticket, usePreviousState: true}),
+        onClose: () => openCustomModal(TicketModal, { onClose, ticket, usePreviousState: true }),
         ...props
       }
     )
   }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column'}}>
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
       <Table>
         <TableBody>
           <TableRow>
@@ -31,14 +31,16 @@ const TicketModal = ({ticket, onClose, usePreviousState, close}) => {
             <TableCell><b>Client: </b></TableCell>
             <TableCell><Button onClick={() => handleClick(ClientView, { client: ticket_s.ticket_head.client })}>Client</Button></TableCell>
           </TableRow>
-          <TableRow>
-            <TableCell><b>Bike: </b></TableCell>
-            <TableCell><Button onClick={() => handleClick(BikeView, { bike: ticket_s.bike_id })}>Bike</Button></TableCell>
-          </TableRow>
+          {ticket_s.bike_id && (
+            <TableRow>
+              <TableCell><b>Bike: </b></TableCell>
+              <TableCell><Button onClick={() => handleClick(BikeView, { bike: ticket_s.bike_id })}>Bike</Button></TableCell>
+            </TableRow>
+          )}
           <TableRow>
             <TableCell><b>Status: </b></TableCell>
             <TableCell>
-              <Select value={ticket_s.ticket_head.status} onChange={(event) => dispatch({type: 'status', payload: event.target.value})}>
+              <Select value={ticket_s.ticket_head.status} onChange={(event) => dispatch({ type: 'status', payload: event.target.value })}>
                 <MenuItem value={"PENDING"}>Pending</MenuItem>
                 <MenuItem value={"RESOLVED"}>Resolved</MenuItem>
                 <MenuItem value={"CANCELED"}>Canceled</MenuItem>
@@ -50,7 +52,7 @@ const TicketModal = ({ticket, onClose, usePreviousState, close}) => {
       <br></br>
       <div><b>Message</b></div>
       <div>{ticket_s.message}</div>
-      <Button onClick={() => {saveStatus(); close()}} disabled={!changed} variant="contained" sx={{alignSelf: 'center', marginTop: '30px'}}>Save</Button>
+      <Button onClick={() => { saveStatus(); close() }} disabled={!changed} variant="contained" sx={{ alignSelf: 'center', marginTop: '30px' }}>Save</Button>
     </div>
   );
 };

@@ -100,6 +100,8 @@ export default function useAuth() {
     isMaintenance: maintenanceAccess(session),
     isLoading: state.loading,
     hasError: state.error,
+    image: session?.image,
+    dni: session?.dni,
     login,
     logout,
     register,

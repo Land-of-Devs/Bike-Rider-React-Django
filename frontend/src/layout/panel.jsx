@@ -6,9 +6,9 @@ const PanelLayout = () => {
   return (
     <>
       <PanelHeader />
-      <div className="main-view">
+      <main className="main-view">
         <Outlet />
-      </div>
+      </main>
     </>
   )
 }
