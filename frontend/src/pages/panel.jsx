@@ -29,10 +29,10 @@ const Panel = () => {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs centered value={value} onChange={handleChange} aria-label="panel tabs">
           {isMaintenance && (
-            <>
-              <Tab label="Stations Map" {...accessibleProps(i++)} />
-              <Tab label="On-Road bike list" {...accessibleProps(i++)} />
-            </>
+            [
+              <Tab key="0" label="Stations Map" {...accessibleProps(i++)} />,
+              <Tab key="1" label="On-Road bike list" {...accessibleProps(i++)} />
+            ]
           )}
           {isSupport && <Tab label="Support Tickets" {...accessibleProps(i++)} />}
         </Tabs>
