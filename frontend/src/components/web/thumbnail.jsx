@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Box,
   IconButton,
+  Icon,
   Tooltip,
   Avatar,
   Menu,
@@ -18,10 +19,10 @@ const UserThumbnail = ({ logout, reservation, image, dni }) => {
   const openCustomModal = useModal();
 
   const settings = [
-    { name: 'Reservation', func: () => reservation() && openCustomModal(Reservation) },
-    { name: 'Subscription', func: () => openCustomModal(Subscription) },
-    { name: 'Coupon', func: () => openCustomModal(Coupon)},
-    { name: 'Logout', func: logout }
+    { name: 'Reservation', func: () => reservation() && openCustomModal(Reservation), icon: 'book' },
+    { name: 'Subscription', func: () => openCustomModal(Subscription), icon: 'local_atm' },
+    { name: 'Coupon', func: () => openCustomModal(Coupon), icon: 'confirmation_number' },
+    { name: 'Logout', func: logout, icon: 'exit_to_app' }
   ];
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -63,6 +64,7 @@ const UserThumbnail = ({ logout, reservation, image, dni }) => {
               setting.func();
               handleCloseUserMenu
             }}>
+            <Icon sx={{verticalAlign: 'middle', mr: 1}}>{setting.icon}</Icon>
             <Typography textAlign="center">{setting.name}</Typography>
           </MenuItem>
         ))}

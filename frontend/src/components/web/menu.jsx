@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -18,7 +18,7 @@ const WebMenu = () => {
   const navigate = useNavigate();
   const openCustomModal = useModal();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const {isAdmin, isSupport, isMaintenance, isLogged} = useAuth();
+  const { isAdmin, isSupport, isMaintenance, isLogged } = useAuth();
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -39,79 +39,85 @@ const WebMenu = () => {
   };
 
   const pages = [
-    {name: 'Panel', click: goPanel, access: isSupport || isMaintenance},
-    {name: 'Tickets', click: modalTicket, access: isLogged},
-    {name: 'Admin', click: goAdmin, access: isAdmin}
+    { name: 'Panel', click: goPanel, access: isSupport || isMaintenance, icon: 'analytics' },
+  { name: 'Tickets', click: modalTicket, access: isLogged, icon: 'note_add'},
+{ name: 'Admin', click: goAdmin, access: isAdmin, icon: 'admin_panel_settings' }
   ];
 
-  return (
-    <>
-      <Typography
-        variant="h6"
-        noWrap
-        component="div"
-        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+return (
+  <>
+    <Typography
+      variant="h6"
+      noWrap
+      component="div"
+      sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+    >
+      LOGO
+    </Typography>
+    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+      <IconButton
+        size="large"
+        aria-label="account of current user"
+        aria-controls="menu-appbar"
+        aria-haspopup="true"
+        onClick={handleOpenNavMenu}
+        color="inherit"
       >
-        LOGO
-      </Typography>
-      <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={handleOpenNavMenu}
-          color="inherit"
-        >
-          <Icon>menu</Icon>
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={anchorElNav}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          open={Boolean(anchorElNav)}
-          onClose={handleCloseNavMenu}
-          sx={{
-            display: { xs: 'block', md: 'none' }
-          }}
-        >
-          {pages.map((page) => page.access && (
-            <MenuItem key={page.name} onClick={() => page.click() && handleCloseNavMenu}>
-              <Typography textAlign="center" color="white">{page.name}</Typography>
-            </MenuItem>
-          ))}
-        </Menu>
-      </Box>
-      <Typography
-        variant="h6"
-        noWrap
-        component="div"
-        sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+        <Icon>menu</Icon>
+      </IconButton>
+      <Menu
+        id="menu-appbar"
+        anchorEl={anchorElNav}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        keepMounted
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+        open={Boolean(anchorElNav)}
+        onClose={handleCloseNavMenu}
+        sx={{
+          display: { xs: 'block', md: 'none' }
+        }}
       >
-        LOGO
-      </Typography>
-      <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
         {pages.map((page) => page.access && (
-          <Button
-            key={page.name}
-            onClick={() => page.click() && handleCloseNavMenu }
-            sx={{ my: 2, display: 'block' }}
-            color="white"
-          >
-            {page.name}
-          </Button>
+          <MenuItem key={page.name} onClick={() => page.click() && handleCloseNavMenu}>
+            <Icon sx={{ verticalAlign: 'middle', mr: 1 }}>
+              {page.icon}
+            </Icon>
+            <Typography textAlign="center" color="white">{page.name}</Typography>
+          </MenuItem>
         ))}
-      </Box>
-    </>
-  )
+      </Menu>
+    </Box>
+    <Typography
+      variant="h6"
+      noWrap
+      component="div"
+      sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+    >
+      LOGO
+    </Typography>
+    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+      {pages.map((page) => page.access && (
+        <Button
+          key={page.name}
+          onClick={() => page.click() && handleCloseNavMenu}
+          sx={{ my: 2, display: 'block' }}
+          color="white"
+        >
+          <Icon sx={{verticalAlign: 'middle'}}>
+            {page.icon}
+          </Icon>
+          {page.name}
+        </Button>
+      ))}
+    </Box>
+  </>
+)
 }
 
 export default WebMenu;
