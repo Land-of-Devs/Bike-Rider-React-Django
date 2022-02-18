@@ -3,6 +3,9 @@ import { Box, Tabs, Tab } from "@mui/material";
 import { TabPanel } from '../components/panel/tabpanel';
 import { StationMap } from '../components/global/stationmap';
 import RoadList from "../components/panel/roadlist";
+import useAuth from "../hooks/useAuth";
+import { useCallback } from "react";
+import SupportList from "../components/global/supportlist";
 
 function accessibleProps(index) {
   return {
@@ -12,31 +15,40 @@ function accessibleProps(index) {
 }
 
 const Panel = () => {
+  const { isMaintenance, isSupport } = useAuth();
   const [value, setValue] = useState(0);
+  let i = 0;
+  let j = 0;
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
-    <Box sx={{backgroundColor: '#F5F5F5', flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+    <Box sx={{ backgroundColor: '#F5F5F5', flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs centered  value={value} onChange={handleChange} aria-label="panel tabs">
-          <Tab label="Stations Map" {...accessibleProps(0)} />
-          <Tab label="On-Road bike list" {...accessibleProps(1)} />
-          <Tab label="Support Tickets" {...accessibleProps(2)} />
+        <Tabs centered value={value} onChange={handleChange} aria-label="panel tabs">
+          {isMaintenance && (
+            <>
+              <Tab label="Stations Map" {...accessibleProps(i++)} />
+              <Tab label="On-Road bike list" {...accessibleProps(i++)} />
+            </>
+          )}
+          {isSupport && <Tab label="Support Tickets" {...accessibleProps(i++)} />}
         </Tabs>
       </Box>
-
-      <TabPanel value={value} index={0}>
-        <StationMap type="maintenance" />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <RoadList></RoadList>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
+      {isMaintenance && (
+        <>
+          <TabPanel value={value} index={j++}>
+            <StationMap type="maintenance" />
+          </TabPanel>
+          <TabPanel value={value} index={j++}>
+            <RoadList></RoadList>
+          </TabPanel>
+        </>)}
+      { isSupport && <TabPanel value={value} index={j++}>
+        <SupportList></SupportList>
+      </TabPanel> }
     </Box>
   )
 }
