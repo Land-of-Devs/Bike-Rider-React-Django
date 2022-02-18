@@ -3,12 +3,12 @@ import { Route } from "react-router-dom";
 import { AppRouter, Restrict } from "../utils/router";
 import { UserContextProvider } from "../context/user";
 import { StationContextProvider } from "../context/station";
-import { StationListContextProvider } from "../context/stationList";
 import { ToastContextProvider } from "../context/toast";
 import { isStaff } from "../guards/access";
 import { isStation } from "../guards/station";
 import { ModalContextProvider } from "../context/modal";
 import { CircularProgress } from "@mui/material";
+import { LegalContextProvider } from "../context/legal";
 
 const WebLayout = React.lazy(() => import("../layout/web"));
 const WebPage = React.lazy(() => import("../pages/web"));
@@ -25,7 +25,7 @@ const RouterView = () => {
         ToastContextProvider,
         ModalContextProvider,
       ]}>
-        <Route path="/" element={<StationListContextProvider />}>
+        <Route path="/" element={<LegalContextProvider />}>
 
           <Route path="" element={<WebLayout />}>
             <Route index element={<WebPage />} />

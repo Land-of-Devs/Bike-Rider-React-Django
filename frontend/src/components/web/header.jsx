@@ -14,13 +14,21 @@ import UserThumbnail from './thumbnail';
 import useAuth from '/src/hooks/useAuth';
 import useBooking from '../../hooks/useBooking';
 import useModal from '/src/hooks/useModal';
+import useToast from '/src/hooks/useToast';
+import { useLegal } from '/src/hooks/useLegal';
 
 const WebHeader = () => {
   const { isLogged, logout, image, dni } = useAuth();
   const { getReservation } = useBooking();
+  const { cookiesAccepted } = useLegal();
   const openCustomModal = useModal();
+  const addToast = useToast();
 
   const login = () => {
+    if (!cookiesAccepted) {
+      addToast({msg: 'Please accept the cookie policy', type: 'info'});
+      return;
+    }
     openCustomModal(LoginForm);
   }
 
