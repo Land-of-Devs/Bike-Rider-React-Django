@@ -14,7 +14,7 @@ class BikeHookViewSet(mixins.UpdateModelMixin, viewsets.GenericViewSet):
 
     def get_permissions(self):
         if (self.request.path.startswith("/api/bikes/hook/")):
-            self.permission_classes = [IsStation, IsAuthenticated]
+            self.permission_classes = [IsStation]
         else :
             self.permission_classes = [IsStation, IsAuthenticated, NotActiveTravels]
         return [permission() for permission in self.permission_classes]
