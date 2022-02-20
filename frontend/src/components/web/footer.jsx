@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { CssBaseline, Box, Typography, Container, Link } from '@mui/material';
+import useModal from '../../hooks/useModal';
+import LegalInfo from './legalinfo';
 
 const WebFooter = () => {
+  const openCustomModal = useModal();
+
   return (
     <Box
       component="footer"
@@ -17,13 +21,13 @@ const WebFooter = () => {
     >
       <Container maxWidth="sm">
         <Typography variant="body1">
-          My sticky footer can be found here.
+          Team Bike Rider
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {'Copyright © '}
-          <Link color="inherit" href="https://mui.com/">
-            Your Website
-          </Link>{' '}
+          <span color="inherit" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => openCustomModal(LegalInfo)}>
+            Legal info
+          </span>{' '}
           {new Date().getFullYear()}
           {'.'}
         </Typography>
