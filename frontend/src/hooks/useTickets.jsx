@@ -1,8 +1,10 @@
 import { useCallback, useState } from 'react';
 import * as ticketsService from '../services/tickets';
+import { list, status } from '../services/tickets';
 
 export default function useTickets() {
   const [state, setState] = useState({ loading: false, error: false })
+  const [supportTickets, setSupportTickets] = useState([]);
 
   const changeState = (msg, bool) => {
     setState({ loading: false, error: msg });
@@ -21,10 +23,15 @@ export default function useTickets() {
       })
   }, [])
 
+  function getSupportTickets() {
+    ticketsService.list().then(({results}) => setSupportTickets(results));
+  }
 
   return {
     isLoading: state.loading,
     hasError: state.error,
-    sendTicket
+    sendTicket,
+    getSupportTickets,
+    supportTickets
   }
 }

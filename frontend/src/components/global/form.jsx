@@ -39,7 +39,6 @@ const Form = ({ children }) => {
           return <c.type {...c.props} key={v} onClick={() => {
             setCount(count + 1);
             onSubmit = c.props.onSubmit;
-
           }}>{c.props.children}</c.type>
         }
 

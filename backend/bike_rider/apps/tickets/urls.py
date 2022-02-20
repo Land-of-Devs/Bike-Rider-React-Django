@@ -9,5 +9,5 @@ router.register(r'status', ChangeTicketStatusViewSet, basename='ChageTicketStatu
 
 urlpatterns = [
     path('tickets/', include(router.urls)),
-    path('tickets/email',SendTicketEmailViewSet.as_view(), name='SendTicketEmail')
+    path('tickets/email/',SendTicketEmailViewSet.as_view(), name='SendTicketEmail')
 ]

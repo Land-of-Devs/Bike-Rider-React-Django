@@ -28,6 +28,7 @@ export default (t, loadSaved) => {
     return JSON.stringify({...t, bike_id: undefined}) != JSON.stringify({...ticket, bike_id: undefined}); // Remove bike from comparation and compare strings with json
   }
 
+
   useEffect(() => {
     if (ticketChanged()) {
       setChanged(true);

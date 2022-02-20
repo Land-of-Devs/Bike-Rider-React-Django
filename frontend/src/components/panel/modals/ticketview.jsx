@@ -5,7 +5,7 @@ import ClientView from './clientview';
 import BikeView from './bikeview';
 import usePanelTicket from '../../../hooks/usePanelTicket';
 
-const TicketModal = ({ ticket, onClose, usePreviousState, close }) => {
+const TicketView = ({ ticket, onClose, usePreviousState, close }) => {
   const openCustomModal = useModal();
   const { dispatch, saveStatus, changed, ticket_s } = usePanelTicket(ticket, usePreviousState);
 
@@ -13,7 +13,7 @@ const TicketModal = ({ ticket, onClose, usePreviousState, close }) => {
     openCustomModal(
       c,
       {
-        onClose: () => openCustomModal(TicketModal, { onClose, ticket, usePreviousState: true }),
+        onClose: () => openCustomModal(TicketView, { onClose, ticket, usePreviousState: true }),
         ...props
       }
     )
@@ -57,4 +57,4 @@ const TicketModal = ({ ticket, onClose, usePreviousState, close }) => {
   );
 };
 
-export default TicketModal;
+export default TicketView;

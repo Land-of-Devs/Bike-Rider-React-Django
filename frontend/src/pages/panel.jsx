@@ -5,7 +5,7 @@ import { StationMap } from '../components/global/stationmap';
 import RoadList from "../components/panel/roadlist";
 import useAuth from "../hooks/useAuth";
 import { useCallback } from "react";
-import SupportList from "../components/global/supportlist";
+import SupportList from "../components/panel/supportlist";
 
 function accessibleProps(index) {
   return {

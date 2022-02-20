@@ -12,6 +12,6 @@ export async function status(ticket, status) {
     return (await api.put('/tickets/status/' + ticket + '/', status)).data;
 }
 
-export async function response(email) {
-    return (await api.post('/tickets/email/', email)).data;
+export async function response(receiver, subject, message) {
+    return (await api.post('/tickets/email/', {receiver, subject, message})).data;
 }
