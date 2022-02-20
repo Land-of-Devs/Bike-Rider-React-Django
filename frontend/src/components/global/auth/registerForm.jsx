@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import useAuth from '/src/hooks/useAuth'
-import { Box, Typography, Grid, Link, TextField, Button, CircularProgress, Alert } from '@mui/material'
+import { Box, Typography, Grid, Link, TextField, Button, CircularProgress, Alert, Checkbox, FormControlLabel } from '@mui/material'
 import LoginForm from "./loginForm";
 import ErrorList from "../errorList";
 import useModal from "/src/hooks/useModal";
 import useToast from "/src/hooks/useToast";
 import { rules } from "/src/utils/validate";
 import Form from "../form";
+import PrivacyTerms from "../privacyterms";
 
 const RegisterForm = ({ close }) => {
   const [dni, setDni] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [accepted, setAccepted] = useState("");
   const openCustomModal = useModal();
   const addToast = useToast();
   const { isLoading, hasError, register } = useAuth();
@@ -74,6 +76,16 @@ const RegisterForm = ({ close }) => {
             rules={[rules.required, rules.password]}
             getter={password}
           />
+
+          <Checkbox
+            checked={accepted}
+            getter={accepted}
+            setter={setAccepted}
+            inputProps={{ 'aria-label': 'controlled' }}
+            label={<span>Acepto la <span onClick={() => openCustomModal(PrivacyTerms, {onClose: () => openCustomModal(RegisterForm, {close})})} style={{textDecoration: 'underline'}}>política de privacidad</span></span>}
+            required
+          />
+
           <Button
             disabled={isLoading}
             fullWidth
@@ -81,7 +93,7 @@ const RegisterForm = ({ close }) => {
             sx={{ mt: 3, mb: 2 }}
             onSubmit={handleSubmit}
           >
-            {!isLoading ? 'Sign In' : <CircularProgress />}
+            {!isLoading ? 'Sign Up' : <CircularProgress />}
           </Button>
         </Box>
         <Grid container>

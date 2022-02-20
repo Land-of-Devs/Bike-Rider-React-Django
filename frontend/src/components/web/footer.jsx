@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { CssBaseline, Box, Typography, Container, Link } from '@mui/material';
 import useModal from '../../hooks/useModal';
-import LegalInfo from './legalinfo';
+import LegalInfo from '../global/legalinfo';
 
 const WebFooter = () => {
   const openCustomModal = useModal();

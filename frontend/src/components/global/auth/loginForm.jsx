@@ -90,7 +90,7 @@ const LoginForm = ({ close, stationLogin = false }) => {
                   component="button"
                   variant="body2"
                   onClick={() => {
-                    openCustomModal(RegisterForm) && close && close()
+                    openCustomModal(RegisterForm, {onClose: () => openCustomModal(LoginForm, { close, stationLogin })}) && close && close()
                   }}>
                   {"Don't have an account? Sign Up"}
                 </Link>

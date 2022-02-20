@@ -1,3 +1,4 @@
+import { FormControl, FormControlLabel, FormGroup, FormHelperText } from "@mui/material";
 import { useEffect, useState } from "react";
 
 let onSubmit = () => { };
@@ -34,7 +35,7 @@ const Form = ({ children }) => {
     }
 
     componentArr = componentArr.map((c, v) => {
-      if (c && c.props) {
+      if (c?.props) {
         if (c.props.onSubmit) {
           return <c.type {...c.props} key={v} onClick={() => {
             setCount(count + 1);
@@ -42,7 +43,7 @@ const Form = ({ children }) => {
           }}>{c.props.children}</c.type>
         }
 
-        if (c.props && c.props.getter != undefined && c.props.rules) { // TextField
+        if (c.type.render.name == 'TextField2') {
           const err = renderErr ? validate(c) : false;
           if (err) errList.push(err);
           return <c.type
@@ -57,6 +58,18 @@ const Form = ({ children }) => {
             })} >
             {c.props.children && errorWraper(c.props.children, renderErr)}
           </c.type>
+        } else if (c.type.render.name == 'Checkbox2') {
+          const err = renderErr ? (c.props.required && !c.props.getter) : undefined;
+          if (err) errList.push('Required checkbox');
+          return <FormControlLabel sx={err && {color: 'red'}} label={c.props.label} control={
+            <c.type
+              {...{
+                ...c.props,
+                onChange: (event) => c.props.setter(event.target.checked),
+                setter: undefined,
+                sx: err && {color: 'red'}
+              }}></c.type>
+          }></FormControlLabel>
         } else if (c.props.children) {
           return <c.type {...c.props} key={v}>{errorWraper(c.props.children, renderErr)}</c.type>
         }
