@@ -1,11 +1,11 @@
 # Bike Rider
 
-Creators: 
+Creators:
 
 - [Fco. Javier Diez Garcia](https://github.com/JDiezGarcia)
 - [Ivan Ferrer](https://github.com/iferrer20)
 - [Juan Jose Paya](https://github.com/jjpaya)
-  
+
 
 Type: CFGS Proyect
 
@@ -17,7 +17,7 @@ Degree: Web Applications Development
 - [Bike Rider](#bike-rider)
 - [Index](#index)
 - [Introduction](#introduction)
-- [Installation](#installation)
+- [Also see](#also-see)
 - [Content](#content)
   - [Web](#web)
     - [HEADER WEB](#header-web)
@@ -36,9 +36,12 @@ What is Bike Rider?
 
 It is a structured platform for renting bikes, send tickets, search the closest station and make a reservation. Also in the panel site, a MAINTENANCE user can search his supervised stations, see if any of the bike there have a ticket or the station it self have any, and can list all bikes with tickets on the road, a SUPPORT use can see all user tickets related and send a email to reply them. Admin and Super Admin can access Server Panel, but Admin only will have create, update (some), and  read permissions. A finally will have the STATION PANEL, that will allow to configure it, hook and unhook bikes, login and send tickets.
 
-# Installation
-Here you have a link with the installation tutorial: 
+# Also see
+Here you have a link with the installation tutorial:
 [INSTALLATION](./INSTALL.md#Bike-Rider-install-and-configuration-steps).
+
+And the document explaining the design of the application can be read here:
+[DESIGN](./DESIGN.md).
 
 # Content
 
@@ -87,12 +90,12 @@ Here you have a link with the installation tutorial:
 | Tabs | Three tabs to navigate between pages, only two to maintenance user and two  |
 | Pages | Maintenance: First a map with all station supervised by the user maintainer and second a list with all the bikes on the road with their tickets and you can change status; Support: A list of all tickets, you can reply and send emails to their senders. |
 > This section is only for Support and Maintenance Users
-> 
+>
 ## Station
 | Section | Features |
 | - | - |
 | Header | Once your log into the totem, you will see 2 buttons, to send a issue or logout and the name of the station. If your not log you only will see the name. |
-| Main Screen | You will have the the login if is't a user log, but if is log it will show all the slots of the station, with the status of the bike and if they have a reservation. If the station isn't configure, will show a page to send the token. | 
+| Main Screen | You will have the the login if is't a user log, but if is log it will show all the slots of the station, with the status of the bike and if they have a reservation. If the station isn't configure, will show a page to send the token. |
 | Hardware Panel | You can hook the bikes and only if the slot is empty. |
 
 > This section only can be configure by a maintainer.
@@ -101,7 +104,7 @@ Here you have a link with the installation tutorial:
 | Section | Features |
 | - | - |
 | Permissions Group | Only Admin and SuperAdmins are allow, the admins only have Read, Update (In some tables), Create(In some tables) and Delete (Only on Coupon Table) |
-| Content | We have all tables, with custom fields and forms with custom heads. | 
+| Content | We have all tables, with custom fields and forms with custom heads. |
 > This section is only for Admins or Super Admins
 ***
 
