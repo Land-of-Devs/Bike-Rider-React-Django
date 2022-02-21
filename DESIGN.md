@@ -150,6 +150,18 @@ En el modal de responder al ticket se utiliza el `TextField` con el atributo `mu
 
 ## Página de estación
 
+La página de estación no es normalmente accesible por un usuario o admin. Esta sección de la página solo está en los totems de las estaciones de las calles para desanclar la bici que se necesite.
+
 ![s26](docs/imgs/s27.png)
+
+El cuadro de login se maqueta con el componente `Grid` de MUI, que nos permite especificar los tamaños de un estilo similar a bootstrap (xs, md, lg): [station.jsx](frontend/src/pages/station.jsx#L19)
+
+También se usa el componente `Paper` para la tarjeta que contiene los elementos.
+
 ![s27](docs/imgs/s28.png)
+
+La pantalla de las bicis de la estacion se maqueta con flex. [mainScreen.jsx](frontend/src/components/station/mainScreen.jsx#L14)
+
 ![s28](docs/imgs/s29.png)
+
+El modal de ticket de la estación nos permite poner incidencias sobre alguna bici o sobre la propia estación. Usa el mismo componente que el modal de tickets anterior.

@@ -27,6 +27,7 @@ const WebFooter = () => {
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {'Copyright © '}
+          {new Date().getFullYear() + ' '}
           <span color="inherit" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => openCustomModal(LegalInfo)}>
             Legal info
           </span>{' '}
@@ -36,7 +37,6 @@ const WebFooter = () => {
           <span color="inherit" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => openCustomModal(PolicyCookies)}>
             Cookie terms
           </span>{' '}
-          {new Date().getFullYear()}
           {'.'}
         </Typography>
       </Container>
