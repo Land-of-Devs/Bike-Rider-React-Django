@@ -3,32 +3,36 @@
 const PrivacyTerms = () => {
 
 
-  return (<div style={{height: 500, overflow: 'auto', textAlign: 'justify', paddingRight: 20, boxSizing: 'border-box'}}>
+  return (<div style={{width: 600, height: 500, overflow: 'auto', textAlign: 'justify', paddingRight: 20, boxSizing: 'border-box'}}>
 
 Agradezco que estés en esta página, eso significa que tus datos te importan, y quieres conocer el destino de los mismos y quién los recoge.
 
 <h1>POLÍTICA DE PRIVACIDAD</h1>
 
-De conformidad con lo dispuesto en el Reglamento General (UE) Sobre Protección de Datos, mediante la aceptación de la presente Política de Privacidad prestas tu consentimiento informado, expreso, libre e inequívoco para que los datos personales que proporciones a través de la página web https://bikerider.com (en adelante Botiga Can Pou) sean incluidos en un fichero de “USUARIOS WEB Y SUSCRIPTORES” así como “CLIENTES Y/O PROVEEDORES”:
-
+De conformidad con lo dispuesto en el Reglamento General (UE) Sobre Protección de Datos, mediante la aceptación de la presente Política de Privacidad prestas tu consentimiento informado, expreso, libre e inequívoco para que los datos personales que proporciones a través de la página web https://bikerider.com (en adelante Bike Rider) sean incluidos en un fichero de “USUARIOS WEB Y SUSCRIPTORES” así como “CLIENTES Y/O PROVEEDORES”:
+<br />
 Mi denominación social es: Land Of Devs,
+<br />
 Mi NIF: 12345678Z
-Mi domicilio social se encuentra en PLAZA IGLESIA 2, 07830 SANT JOSEP DE SA TALAIA IBIZA (BALEARS) 
-
+<br />
+Mi domicilio social se encuentra en Calle Palacio 
+<br />
 Email: thelandofdevs@gmail.com
+<br />
 Mi actividad social es: Comercio Venta al por menor.
-
+<br />
+<br />
 Todo ello debidamente inscrito ante la agencia Española de Protección de Datos y respecto del que Land Of Devs garantiza que se han aplicado las medidas de seguridad tanto organizativas como técnicas requeridas por el RGPD.
 
-La presente Política de Privacidad será válida únicamente para los datos de carácter personal obtenidos en el Botiga Can Pou, no siendo aplicable para aquella información recabada por terceros en otras páginas web, incluso si éstas se encuentran enlazadas por el Botiga Can Pou.
+La presente Política de Privacidad será válida únicamente para los datos de carácter personal obtenidos en el Bike Rider, no siendo aplicable para aquella información recabada por terceros en otras páginas web, incluso si éstas se encuentran enlazadas por el Bike Rider.
 
-Con ello manifiesto mi compromiso por mantener y garantizar las relaciones comerciales de forma seguridad mediante la protección de los datos personales y garantizando el derecho a la privacidad de cada uno de los usuarios de nuestro Botiga Can Pou.
+Con ello manifiesto mi compromiso por mantener y garantizar las relaciones comerciales de forma seguridad mediante la protección de los datos personales y garantizando el derecho a la privacidad de cada uno de los usuarios de nuestro Bike Rider.
 
 <h3>1. ¿QUÉ SON LOS DATOS PERSONALES?</h3>
 
-Una pequeña aproximación es importante, por ello, debes saber que sería cualquier información relativa a una persona que nos facilita cuando visita nuestro Botiga Can Pou, en nuestro caso nombre e email, y si compra algún producto necesitando factura, solicitaremos Domicilio completo, nombre, apellidos y DNI o CIF.
+Una pequeña aproximación es importante, por ello, debes saber que sería cualquier información relativa a una persona que nos facilita cuando visita nuestro Bike Rider, en nuestro caso nombre e email, y si compra algún producto necesitando factura, solicitaremos Domicilio completo, nombre, apellidos y DNI o CIF.
 
-Adicionalmente, cuando visitas nuestro Botiga Can Pou, determinada información se almacena automáticamente por motivos técnicos como la dirección IP asignada por su proveedor de acceso a Internet.
+Adicionalmente, cuando visitas nuestro Bike Rider, determinada información se almacena automáticamente por motivos técnicos como la dirección IP asignada por su proveedor de acceso a Internet.
 
 <h3>2. FINALIDAD, LEGITIMACIÓN, CATEGORÍA DE LOS DATOS RECABADOS, CONSENTIMIENTO AL TRATAMIENTO, MENORES DE EDAD.</h3>
 
@@ -111,13 +115,13 @@ Aquellas personas físicas que hayan facilitado sus datos a través de https://b
 El interesado podrá ejercitar sus derechos mediante comunicación por escrito dirigida a Land Of Devs con la referencia “Protección de datos”, especificando sus datos, acreditando su identidad y los motivos de su solicitud en la siguiente dirección:
 
 Land Of Devs,
-PLAZA IGLESIA 2 07830 SANT JOSEP DE SA ATALAIA BALEARS, España
+Calle Palacio
 
 También podrá ejercitar los derechos, a través del correo electrónico: thelandofdevs@gmail.com
 
 <h3>6. LINKS O ENLACES EXTERNOS</h3>
 
-Como un servicio a nuestros visitantes, nuestro Botiga Can Pou puede incluir hipervínculos a otros sitios que no son operados o controlados por el Botiga Can Pou. Por ello https://bikerider.com  no garantiza, ni se hace responsable de la licitud, fiabilidad, utilidad, veracidad y actualidad de los contenidos de tales sitios web o de sus prácticas de privacidad. Por favor, antes de proporcionar su información personal a estos sitios web ajenos a https://bikerider.com, tenga en cuenta que sus prácticas de privacidad pueden diferir de las nuestras.
+Como un servicio a nuestros visitantes, nuestro Bike Rider puede incluir hipervínculos a otros sitios que no son operados o controlados por el Bike Rider. Por ello https://bikerider.com  no garantiza, ni se hace responsable de la licitud, fiabilidad, utilidad, veracidad y actualidad de los contenidos de tales sitios web o de sus prácticas de privacidad. Por favor, antes de proporcionar su información personal a estos sitios web ajenos a https://bikerider.com, tenga en cuenta que sus prácticas de privacidad pueden diferir de las nuestras.
 
 El único objeto de los enlaces es proporcionar al Usuario la posibilidad de acceder a dichos enlaces y conocer nuestro trabajo, aunque vcgs.net no ofrece ni comercializa por sí ni por medio de terceros la información, contenidos y servicios disponibles en los sitios enlazados, ni aprueba, supervisa o controla en modo alguno los contenidos y servicios y cualquier material de cualquier naturaleza existente en los mismos. https://bikerider.com  no se responsabiliza en ningún caso de los resultados que puedan derivarse al Usuario por acceso a dichos enlaces.
 
@@ -148,7 +152,7 @@ Privacidad de fuentes de rastreo utilizadas en este sitio: Google (Analytics) Pi
 
 En https://bikerider.com también se estudian las preferencias de sus usuarios, sus características demográficas, sus patrones de tráfico, y otra información en conjunto para comprender mejor quiénes constituyen nuestra audiencia y qué es lo que necesita. El rastreo de las preferencias de nuestros usuarios también nos ayuda a mostrarle los avisos publicitarios más relevantes.
 
-El usuario y, en general, cualquier persona física o jurídica, podrá establecer un hiperenlace o dispositivo técnico de enlace (por ejemplo, links o botones) desde su Botiga Can Pou a https://bikerider.com (el “Hiperenlace“). El establecimiento del Hiperenlace no implica en ningún caso la existencia de relaciones entre https://bikerider.com y el propietario del sitio o de la página web en la que se establezca el Hiperenlace, ni la aceptación o aprobación por parte de https://bikerider.com de sus contenidos o servicios. En todo caso, https://bikerider.com se reserva el derecho de prohibir o inutilizar en cualquier momento cualquier Hiperenlace al Botiga Can Pou.
+El usuario y, en general, cualquier persona física o jurídica, podrá establecer un hiperenlace o dispositivo técnico de enlace (por ejemplo, links o botones) desde su Bike Rider a https://bikerider.com (el “Hiperenlace“). El establecimiento del Hiperenlace no implica en ningún caso la existencia de relaciones entre https://bikerider.com y el propietario del sitio o de la página web en la que se establezca el Hiperenlace, ni la aceptación o aprobación por parte de https://bikerider.com de sus contenidos o servicios. En todo caso, https://bikerider.com se reserva el derecho de prohibir o inutilizar en cualquier momento cualquier Hiperenlace al Bike Rider.
 
 <h3>10. ¿ NO DESESAS RECIBIR INFORMACIÓN DE NOSOTROS O DESEAS REVOCAR TU CONSENTIMIENTO?</h3>
 

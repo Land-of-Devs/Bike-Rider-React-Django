@@ -3,7 +3,7 @@ const LegalInfo = () => {
 
 
   return (
-    <div style={{height: 500, overflow: 'auto', textAlign: 'justify', paddingRight: 20, boxSizing: 'border-box'}}>
+    <div style={{width: 600, height: 500, overflow: 'auto', textAlign: 'justify', paddingRight: 20, boxSizing: 'border-box'}}>
 <h1 style={{marginTop: 0}}>Aviso Legal</h1>
 
 <h3>1. AVISO LEGAL Y TÉRMINOS DE USO</h3>
@@ -16,7 +16,7 @@ Tal y como recoge la Ley 34/2002, de 11 de julio, de servicios de la sociedad de
 
     Mi denominación social es: Land Of Devs
     Mi NIF es 12345678Z
-    Mi domicilio social se encuentra en PLAÇA ESGLÉSIA 2 C.P 07830 SA TALAIA EIVISSA (ILLES BALEARS), España
+    Mi domicilio social se encuentra en Calle Palacio, España
     Email:  thelandofdevs@gmail.com
     Mi actividad social es: Establecimiento de bicicletas
 
@@ -38,11 +38,11 @@ El acceso y/o uso de este sitio web atribuye la condición de USUARIO, que acept
 
 <h3>1.4.1 USO DEL SITIO WEB</h3>
 
-La página web https://botigacanpou.com/  en adelante (LA WEB) proporciona el acceso a artículos, informaciones, servicios y datos (en adelante, “los contenidos”) propiedad de Land Of Devs El USUARIO asume la responsabilidad del uso de la web. El USUARIO se compromete a hacer un uso adecuado de los contenidos que ofrece a través de su web y con carácter enunciativo pero no limitativo, a no emplearlos para: (a) incurrir en actividades ilícitas, ilegales o contrarias a la buena fe y al orden público; (b) difundir contenidos o propaganda de carácter racista, xenófobo, pornográfico- ilegal, de apología del terrorismo o atentatorio contra los derechos humanos; (c) provocar daños en los sistemas físicos y lógicos de la web, de sus proveedores o de terceras personas, introducir o difundir en la red virus informáticos o cualesquiera otros sistemas físicos o lógicos que sean susceptibles de provocar los daños anteriormente mencionados; (d) intentar acceder y, en su caso, utilizar las cuentas de correo electrónico de otros usuarios y modificar o manipular sus mensajes. Land Of Devs se reserva el derecho de retirar todos aquellos comentarios y aportaciones que vulneren el respeto a la dignidad de la persona, que sean discriminatorios, xenófobos, racistas, pornográficos, que atenten contra la juventud o la infancia, el orden o la seguridad pública o que, a su juicio, no resultaran adecuados para su publicación. En cualquier caso, Land Of Devs no será responsable de las opiniones vertidas por los usuarios a través del blog u otras herramientas de participación que puedan crearse, conforme a lo previsto en la normativa de aplicación.
+La página web https://bikerider.com/  en adelante (LA WEB) proporciona el acceso a artículos, informaciones, servicios y datos (en adelante, “los contenidos”) propiedad de Land Of Devs El USUARIO asume la responsabilidad del uso de la web. El USUARIO se compromete a hacer un uso adecuado de los contenidos que ofrece a través de su web y con carácter enunciativo pero no limitativo, a no emplearlos para: (a) incurrir en actividades ilícitas, ilegales o contrarias a la buena fe y al orden público; (b) difundir contenidos o propaganda de carácter racista, xenófobo, pornográfico- ilegal, de apología del terrorismo o atentatorio contra los derechos humanos; (c) provocar daños en los sistemas físicos y lógicos de la web, de sus proveedores o de terceras personas, introducir o difundir en la red virus informáticos o cualesquiera otros sistemas físicos o lógicos que sean susceptibles de provocar los daños anteriormente mencionados; (d) intentar acceder y, en su caso, utilizar las cuentas de correo electrónico de otros usuarios y modificar o manipular sus mensajes. Land Of Devs se reserva el derecho de retirar todos aquellos comentarios y aportaciones que vulneren el respeto a la dignidad de la persona, que sean discriminatorios, xenófobos, racistas, pornográficos, que atenten contra la juventud o la infancia, el orden o la seguridad pública o que, a su juicio, no resultaran adecuados para su publicación. En cualquier caso, Land Of Devs no será responsable de las opiniones vertidas por los usuarios a través del blog u otras herramientas de participación que puedan crearse, conforme a lo previsto en la normativa de aplicación.
 
 <h3>1.4.2 Captura de información</h3>
 
-Formulario de contacto, donde el USUARIO deberá rellenar el campo de correo electrónico, asunto y nombre. – Formulario de suscripción, rellenando el USUARIO los campos necesarios para la suscripción a la web con los campos de nombre, y email. – Formulario de venta, rellenando el USUARIO los campos necesarios para la venta con los campos de nombre, email, dirección y DNI. – Cookies de rastreo, conforme a las siguientes reglas – Navegación y Dirección IP: Al navegar por esta web, el usuario facilita de forma automática al servidor de la web información relativa a tu dirección IP, fecha y hora de acceso, el hipervínculo que le ha reenviado a éstas, tu sistema operativo y el navegador utilizado. En todo caso Land Of Devs se reserva el derecho de modificar, en cualquier momento y sin necesidad de previo aviso, la presentación y configuración de la web  https://botigacanpou.com/ como el presente aviso legal.
+Formulario de contacto, donde el USUARIO deberá rellenar el campo de correo electrónico, asunto y nombre. – Formulario de suscripción, rellenando el USUARIO los campos necesarios para la suscripción a la web con los campos de nombre, y email. – Formulario de venta, rellenando el USUARIO los campos necesarios para la venta con los campos de nombre, email, dirección y DNI. – Cookies de rastreo, conforme a las siguientes reglas – Navegación y Dirección IP: Al navegar por esta web, el usuario facilita de forma automática al servidor de la web información relativa a tu dirección IP, fecha y hora de acceso, el hipervínculo que le ha reenviado a éstas, tu sistema operativo y el navegador utilizado. En todo caso Land Of Devs se reserva el derecho de modificar, en cualquier momento y sin necesidad de previo aviso, la presentación y configuración de la web  https://bikerider.com/ como el presente aviso legal.
 
 <h3>2. PROPIEDAD INTELECTUAL E INDUSTRIAL:</h3>
 

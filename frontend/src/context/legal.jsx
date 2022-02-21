@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { Box, Button, Icon } from '@mui/material';
-
 import { getCookieJson } from '/src/utils/cookie';
+import useModal from '../hooks/useModal';
+import policycookies from '../components/global/policycookies';
 
 const LegalContext = React.createContext({});
 
@@ -19,6 +20,7 @@ const style = {
 
 export function LegalContextProvider({ children }) {
   const [cookiesAccepted, setCookiesAccepted] = useState(!!getCookieJson('cookiesAccepted'));
+  const openCustomModal = useModal();
 
   const handleCookieAccept = () => {
     setCookiesAccepted(true);
@@ -35,7 +37,7 @@ export function LegalContextProvider({ children }) {
           <h2><Icon fontSize="large" sx={{ verticalAlign: 'middle', mr: 1 }}>cookie</Icon> We use cookies</h2>
           <p>We use cookies to improve your experience on our website.</p>
           <p>To use the website, please accept the usage of cookies by clicking the button below.</p>
-          <p>Read our <a href="#" onClick={() => console.log('adsf')}>Cookie Privacy Policy.</a></p>
+          <p>Read our <a href="#" onClick={() => openCustomModal(policycookies)}>Cookie Privacy Policy.</a></p>
           <Button onClick={handleCookieAccept}>OK</Button>
         </Box>
       )}

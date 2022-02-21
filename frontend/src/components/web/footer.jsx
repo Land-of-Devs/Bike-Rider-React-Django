@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { CssBaseline, Box, Typography, Container, Link } from '@mui/material';
+import { Box, Typography, Container } from '@mui/material';
 import useModal from '../../hooks/useModal';
 import LegalInfo from '../global/legalinfo';
+import PrivacyTerms from '../global/privacyterms';
+import PolicyCookies from '../global/policycookies';
 
 const WebFooter = () => {
   const openCustomModal = useModal();
@@ -27,6 +29,12 @@ const WebFooter = () => {
           {'Copyright © '}
           <span color="inherit" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => openCustomModal(LegalInfo)}>
             Legal info
+          </span>{' '}
+          <span color="inherit" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => openCustomModal(PrivacyTerms)}>
+            Privacy terms
+          </span>{' '}
+          <span color="inherit" style={{textDecoration: 'underline', cursor: 'pointer'}} onClick={() => openCustomModal(PolicyCookies)}>
+            Cookie terms
           </span>{' '}
           {new Date().getFullYear()}
           {'.'}
